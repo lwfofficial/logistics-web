@@ -1,0 +1,49 @@
+<div id="deposit-modal-container"
+     class="container-fluid" *ngIf="profile">
+
+    <progress-spinner></progress-spinner>
+
+    <div class="row text-center header-text-uppercase dialog-header">
+        <h3 class="row-title" i18n>Buy Credits</h3>
+        <hr class="bottom-hr-orange"/>
+        <button mat-button class="close-button" (click)="closeDialog()">
+            <i class="material-icons">
+                close
+            </i>
+        </button>
+    </div>
+
+    <div class="row text-center">
+        <p i18n>
+            You've decided to buy bundle credits.<br/>
+            The transaction will be processed by Paypal
+        </p>
+        <p i18n>
+            Please enter the amount and click the Paypal button.<br/>
+            The Paypal dialog will open and you will be able to pay using your Paypal account or using your card by clicking "Pay with Debit or Credit card"
+
+        </p>
+    </div>
+    <form [formGroup]="paypalDepositForm">
+        <div class="row text-center">
+            <label>Amount in {{profile.currencySetting}}</label>
+            <mat-form-field floatLabel="never" class="amount-field">
+                <input matInput
+                       name="amount"
+                       id="wdamount"
+                       type="number"
+                       min="0"
+                       formControlName="amount">
+                <mat-hint>Minimum amount {{profile.currencySetting === 'USD' ? '$' : '€'}}1</mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="gross-amount-container">
+            The total amount with the {{transaction.fee}}% fee applied is:
+            <div class="gross-amount">{{profile.currencySetting === 'USD' ? '$' : '€'}}{{transaction.amount.toFixed(2)}}</div>
+        </div>
+        <div id="paypal-button" class="row text-center">
+            <!--<ngx-paypal [config]="payPalConfig"></ngx-paypal>-->
+        </div>
+    </form>
+
+</div>

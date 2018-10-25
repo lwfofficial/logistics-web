@@ -1,0 +1,91 @@
+{% extends "admin/base_colorbox.html" %}
+{% load i18n %}
+
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css"
+          href="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH }}/adminmedia/css/courier.css?v=
+              {{ randomStr }}{% else %}/adminmedia/css/courier.css?v={{ randomStr }}{% endif %}"/>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH }}/adminmedia/js/courier.js?v=
+        {{ randomStr }}{% else %}/adminmedia/js/courier.js?v={{ randomStr }}{% endif %}"></script>
+{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+    <div id="courier-content-main" class="container-fluid">
+        <div class="row">
+            <h2>Manage {{ partnerCourier.name }} Courier Prices</h2>
+        </div>
+        <div class="row">
+            <div id="update-prices" class="col-lg-6">
+
+                <h2 class="col-lg-12">Update Prices</h2>
+
+                <form action="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH }}/admin/updateCourierPrices{% else %}/admin/updateCourierPrices{% endif %}"
+                      method="post"
+                      id="file-upload-form"
+                      enctype="multipart/form-data"
+                      class="col-lg-12">
+                    {% csrf_token %}
+                    {% for hidden_field in updateForm.hidden_fields %}
+                        {{ hidden_field }}
+                    {% endfor %}
+
+                    {% for field in updateForm.visible_fields %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id='upload-btn'>Update
+                    </button>
+                </form>
+                <div id="response-update-container" class="col-lg-12">
+                    <p id="response-update-text"></p>
+                </div>
+            </div>
+
+            <div id="delete-prices" class="col-lg-6">
+                <h2 class="col-lg-12">Delete Prices</h2>
+                <form action="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH }}/admin/deleteAllCourierPrices{% else %}/admin/deleteAllCourierPrices{% endif %}"
+                      method="post"
+                      id="delete-form"
+                      enctype="multipart/form-data"
+                      class="col-lg-12">
+                    {% csrf_token %}
+                    {% for hidden_field in deleteForm.hidden_fields %}
+                        {{ hidden_field }}
+                    {% endfor %}
+
+                    {% for field in deleteForm.visible_fields %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id='delete-btn'>Delete All
+                    </button>
+                </form>
+                <div id="response-delete-container" class="col-lg-12">
+                    <p id="response-delete-text"></p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "L86J68VFX3.com.lwflogisticts.lwfmobile",
+                "paths": [ "/signup/*"]
+            }
+        ]
+    }
+}

@@ -1,0 +1,92 @@
+{% extends "admin/base_colorbox.html" %}
+{% load i18n %}
+
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/css/verification.css?v={{ randomStr }}{% else %}/adminmedia/css/verification.css?v={{ randomStr }}{% endif %}" />
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/js/verification.js?v={{ randomStr }}{% else %}/adminmedia/js/verification.js?v={{ randomStr }}{% endif %}"></script>
+    <script>
+
+    </script>
+{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+    <div id="verification-content-main">
+        <div class="float_left">
+            <h2>Documents Verification</h2>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div class="clear">
+            <div class="user-image-container">
+                <img src="{{ profile.avatarImage.url }}" />
+            </div>
+            <div class="user-data-container">
+                <div class="clear">
+                    User: <b>{{ user.username }}</b>
+                </div>
+                <div class="clear">
+                    Role: <b>{% if profile.docVerified and profile.ProofOfresidenceVerified and profile.SelfIDocVerified %}Forwarder{% else %}Buyer{% endif %}</b>
+                </div>
+            </div>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div class="clear">
+            <div class="docfront-image-container">
+                Document Front (<b>{% if profile.docVerified %}Verified{% else %}Not Verified{% endif %}</b>)<br/>
+                {% if profile.IDDocFrontImage %}
+                    <a href="{{ profile.IDDocFrontImage.url }}" target="_blank">
+                        <img src="{{ profile.IDDocFrontImage.url }}" />
+                    </a>
+                    <br/>
+                    <input type="button" value="Verify" onclick="validateDocument('IDDocFrontImage', {{ user.id }}, '{{ csrf_token }}')"/><input type="button" value="Invalidate" onclick="invalidateDocument('IDDocFrontImage', {{ user.id }}, '{{ csrf_token }}')"/>
+                {% else %}
+                    <b>Not available</b>
+                {% endif %}
+            </div>
+            <div class="docback-image-container">
+                Document Back (<b>{% if profile.docVerified %}Verified{% else %}Not Verified{% endif %}</b>)<br/>
+                {% if profile.IDDocBackImage %}
+                    <a href="{{ profile.IDDocBackImage.url }}" target="_blank">
+                        <img src="{{ profile.IDDocBackImage.url }}" />
+                    </a>
+                    <br/>
+                    <input type="button" value="Verify" onclick="validateDocument('IDDocBackImage', {{ user.id }}, '{{ csrf_token }}')"/><input type="button" value="Invalidate" onclick="invalidateDocument('IDDocBackImage', {{ user.id }}, '{{ csrf_token }}')"/>
+                {% else %}
+                    <b>Not available</b>
+                {% endif %}
+            </div>
+        </div>
+        <div class="clear">
+            <div class="proof-image-container">
+                Proof of residence (<b>{% if profile.ProofOfresidenceVerified %}Verified{% else %}Not Verified{% endif %}</b>)<br/>
+                {% if profile.ProofOfresidenceImage %}
+                    <a href="{{ profile.ProofOfresidenceImage.url }}" target="_blank">
+                        <img src="{{ profile.ProofOfresidenceImage.url }}" />
+                    </a>
+                    <br/>
+                    <input type="button" value="Verify" onclick="validateDocument('ProofOfresidenceImage', {{ user.id }}, '{{ csrf_token }}')"/><input type="button" value="Invalidate" onclick="invalidateDocument('ProofOfresidenceImage', {{ user.id }}, '{{ csrf_token }}')"/>
+                {% else %}
+                    <b>Not available</b>
+                {% endif %}
+            </div>
+            <div class="selfid-image-container">
+                Self Id doc (<b>{% if profile.SelfIDocVerified %}Verified{% else %}Not Verified{% endif %}</b>)<br/>
+                {% if profile.SelfIDocImage %}
+                    <a href="{{ profile.SelfIDocImage.url }}" target="_blank">
+                        <img src="{{ profile.SelfIDocImage.url }}" />
+                    </a>
+                    <br/>
+                    <input type="button" value="Verify" onclick="validateDocument('SelfIDocImage', {{ user.id }}, '{{ csrf_token }}')"/><input type="button" value="Invalidate" onclick="invalidateDocument('SelfIDocImage', {{ user.id }}, '{{ csrf_token }}')"/>
+                {% else %}
+                    <b>Not available</b>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,1 @@
+[{"model": "transactions.wallet", "pk": 1, "fields": {"profile": 1, "deposit": 0.0, "credit": 1000.0, "addresses": []}}]

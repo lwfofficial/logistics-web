@@ -1,0 +1,19 @@
+<mat-form-field floatLabel="never" [class]="class">
+    <input matInput
+           [placeholder]="placeHolder"
+           name="location"
+           [id]="id"
+           type="text"
+           [formControl]="formControl"
+           [matAutocomplete]="autocomplete">
+    <mat-autocomplete [id]="id+'-auto'">
+        <mat-option *ngFor="let place of filteredPlaces | async"
+                    [value]="signup ? place.terms[0].value : place.description"
+                    (onSelectionChange)="fromSelected(place)">
+            <span  i18n>{{ place.description }}</span> |
+        </mat-option>
+    </mat-autocomplete>
+    <mat-error *ngIf="!formControl.valid || formControl.hasError('required')">
+        <span i18n>Please select a valid location from the list</span>
+    </mat-error>
+</mat-form-field>

@@ -1,0 +1,144 @@
+<div id="form-login-container">
+    <div id="form-login">
+        <h3 i18n>Login</h3>
+        <div class="login-instruction" i18n>If you have already registered with LWF, please login using your details</div>
+        <div *ngIf="errorMsg">
+            <span class="text-center alert-danger" i18n>{{errorMsg}}</span>
+        </div>
+
+        <div>
+            <progress-spinner #spinner></progress-spinner>
+            <form (ngSubmit)="login(loginForm)"
+                  [formGroup]="loginForm">
+                <label i18n>Username / Email</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Username or Email"
+                           name="username"
+                           type="text"
+                           formControlName="username"
+                           class="username">
+                    <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
+                        *Username / Email is required
+                    </mat-error>
+                </mat-form-field>
+
+                <label i18n>Password</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Password"
+                           type="password"
+                           autocapitalize="none"
+                           formControlName="password">
+                    <mat-error *ngIf="loginForm.errors && loginForm.errors.notfound">
+                        <span i18n>*Username / Email or password are incorrect!</span>
+                    </mat-error>
+                    <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+                        *Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="password-recovery-link">
+                    <a [routerLink]="['/password-recovery']" i18n>
+                        Forgot your password?
+                    </a>
+                </div>
+
+                <div class="text-center">
+                    <button mat-button
+                            class="sign-in"
+                            color="secondary"
+                            type="submit" i18n>
+                        Sign In
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="form-signup">
+        <h3>Signup</h3>
+        <div class="login-instruction" i18n> To begin using our services please register by completing the information below</div>
+        <div *ngIf="errorMsg">
+            <span class="text-center alert-danger">{{errorMsg}}</span>
+        </div>
+        <div>
+            <progress-spinner #spinner></progress-spinner>
+            <form class="registration-form" (ngSubmit)="signup(signupForm)"
+                  [formGroup]="signupForm"
+                  #signupFormElement="ngForm">
+
+                <label>First Name</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Name"
+                           name="name"
+                           type="text"
+                           formControlName="name">
+                </mat-form-field>
+
+                <label>Last Name</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Last Name"
+                           type="text"
+                           formControlName="surname">
+                </mat-form-field>
+
+                <label>Username</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Username"
+                           type="text"
+                           maxlength="16"
+                           formControlName="username"
+                           class="username">
+
+                    <mat-error *ngIf="signupForm.get('username').errors
+                                        && signupForm.get('username').errors.backend
+                                        && signupForm.get('username').errors.backend.username"
+                               i18n>
+                        Username already taken!
+                    </mat-error>
+
+                </mat-form-field>
+
+                <label>Email</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Email"
+                           type="email"
+                           autocapitalize="none"
+                           formControlName="email">
+
+                    <mat-error *ngIf="signupForm.get('email').errors
+                                        && signupForm.get('email').errors.backend
+                                        && signupForm.get('email').errors.backend.email"
+                               i18n>
+                        Email already registered!
+                    </mat-error>
+
+                    <mat-error *ngIf="signupForm.get('email').errors
+                                        && signupForm.get('email').errors.backend
+                                        && signupForm.get('email').errors.backend.closed"
+                               i18n>
+                        Signup enabled only for closed beta users!
+                        Signup enabled only for closed beta users!
+                    </mat-error>
+
+                </mat-form-field>
+
+                <div class="text-center registration-button">
+                    <button mat-button
+                            color="primary"
+                            class="sign-up"
+                            type="submit"
+                            i18n>
+                        Sign Up
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

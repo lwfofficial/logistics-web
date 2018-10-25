@@ -1,0 +1,41 @@
+<div id="update-tracking-info-form-container"
+     class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 i18n>Insert Refuse Reason</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div id="express-delivery-form"
+         class="row">
+
+        <div id="p2p-freight-form">
+            <div class="clearboth">&nbsp;</div>
+            <form (ngSubmit)="updateRefuseReason(addRefuseReason)"
+                  [formGroup]="addRefuseReason">
+
+                <mat-form-field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <textarea matInput
+                              placeholder="Refuse reason..."
+                              name="refuseText"
+                              rows="10"
+                              formControlName="refuseText">
+                    </textarea>
+                </mat-form-field>
+                <span class="clearfix"></span>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-6 col-lg-push-3 col-md-push-3 col-sm-push-3 col-xs-push-2 col-push-0">
+                    <button mat-button
+                            color="cancel"
+                            type="submit"
+                            class="full-width">
+                        <span i18n>Insert Refuse Reason</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>

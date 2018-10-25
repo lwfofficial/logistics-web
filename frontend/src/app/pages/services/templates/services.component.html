@@ -1,0 +1,70 @@
+<div id="services-container"
+     class="container-fluid">
+
+    <progress-spinner #spinner></progress-spinner>
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="row-title" i18n>Services</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div *ngIf="isForwarder">
+
+        <div id="service-enable-container">
+            <div class="service-enable-all">
+                <div>
+                    <div>
+                        <span i18n *ngIf="canActivateAllServices">Enable</span>
+                        <span i18n *ngIf="!canActivateAllServices">Disable</span>
+                        <span i18n> all services </span>
+                    </div>
+                    <mat-slide-toggle
+                            [(ngModel)]="activateAllServicesModel"
+                            color="primary"
+                            (change)="toggleActivateService()"></mat-slide-toggle>
+                </div>
+            </div>
+
+            <div class="service-create">
+                <form (ngSubmit)="addService(addServiceForm)"
+                      [formGroup]="addServiceForm"
+                      #addServiceFormElement="ngForm"
+                      id="service-create-form">
+
+                    <mat-form-field floatLabel="never">
+                        <mat-select placeholder="Select Service"
+                                    formControlName="type">
+                            <mat-option *ngFor="let serviceType of serviceTypes"
+                                        [value]="serviceType.type">
+                                {{serviceType.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div>
+                        <button id="add-service-button" mat-button color="secondary" type="submit">New</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="service-list-container">
+
+            <div *ngFor="let service of services">
+
+                <service-box [service]="service"
+                             [profile]="profile"
+                             (onEdit)="editService($event)"
+                             (onToggle)="singleServiceToggle($event)"
+                             (onDelete)="deleteService($event)"></service-box>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div *ngIf="!isForwarder">
+        <h2 i18n>You must be a forwarder to access this page!</h2>
+    </div>
+
+</div>

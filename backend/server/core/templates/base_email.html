@@ -1,0 +1,124 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <head>
+        {% block title %}{% endblock %}
+        {% block meta %}
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% endblock %}
+        {% block inline_styles %}
+            <style type="text/css">
+                * {
+                    box-sizing: border-box;
+                }
+                #main-container {
+                    font-size:16px;
+                    background-color: #f0f1f3;
+                    padding:20px;
+                    height:100%;
+                    width:100%;
+                }
+                #content {
+                    display:block;
+                    width:700px;
+                    height:auto;
+                    margin: 0 auto;
+                    border:1px solid #9B9DA0;
+                    background-color:#fff;
+                }
+                h1 {
+                    color: #005DA1;
+                }
+
+                a {
+                    color: #005DA1;
+                }
+                hr.bottom-hr-orange {
+                    width: 35px;
+                    height: 3px;
+                    border: 0;
+                    border-radius: 2px;
+                    opacity: 0.8;
+                    background: #F7A800;
+                }
+
+                .text-uppercase {
+                    text-transform: uppercase;
+                }
+                .clear {
+                    clear: both;
+                }
+                .max-width {
+                    width: 100%;
+                }
+                .text-center {
+                    text-align: center;
+                }
+                header {
+                    background-color: #005DA1;
+                    width:100%;
+                    border-bottom:10px solid #F7A800;
+                    padding:20px 0;
+                    height: 130px;
+                }
+                header img {
+                    display:block;
+                    width:150px;
+                    margin:auto;
+                }
+                .email-content {
+                    width:100%;
+                    padding:0 30px 30px 30px;
+                }
+                .email-body {
+                    padding:30px;
+                }
+                .email-body div {
+                    line-height:2;
+                }
+                .email-message {
+                    margin-bottom: 50px;
+                    line-height:2;
+                }
+                .email-data {
+                    margin-bottom:20px;
+                }
+                .highlight {
+                    color: #005DA1;
+                    font-weight:bold;
+                }
+                .highlight-1 {
+                    color: #005DA1;
+                    font-weight:bold;
+                    font-size:20px;
+                    margin: 10px 0;
+                }
+                footer {
+                    height: 100px;
+                    color:#fff;
+                    padding:30px;
+                    background-color: #005DA1;
+                    border-top:10px solid #F7A800;
+                }
+            </style>
+        {% endblock %}
+        {% block inline_scripts %}
+        {% endblock %}
+    </head>
+    <body>
+        <div id="main-container">
+            <div id="content">
+                <header>
+                    <a href="http://lwf.global"><img src="{{baseUrl}}emailmedia/assets/LWF-logo-white.png"></a>
+                </header>
+                <div class="email-content">
+                    {% block container %}
+                        base html
+                    {% endblock %}
+                </div>
+                <footer>LWF  2017 All Rights Reserved</footer>
+            </div>
+        </div>
+    </body>
+</html>

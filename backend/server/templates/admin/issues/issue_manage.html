@@ -1,0 +1,50 @@
+{% extends "admin/base_colorbox.html" %}
+{% load i18n %}
+
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/css/issues.css?v={{ randomStr }}{% else %}/adminmedia/css/issues.css?v={{ randomStr }}{% endif %}" />
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/js/issues.js?v={{ randomStr }}{% else %}/adminmedia/js/issues.js?v={{ randomStr }}{% endif %}"></script>
+    <script>
+        var ICM;
+        $(document).ready(function () {
+            ICM = IssueChatManager;
+            ICM.init({
+                el: $('#chat_container_{{ issue.chat.id }}'),
+                chatId: {{ issue.chat.id }},
+                urlDefaultAvatar: getBaseUrl()+"adminmedia/images/default_avatar.png",
+                urlGetData: getBaseUrl()+"admin/ajax/get_chat_data.html",
+                urlPostMessage: getBaseUrl()+"admin/ajax/post_chat_message.html",
+                csrfToken: '{{ csrf_token }}'
+            });
+        })
+    </script>
+{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+    <div id="issue-content-main">
+        <div class="float_left">
+            <h2>Issue Manage</h2>
+        </div>
+        <div class="float_right">
+            <input type="button" value="Close issue" onclick="closeIssue('{{ csrf_token }}', {{ issue.id }});">
+        </div>
+        <div class="issue_data">
+            <div class="clear">
+                Type: {{ typeStr }}, Buyer: {{ issue.profile.user.first_name }} {{ issue.profile.user.last_name }}, Forwarder: {{ issue.order.service.profile.user.first_name }} {{ issue.order.service.profile.user.last_name }}
+            </div>
+        </div>
+        <div id="chat_container_{{ issue.chat.id }}" class="chat_container">
+            <div class="chat_messages"></div>
+            <div class="chat_controls">
+                <textarea name="chat_text_send" class="chat_text_send"></textarea>
+                <input type="button" name="chat_text_send_button" class="chat_text_send_button" value="Send Message"/>
+            </div>
+        </div>
+    </div>
+{% endblock %}

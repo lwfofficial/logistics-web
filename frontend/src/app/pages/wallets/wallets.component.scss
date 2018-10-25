@@ -1,0 +1,496 @@
+#wallets-container {
+  min-height: 800px;
+  margin-bottom: 50px;
+}
+
+#operation-tab-group {
+  .mat-tab-label {
+    width: 50%;
+    font-size: 1.25rem;
+  }
+  .buyer-label {
+    .mat-tab-label {
+      width: 100%;
+    }
+  }
+  .mat-tab-label-active {
+    color: #005DA1;
+    opacity: 1;
+    font-weight: 700;
+  }
+  .mat-tab-body {
+    color: #585A63;
+    border: 0px solid #D6D8DA;
+  }
+  button {
+    letter-spacing: 1px;
+  }
+}
+
+.wallet-help {
+  font-size: 1rem;
+  width: 600px;
+}
+
+#deposit-form-container {
+  margin-top: 0;
+  .deposit-sections {
+    background-color: #F0F1F3;
+    text-align: center;
+    padding: 30px 20px 20px;
+    h3 {
+      margin-top: 0;
+      font-weight: 700;
+    }
+  }
+  #credit-card-deposit {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+
+    .credit-card-logos {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      img {
+        margin-left: 10px;
+      }
+    }
+    button {
+      margin-top: 40px;
+    }
+  }
+  #crypto-deposit {
+    .crypto-logos {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      button {
+        min-width: 80px;
+        height: 100px;
+        text-align: center;
+        margin: 15px;
+        .mat-ripple {
+          width: 100%;
+          height: 100%;
+        }
+        >span {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          .mat-icon {
+            width: 80px;
+            height: 80px;
+          }
+          span {
+            width: 100%;
+            height:20px;
+          }
+          .fee-amount{
+            font-size:0.875rem;
+            font-weight:400;
+          }
+        }
+      }
+    }
+    .crypto-info {
+      text-transform: uppercase;
+      margin-top: 20px;
+    }
+  }
+}
+
+#deposit-note {
+  padding: 0 30px;
+  margin-top: 20px;
+}
+
+#caution-row {
+  div:first-of-type {
+    font-size: 1.875rem;
+    font-weight: bold;
+  }
+  margin-top: 100px;
+  padding: 40px;
+  background: #585A63;
+  color: white;
+}
+
+#transactions-row {
+  padding: 50px 30px;
+  margin: 0 auto;
+  display: block;
+}
+
+.transactions-warning-message {
+  display: none;
+}
+
+#deposit-modal-container,
+#withdrawal-modal-container {
+  color: #585A63;
+}
+
+#deposit-modal-container .row,
+#withdrawal-modal-container .row {
+  margin-top: 10px;
+}
+
+#deposit-modal-container {
+  .loading-shade {
+    z-index:9999 !important;
+  }
+  .dialog-header {
+    position: relative;
+    .close-button {
+      position: absolute;
+      color: #585A63;
+      top: -20px;
+      right: 0;
+      border-radius: 100%;
+      padding: 0;
+      min-width: 24px;
+      width: 24px;
+      height: 24px;
+      display: block;
+      span {
+        height: 24px;
+      }
+    }
+    h3 {
+      margin-top: 0;
+    }
+  }
+  input {
+    outline: none;
+    border: none;
+  }
+
+  label {
+    display: block;
+  }
+  .gross-amount-container{
+    margin-top:10px;
+    text-align:center;
+    color:#585A63;
+    font-size:1.2rem;
+    font-weight:600;
+    .gross-amount{
+      font-size:2rem;
+      color: #054781;
+      font-weight: 700;
+    }
+  }
+}
+
+#currency-address {
+  background-color: white;
+  font-size: 1.25rem;
+  color: #005DA1;
+}
+
+#withdrawal-form-container {
+  margin: 0;
+  .no-credit {
+    font-weight: 600;
+    color: #585A63;
+    width: 600px;
+    display: block;
+    margin: 0 auto;
+  }
+  form {
+    background-color: #F0F1F3;
+    padding: 30px 0 20px;
+  }
+
+  #withdrawal-form {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 700px;
+    > section {
+      .input-label {
+        display: block;
+      }
+      .mat-form-field {
+        margin-right: 20px;
+        width: 100%;
+      }
+    }
+    #currency-field {
+      flex-basis: 45%;
+    }
+    #amount-field {
+      flex-basis: 45%;
+    }
+    #address-field {
+      margin-top:20px;
+      flex-basis: 100%;
+    }
+    .submit-btn {
+      text-align: center;
+      margin: 20px auto;
+      flex-basis: 100%;
+      width: 100%;
+      button {
+        min-width: 200px;
+      }
+    }
+  }
+}
+
+.transactions-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  border: 1px solid #d6d7d8;
+
+  .transactions-table {
+    overflow: auto;
+    min-height: 300px;
+    display: block;
+  }
+
+  .mat-header-row {
+    background: #e9eaeb;
+    padding: 0 10px;
+  }
+
+  .mat-header-cell {
+    color: #005DA1;
+    font-size: 0.875rem;
+    font-weight: 700;
+    .mat-sort-header-button {
+      text-transform: capitalize !important;
+    }
+  }
+  .mat-sort-header-arrow {
+    margin-top: 5px;
+  }
+  .mat-row {
+    padding: 0 10px;
+  }
+  /* Column Widths */
+
+  #deposit-table,
+  #deposit-paypal-table {
+    .mat-column-currency {
+      max-width: 200px;
+      min-width: 75px;
+      margin-right: 10px;
+      padding: 0 5px;
+    }
+    .mat-column-amount {
+      max-width: 200px;
+      margin-right: 10px;
+      padding: 0 5px;
+    }
+    .mat-column-date {
+      max-width: 200px;
+      min-width: 100px;
+      margin-right: 10px;
+      padding: 0 5px;
+    }
+    .mat-column-view-details {
+      max-width: 20px;
+      min-width: 20px;
+      margin-right: 5px;
+      padding: 0 5px;
+    }
+    .mat-column-expandedDetail {
+      .row-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        flex-wrap: wrap;
+        width: 100%;
+        .transaction-time {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  #withdraw-table {
+    .mat-column-dateCreated {
+      max-width: 200px;
+      min-width: 100px;
+      margin-right: 10px;
+      padding: 0 5px;
+    }
+    .mat-column-amount {
+      max-width: 200px;
+      margin-right: 10px;
+      padding: 0 5px;
+    }
+    .mat-column-status {
+      max-width: 200px;
+      min-width: 100px;
+      margin-right: 10px;
+      padding: 0 5px;
+    }
+    .mat-column-view-details {
+      max-width: 20px;
+      min-width: 20px;
+      margin-right: 5px;
+      padding: 0 5px;
+    }
+    .mat-column-expandedDetail {
+      .row-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        flex-wrap: wrap;
+        .transaction-time {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  .transaction-id {
+    cursor: pointer;
+  }
+
+  .transaction-detail-btn {
+    cursor: pointer;
+    max-width: 20px;
+  }
+
+  .transaction-row {
+    position: relative;
+  }
+
+  .transaction-row:not(.expanded) {
+    cursor: pointer;
+  }
+
+  .transaction-row:not(.expanded):hover {
+    background: #f5f5f5;
+  }
+
+  .transaction-row.expanded {
+    border-bottom-color: transparent;
+  }
+}
+
+@media (max-width: 991px) {
+  #deposit-form-container {
+    flex-wrap: wrap;
+  }
+  #withdrawal-form-container {
+
+    form {
+      background-color: #F0F1F3;
+      padding: 30px 0 20px;
+    }
+
+    #withdrawal-form {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
+      #currency-field {
+        flex-basis: 45%;
+      }
+      #amount-field {
+        flex-basis: 45%;
+      }
+      #address-field {
+        flex-basis: 100%;
+      }
+      .mat-form-field {
+        margin-right: 20px;
+        margin-top: 10px;
+      }
+
+      .submit-btn {
+        width: 150px;
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  #operation-tab-group {
+    .mat-tab-body {
+      padding: 20px 0;
+    }
+  }
+  #withdrawal-form-container {
+
+    form {
+      background-color: #F0F1F3;
+      padding: 30px 0 20px;
+    }
+    #withdrawal-form {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
+      #currency-field {
+        flex-basis: 100%;
+      }
+      #amount-field {
+        flex-basis: 100%;
+      }
+      #address-field {
+        flex-basis: 100%;
+      }
+      .mat-form-field {
+        margin-right: 20px;
+        margin-top: 10px;
+      }
+
+      .submit-btn {
+        width: 150px;
+        margin-top: 20px;
+      }
+    }
+  }
+  #transactions-row {
+    padding: 20px 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  #deposit-form-container {
+    justify-content: center;
+    > div {
+      flex-basis: 100%;
+      .currency-button {
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+  }
+
+  .transactions-container {
+    .mat-header-row,
+    .mat-row {
+      padding-left: 5px;
+      paddign-right: 5px;
+    }
+  }
+
+}
+

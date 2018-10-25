@@ -1,0 +1,36 @@
+<div id="confim-delete-container"
+     class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 class="row-title" i18n>Confirm Delete</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="row text-center warning-text">
+            <p i18n>You are about to delete a service</p>
+            <p i18n>Continue?</p>
+    </div>
+
+    <div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-6 ">
+            <button mat-button
+                    color="cancel"
+                    class="full-width"
+                    (click)="closeDialog()"
+                    type="button">
+                <span i18n>Cancel</span>
+            </button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-6" >
+            <button mat-button
+                    color="secondary"
+                    class="full-width"
+                    (click)="delete()"
+                    type="button">
+                <span i18n>Confirm</span>
+            </button>
+        </div>
+    </div>
+
+
+</div>

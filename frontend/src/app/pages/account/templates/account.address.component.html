@@ -1,0 +1,89 @@
+<div id="add-addres-dialog">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="container-title row-title" *ngIf="!address" i18n>Add Address</h2>
+        <h2 class="container-title row-title" *ngIf="address" i18n>Modify Address</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+
+    <form id="address-details" [formGroup]="addAddressForm"
+          (ngSubmit)="addAddress(addAddressForm)">
+
+        <label i18n>Street</label>
+        <mat-form-field floatLabel="never">
+            <input matInput
+                   placeholder="Street"
+                   name="street"
+                   type="text"
+                   formControlName="street">
+        </mat-form-field>
+
+        <label i18n>City</label>
+        <geocomplete
+                [id]="'city'"
+                class="city"
+                [placeHolder]="'City'"
+                [value]="addAddressForm.controls['city'].value"
+                (optionSelected)="setCity($event)"
+                [signup]="true"
+                ngDefaultControl>
+        </geocomplete>
+
+        <label i18n>Zip Code</label>
+        <mat-form-field floatLabel="never">
+            <input matInput
+                   placeholder="Zip Code"
+                   name="zipCode"
+                   type="text"
+                   formControlName="zipCode">
+        </mat-form-field>
+
+        <label i18n>Region</label>
+        <mat-form-field class="readonlyField" floatLabel="never">
+            <input matInput
+                   placeholder="Region"
+                   name="region"
+                   readonly
+                   type="text"
+                   formControlName="region">
+        </mat-form-field>
+
+        <label i18n>Country</label>
+        <mat-form-field class="readonlyField" floatLabel="never">
+            <input matInput
+                   placeholder="Country"
+                   name="country"
+                   readonly
+                   type="text"
+                   formControlName="country">
+        </mat-form-field>
+
+        <div id="dialog-buttons">
+            <div [ngClass]="!address ? '' : 'editing'">
+                <button mat-button color="cancel" class="full-width" type="button" (click)="dialogRef.close()">
+                    <span i18n>Close</span>
+                </button>
+            </div>
+            <div [ngClass]="!address ? '' : 'editing'">
+                <button mat-button color="secondary"
+                        class="full-width"
+                        type="submit">
+                    <span *ngIf="!address" i18n>Add</span>
+                    <span *ngIf="address" i18n>Update</span>
+                </button>
+            </div>
+            <div *ngIf="address" class="editing">
+                <button mat-button
+                        color="secondary"
+                        class="full-width"
+                        (click)="delete()"
+                        type="button">
+                    <span  i18n>Delete</span>
+                </button>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+    </form>
+</div>

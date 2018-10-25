@@ -1,0 +1,179 @@
+<nav class="tool-bar navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header navbar-left pull-left">
+            <a class="navbar-brand" [routerLink]="isLoggedIn() ? ['/forwarder'] : ['']" *ngIf="profileIsForwarder">
+                <img class="tool-bar-logo" src="../../../assets/images/LWF-logo-white.svg"/>
+            </a>
+            <a class="navbar-brand" [routerLink]="isLoggedIn() ? ['/buyer'] : ['']">
+                <img class="tool-bar-logo" src="../../../assets/images/LWF-logo-white.svg" *ngIf="!profileIsForwarder"/>
+            </a>
+        </div>
+        <div class="navbar-header navbar-right pull-right" id="account-menu">
+            <ul class="nav pull-left">
+                <li *ngIf="isLoggedIn()"
+                    class="dropdown pull-right">
+                    <a class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        <i class="fal fa-user-circle"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <div class="arrow-up"></div>
+                        <li>
+                            <a [routerLink]="'account'" i18n>
+                                Account Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="'account/verification'" i18n>
+                                Account Verification
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="'account/security'" i18n>
+                                Security
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="'wallets'" i18n>
+                                Wallet
+                            </a>
+                        </li>
+                        <li>
+                            <a (click)="logout()" i18n>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#header-menu"
+                    aria-expanded="false">
+                <i class="material-icons md-36">menu</i>
+            </button>
+        </div>
+        <div class="navbar-header navbar-right pull-right"
+             id="notification-menu"
+             *ngIf="isLoggedIn()">
+            <ul class="nav pull-left">
+                <li class="dropdown pull-right" [ngClass]="!notifications.length ? 'disabled' : ''">
+                    <a class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       role="button"
+                       [ngClass]="!notifications.length ? 'disabled' : ''"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                       (click)="setNotificationsAsRead()">
+                        <mat-icon class="material-icons" [matBadge]="newNotifications.length" matBadgeOverlap="true" matBadgePosition="above" matBadgeSize="medium" matBadgeColor="warn" [matBadgeHidden]="!unreadNotification">notifications</mat-icon>
+                        <!--<span class="notification-badge" *ngIf="unreadNotification">-->
+                            <!--{{notifications.length}}-->
+                        <!--</span>-->
+                    </a>
+                    <ul class="dropdown-menu">
+                        <div class="arrow-up"></div>
+                        <li *ngFor="let notification of notifications"
+                            [ngClass]="notification.read ? '':'unread'"
+                            (click)="notificationAction(notification)" i18n>
+                            {{notification.text}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-header navbar-right pull-right" id="help-menu">
+            <ul class="nav pull-left">
+                <li class="dropdown pull-right">
+                    <a class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false" i18n>
+                        <i class="material-icons">help_outline</i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <div class="arrow-up"></div>
+                        <li>
+                            <a *ngIf="isLoggedIn()" [routerLink]="'our-services'" i18n>
+                                Our Services
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.lwf.io#faq" target="_blank" i18n>
+                                Faq
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.lwf.io" target="_blank" i18n>
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://explorer.lwf.io" target="_blank" i18n>
+                                LWF Blockchain
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="visible-xs-block clearfix"></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="header-menu">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li> -->
+                <li>
+                    <a [routerLink]="isLoggedIn() ? 'buyer' : 'home'"
+                       routerLinkActive="active-link"
+                       [routerLinkActiveOptions]="{exact: true}"
+                       i18n>
+                        Home
+                    </a>
+                </li>
+                <li *ngIf="profileIsForwarder">
+                    <a [routerLink]="'forwarder'"
+                       routerLinkActive="active-link"
+                       [routerLinkActiveOptions]="{exact: true}"
+                       i18n>
+                        Dashboard
+                    </a>
+                </li>
+                <li *ngIf="profileIsForwarder">
+                    <a [routerLink]="'services'"
+                       routerLinkActive="active-link"
+                       [routerLinkActiveOptions]="{exact: true}"
+                       i18n>
+                        Services
+                    </a>
+                </li>
+                <li>
+                    <a *ngIf="!isLoggedIn()"
+                       [routerLink]="'our-services'"
+                       routerLinkActive="active-link"
+                       [routerLinkActiveOptions]="{exact: true}"
+                       i18n>
+                        Our Services
+                    </a>
+                </li>
+
+                <li>
+                    <a *ngIf="!isLoggedIn()"
+                       [routerLink]="'login'"
+                       routerLinkActive="active-link"
+                       [routerLinkActiveOptions]="{exact: true}"
+                       i18n>
+                        Login / Sign Up
+                    </a>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+
+    </div><!-- /.container-fluid -->
+</nav>

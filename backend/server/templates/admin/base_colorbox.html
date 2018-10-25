@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" xml:lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/css/styles.css?v={{ randomStr }}{% else %}/adminmedia/css/styles.css?v={{ randomStr }}{% endif %}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    {% block extrastyle %}{% endblock %}
+    {% block extrahead %}{% endblock %}
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/js/jquery.min.js{% else %}/adminmedia/js/jquery.min.js{% endif %}"></script>
+    <script>
+        function getBaseUrl() {
+            var protocol = '{% if request.scheme|lower == 'https'%}https://{% else %}http://{% endif %}';
+            var baseDomain = '{{ request.get_host }}';
+            var restBase = '{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/{% else %}{% endif %}';
+            var url = protocol + baseDomain + '/' + restBase;
+            return url;
+        }
+    </script>
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/js/colorboxLib.js?v={{ randomStr }}{% else %}/adminmedia/js/colorboxLib.js?v={{ randomStr }}{% endif %}"></script>
+    {% block extrajs %}{% endblock %}
+    {% block blockbots %}
+        <meta name="robots" content="NONE,NOARCHIVE" />
+    {% endblock %}
+</head>
+{% load i18n %}
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+{% if not is_popup %}
+    {% if user.is_active and user.is_staff %}
+
+    {% endif %}
+
+{% endif %}
+
+{% block userlinks %}{% endblock %}
+
+{% block mainbody %}
+    <div class="">
+
+    {% if messages %}
+        <div class="alert alert-success">
+            <ul class="messagelist">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% block breadcrumbs %}
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans 'Home' %}</a> <span class="divider">/</span></li>
+            <li class="active">{% if title %} {{ title }}{% endif %}</li>
+        </ul>
+    {% endblock %}
+
+    {% block pretitle %}{% endblock %}
+    {% block content_title %}
+        {% if title %}
+            <div class="page-header">
+                <h3>{{ title }}</h3>
+            </div>
+        {% endif %}
+    {% endblock %}
+    <div class="row-fluid show-grid">
+        <div style="float:left; width:100px;">&nbsp;</div>
+        <div class="span9">
+            {% block content %}
+                {% block object-tools %}{% endblock %}
+                {{ content }}
+            {% endblock %}
+        </div>
+
+        {% block footer %}{% endblock %}
+
+    </div>
+{% endblock %}
+</body>
+</html>

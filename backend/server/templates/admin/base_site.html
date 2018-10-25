@@ -1,0 +1,26 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}
+    LWF Administration
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">LWF Administration</a></h1>
+{% endblock %}
+
+{% block blockbots %}
+    {{block.super}}
+    <link rel="stylesheet" type="text/css" href="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/css/colorbox.css?v={{ randomStr }}{% else %}/adminmedia/css/colorbox.css?v={{ randomStr }}{% endif %}" />
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/js/jquery.min.js{% else %}/adminmedia/js/jquery.min.js{% endif %}"></script>
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/js/jquery.colorbox-min.js{% else %}/adminmedia/js/jquery.colorbox-min.js{% endif %}"></script>
+    <script>
+        function getBaseUrl() {
+            var protocol = '{% if request.scheme|lower == 'https'%}https://{% else %}http://{% endif %}';
+            var baseDomain = '{{ request.get_host }}';
+            var restBase = '{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/{% else %}{% endif %}';
+            var url = protocol + baseDomain + '/' + restBase;
+            return url;
+        }
+    </script>
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH}}/adminmedia/js/lib.js?v={{ randomStr }}{% else %}/adminmedia/js/lib.js?v={{ randomStr }}{% endif %}"></script>
+{% endblock %}

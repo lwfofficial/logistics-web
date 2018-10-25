@@ -1,0 +1,108 @@
+<div>
+    <section class="order-data">
+        <span class="order-state"><span i18n>Order State:</span>
+            <span class="highlight_3 text-uppercase"><strong i18n>New</strong></span></span>
+    </section>
+
+    <section id="goods-settings">
+        <div class="section-title-box grey-bg text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+            <h4 class="section-title text-uppercase" i18n>Goods</h4>
+            <img src="../../../../assets/images/orders/goods-icon.svg">
+        </div>
+
+        <div class="goods-info col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12" >
+            <div><span i18n>Goods Value</span>: <strong i18n>
+                {{orderCompletionForm.get("goodValue").value | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}}
+            </strong></div>
+            <div><span i18n>Size</span>: <strong i18n>{{orderCompletionForm.controls['parcelSize'].value | maxSize:profile.measuresSetting}}</strong></div>
+            <div *ngIf="!service.addPartnerForwarder"><span i18n>Weight</span>: <strong i18n>{{orderCompletionForm.controls['parcelWeight'].value | maxWeight:profile.measuresSetting}}</strong></div>
+            <div *ngIf="service.addPartnerForwarder"><span i18n>Weight</span>: <strong i18n>{{orderCompletionForm.controls['shippingWeight'].value | convertWeight:profile.measuresSetting}}</strong></div>
+            <div><span i18n>Buy goods from</span>: <strong i18n>{{orderCompletionForm.controls['buyGoodsFrom'].value ? 'Private' : 'Company'}}</strong></div>
+        </div>
+
+        <div class="goods-info col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+            <div><span i18n>Goods Type</span>: <strong i18n>{{orderCompletionForm.get("goodType").value | goodType}}</strong></div>
+            <div><span i18n>Delivery to Forwarder</span>: <strong i18n>
+                {{orderCompletionForm.get("forwarderDeliveryDate").value | l10nDate:defaultLocale:'shortDate'}}
+            </strong>
+            </div>
+        </div>
+
+
+        <div class="clearfix"></div>
+    </section>
+
+    <section id="forwarding-settings">
+        <div class="section-title-box grey-bg text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+            <h4 class="section-title text-uppercase" i18n>Forwarding</h4>
+            <img src="../../../../assets/images/orders/forwarder-icon.svg">
+        </div>
+
+        <div class="forwarding-info col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+            <div><span i18n>Forwarder</span>: <strong i18n>{{service.profile.user.username}}</strong></div>
+            <div><span i18n>Service</span>: <strong i18n>{{service.type | serviceName}}</strong></div>
+            <div><span i18n>Feedback</span>: <strong i18n>{{service.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong></div>
+        </div>
+
+        <div class="forwarding-info  col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+            <div><span i18n>Price</span>: <strong i18n> BC {{orderCompletionForm.get("totalPrice").value | l10nDecimal:defaultLocale:'1.2-2'}}
+                ({{priceAmount | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}})</strong>
+            </div>
+            <div><span i18n>Shipping Mode</span>: <strong i18n>{{orderCompletionForm.get("shippingMode").value | shippingMode}}</strong></div>
+        </div>
+
+
+
+        <div class="clearfix"></div>
+    </section>
+
+    <section id="receiving-settings">
+        <div class="section-title-box grey-bg text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+            <h4 class="section-title text-uppercase" i18n>Receiving</h4>
+            <img src="../../../../assets/images/orders/receiver-icon.svg">
+        </div>
+
+        <div class="receiving-info col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+            <div><span i18n>Receiving</span>: <strong i18n>{{profile.user.first_name}} {{profile.user.last_name}}</strong></div>
+            <div><span i18n>To</span>: <strong i18n>
+                {{deliveryAddress.street}},
+                {{deliveryAddress.zipCode}}- {{deliveryAddress.city}} -
+                {{deliveryAddress.region}}- {{deliveryAddress.country}}
+            </strong>
+            </div>
+        </div>
+
+        <div class="receiving-info col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+            <div> <span i18n>Date arrive to Receiving</span>: <strong i18n>
+                {{orderCompletionForm.get("estimatedDate").value | l10nDate:defaultLocale:'shortDate'}}
+            </strong></div>
+        </div>
+
+        <div class="clearfix"></div>
+    </section>
+    <section id="total-price">
+        <span i18n>Total Price: </span>
+        <span class="highlight_3" i18n> <strong>BC {{orderCompletionForm.get("totalPrice").value | l10nDecimal:defaultLocale:'1.2-2'}} ({{priceAmount | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}})</strong></span>
+    </section>
+    <!--<section id="total-price">-->
+        <!--<span i18n>Total Price:</span>-->
+        <!--<span class="highlight_3" i18n> {{orderCompletionForm.get("totalPrice").value | currency: 'BC '}} ({{orderCompletionForm.get("totalPrice").value | currency}} )</span>-->
+    <!--</section>-->
+</div>
+
+<div class="stepper-btn">
+        <button mat-button
+                color="cancel"
+                class="text-uppercase"
+                matStepperPrevious
+                i18n>
+            Back
+        </button>
+        <button mat-button
+                color="primary"
+                class="text-uppercase"
+                matStepperNext
+                i18n>
+            Next
+        </button>
+</div>

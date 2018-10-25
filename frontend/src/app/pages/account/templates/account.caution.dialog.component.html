@@ -1,0 +1,53 @@
+<div id="caution-dialog-container">
+
+    <div>
+        <div class="row text-center header-text-uppercase">
+            <h3 i18n>Security Deposit</h3>
+            <hr class="bottom-hr-orange"/>
+        </div>
+
+        <div class="row text-center">
+            <form (ngSubmit)="submit(cautionForm)"
+                  [formGroup]="cautionForm">
+
+                <!-- <mat-form-field class="col-md-8 col-sm-10 col-xs-10 col-12 col-md-push-2 col-sm-push-1 col-xs-push-1 col-push-0">
+                    <mat-select placeholder="Select Currency"
+                                formControlName="currency">
+                        <mat-option *ngFor="let currency of currencies"
+                                    [value]="currency">
+                            {{currency}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+
+                <label>Enter Security Deposit</label>
+                <mat-form-field floatLabel="never" class="full-width">
+                    <input matInput
+                           placeholder="Amount"
+                           name="amount"
+                           type="number"
+                           min="1"
+                           formControlName="amount">
+                    <mat-error *ngIf="cautionForm.get('amount').errors
+                                        && cautionForm.get('amount').errors.backend
+                                        && cautionForm.get('amount').errors.backend.amount">
+                        <span i18n>Insufficient credit for this amount, <a [routerLink]="'/wallets'" (click)="closeDialog()">click here</a> to buy more credits</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <div>
+                    <button mat-button
+                            color="secondary"
+                            class="full-width"
+                            type="submit"
+                            i18n>
+                        Deposit
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+</div>

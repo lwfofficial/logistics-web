@@ -1,0 +1,214 @@
+<div id="deposit-form-container" *ngIf="profile">
+    <section class="deposit-sections" id="credit-card-deposit">
+        <div>
+            <h3 class="text-uppercase" i18n>Paypal, Credit &#38; Debit Card</h3>
+            <span i18n>({{8.5 | l10nDecimal:defaultLocale:'1.1-2'}}% fee will be automatically applied to transaction)</span>
+        </div>
+        <div class="credit-card-logos">
+            <img width="150" src="../../../../assets/images/orders/paypal-logo.svg">
+            <img width="100" src="../../../../assets/images/orders/visa-logo.svg">
+            <img width="100" src="../../../../assets/images/orders/mastercard-logo.svg">
+        </div>
+        <div>
+            <button mat-button
+                    class="currency-button"
+                    (click)="openPaypalDepositDialog()"
+                    [disabled]="!profile.docVerified"
+                    [class.btn-disabled]="!profile.docVerified"
+                    type="submit">
+                <span i18n>Buy Credits</span>
+            </button>
+        </div>
+    </section>
+
+    <section class="deposit-sections" id="crypto-deposit">
+        <div>
+            <h3 class="text-uppercase" i18n>Cryptocurrencies</h3>
+            <span i18n>(a fee, depending on the type of Cryptocurrency, will be automatically applied to transaction)</span>
+        </div>
+        <div class="crypto-logos">
+            <button mat-button
+                    [class.disabled]="button.disabled"
+                    (click)="openCryptoDepositDialog(button)"
+                    type="submit"
+                    [disabled]="!profile.docVerified"
+                    *ngFor="let button of buttons">
+                <mat-icon [svgIcon]="button.currency | currencySymbol"></mat-icon>
+                <span>{{button.name}}</span>
+                <span class="fee-amount">({{button.fee | l10nDecimal:defaultLocale:'1.1-2'}}% fee)</span>
+            </button>
+        </div>
+        <div class="crypto-info">
+            Click on currency to show the address
+        </div>
+    </section>
+    <!--<div *ngFor="let button of buttons">-->
+
+        <!--<button mat-button-->
+                <!--class="currency-button"-->
+                <!--[class.disabled]="button.disabled"-->
+                <!--(click)="openDepositDialog(button)"-->
+                <!--type="submit">-->
+            <!--<mat-icon [svgIcon]="button.currency | currencySymbol"></mat-icon>-->
+            <!--{{button.name}}-->
+        <!--</button>-->
+
+    <!--</div>-->
+</div>
+
+<div id="transactions-row">
+
+    <h2 class="header-text-uppercase text-center" i18n>Crypto-Currency Transaction History</h2>
+
+    <div *ngIf="transactions"
+         class="transactions-container">
+        <progress-spinner #spinner></progress-spinner>
+        <mat-table #depositTransactionsTable
+                   matSort
+                   matSortActive="date"
+                   matSortDisableClear
+                   matSortDirection="asc"
+                   [dataSource]="transactions"
+                   id="deposit-table">
+
+            <ng-container matColumnDef="date">
+                <mat-header-cell mat-sort-header
+                                 *matHeaderCellDef>
+                    <span i18n>Date</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.date | l10nDate:defaultLocale:'shortDate'}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="currency">
+                <mat-header-cell *matHeaderCellDef><span i18n>Currency</span></mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.currency}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef><span i18n>Amount</span></mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.amount | l10nDecimal:defaultLocale:'1.4-4'}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="view-details">
+                <mat-header-cell class="text-center" *matHeaderCellDef>
+                </mat-header-cell>
+                <mat-cell class="text-center order-detail-btn" *matCellDef="let row">
+                    <i [ngClass]="expandedElement == row ? 'far fa-angle-up' : 'far fa-angle-down'"></i>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <mat-cell *matCellDef="let detail">
+                    <div class="row-details">
+                        <div>
+                            <div class="highlight_3 row-title">Address</div>
+                            <div>{{detail.transaction.address.address}}</div>
+                            <div class="transaction-time highlight_3 row-title"> Transaction Time</div>
+                            <div> {{detail.transaction.date | l10nDate:defaultLocale:'shortTime'}}</div>
+                        </div>
+                        <button mat-button color="secondary" (click)="openDepositReceiptPdf(detail.transaction.id)">
+                            View Receipt
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                     matRipple
+                     class="transaction-row"
+                     [class.expanded]="expandedElement == row"
+                     (click)="expandedElement == row ? expandedElement = null : expandedElement = row">
+            </mat-row>
+            <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+                     [@detailExpand]="row.transaction == expandedElement ? 'expanded' : 'collapsed'"
+                     style="overflow: hidden"></mat-row>
+
+        </mat-table>
+        <mat-paginator [length]="transactionsCount" [pageSize]="maxPerPage">
+        </mat-paginator>
+
+    </div>
+
+    <h2 class="header-text-uppercase text-center"
+        *ngIf="transactionsPaypal"
+        i18n>PayPal/Credit Card Transaction History</h2>
+
+    <div *ngIf="transactionsPaypal"
+         class="transactions-container">
+        <progress-spinner #paypalSpinner></progress-spinner>
+        <mat-table #paypalTable
+                   matSort
+                   matSortActive="date"
+                   matSortDisableClear
+                   matSortDirection="asc"
+                   [dataSource]="transactionsPaypal"
+                   id="deposit-paypal-table">
+
+            <ng-container matColumnDef="date">
+                <mat-header-cell mat-sort-header
+                                 *matHeaderCellDef>
+                    <span i18n>Date</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.date  | l10nDate:defaultLocale:'shortDate'}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="currency">
+                <mat-header-cell *matHeaderCellDef><span i18n>Currency</span></mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.currency}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef><span i18n>Amount</span></mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.amount | l10nDecimal:defaultLocale:'1.2-2'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="view-details">
+                <mat-header-cell class="text-center" *matHeaderCellDef>
+                </mat-header-cell>
+                <mat-cell class="text-center order-detail-btn" *matCellDef="let row">
+                    <i [ngClass]="expandedElement == row ? 'far fa-angle-up' : 'far fa-angle-down'" ></i>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <mat-cell *matCellDef="let detail">
+                    <div class="row-details">
+                        <div>
+                            <div class="highlight_3 row-title">Payment Id</div>
+                            <div>{{detail.transaction.paymentId}}</div>
+                            <div class="transaction-time highlight_3 row-title"> Transaction Time</div>
+                            <div> {{detail.transaction.date  | l10nDate:defaultLocale:'shortTime'}}</div>
+                        </div>
+                        <button mat-button color="secondary" (click)="openDepositPaypalReceiptPdf(detail.transaction.id)">
+                            View Receipt
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumnsPaypal"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumnsPaypal;"
+                     matRipple
+                     class="orders-row"
+                     [class.expanded]="expandedElement == row"
+                     (click)="expandedElement == row ? expandedElement = null : expandedElement = row">
+            </mat-row>
+            <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+                     [@detailExpand]="row.transaction == expandedElement ? 'expanded' : 'collapsed'"
+                     style="overflow: hidden"></mat-row>
+        </mat-table>
+        <mat-paginator [length]="transactionsPaypalCount" [pageSize]="maxPerPage" #paypalPaginator>
+        </mat-paginator>
+
+    </div>
+
+    <!--<div class="transactions-warning-message text-center">-->
+        <!--In order to view your transaction history please rotate your device in landscape mode-->
+    <!--</div>-->
+</div>

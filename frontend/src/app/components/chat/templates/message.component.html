@@ -1,0 +1,19 @@
+<section [ngClass]="class">
+    <mat-card class="message-card">
+        <mat-card-header>
+            <div mat-card-avatar
+                 [style.background-image]="'url('+avatarSrc+')'"
+                 class="message-header-image"></div>
+            <mat-card-title i18n>{{senderName}}</mat-card-title>
+            <mat-card-subtitle i18n>{{dateTime | l10nDate:defaultLocale:'shortDate'}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image
+             *ngIf="imageSrc"
+             [src]="imageSrc">
+        <mat-card-content>
+            <p i18n>
+                {{text}}
+            </p>
+        </mat-card-content>
+    </mat-card>
+</section>

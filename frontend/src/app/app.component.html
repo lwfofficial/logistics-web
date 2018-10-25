@@ -1,0 +1,14 @@
+<div class="container-fluid" *ngIf="currency && configuration">
+
+    <tool-bar *ngIf="!router.url.includes('signup')"></tool-bar>
+
+    <router-outlet></router-outlet>
+
+    <site-footer *ngIf="!router.url.includes('signup')"></site-footer>
+
+    <script-wrapper *ngIf="enableAnalytics">
+        smartlook('init', '673e751fe7beac296f90cf3678fde2d1ace0e9fc');
+        console.log("init statistics");
+    </script-wrapper>
+
+</div>

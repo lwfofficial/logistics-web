@@ -1,0 +1,67 @@
+<!-- OPEN ORDER ISSUE PAGE -->
+<div id="open-order-issue-container"
+     class="container"
+     *ngIf="order">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="row-title" i18n>Open Order Issue</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+    <div class="info-header">
+        <div>
+            <span i18n>Order Number:</span>
+            <span class="highlight_3">
+                <!-- <strong>{{order.id}}</strong> -->
+                <strong i18n>{{order.id}}</strong>
+            </span>
+        </div>
+        <div>
+            <span i18n>Order details will be reported on next step</span>
+        </div>
+    </div>
+
+    <div class="issue-title highlight_3 row-title text-uppercase" i18n>
+        Report a problem with your order
+    </div>
+    <form [formGroup]="newIssueForm"
+          (ngSubmit)="createIssue(newIssueForm)">
+        <mat-form-field floatLabel="never" class="full-width">
+            <mat-select placeholder="Choose the type of your issue"
+                        formControlName="type">
+                <mat-option value="1" i18n>
+                    Against policy
+                </mat-option>
+                <mat-option value="2" i18n>
+                    Not corresponding
+                </mat-option>
+                <mat-option value="3" i18n>
+                    Not received
+                </mat-option>
+                <mat-option value="4" i18n>
+                    Other issue
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="issue-title highlight_3 row-title text-uppercase" i18n>
+            Please tell us the issues encountered
+        </div>
+        <mat-form-field floatLabel="never" class="full-width">
+            <textarea matInput
+                      placeholder="Issue description"
+                      formControlName="description"></textarea>
+        </mat-form-field>
+        <div class="row text-center issue-buttons">
+            <button mat-button
+                    (click)="back()"
+                    color="cancel" i18n>Back
+            </button>
+            <button mat-button
+                    type="submit"
+                    color="secondary" i18n>Send
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- END OPEN ORDER ISSUE PAGE -->

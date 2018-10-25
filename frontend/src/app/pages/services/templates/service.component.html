@@ -1,0 +1,240 @@
+<div *ngIf="service"
+     class="service-container container-fluid">
+
+    <div class="service-first-col text-center col-lg-2 col-md-2 col-sm-2 col-xs-4 col-12">
+        <div>
+            <img [src]="service.type | serviceIcon"/>
+        </div>
+
+        <div class="service-label">
+            {{service.type | serviceName}}
+        </div>
+
+        <div>
+            <mat-slide-toggle
+                    [(checked)]="service.enabled"
+                    (change)="toggleEnableService($event)"
+                    color="primary">
+            </mat-slide-toggle>
+
+        </div>
+        <div class="edit-service">
+            <i class="fas fa-pencil-alt"
+               (click)="edit()"></i>
+            <i class="fas fa-trash-alt"
+               (click)="delete()"></i>
+        </div>
+    </div>
+
+    <div *ngIf="service.type === serviceTypes.p2p"
+         class="service-col-box text-center col-lg-2 col-md-2 col-sm-2 col-xs-4 col-12">
+
+        <div>
+            <img src="assets/images/home-buyer/Lwf-services-iconmap-address.svg"/>
+        </div>
+
+        <div class="service-option-title">
+            <span class="i18n">Place</span>
+            <hr class="bottom-hr-blue">
+        </div>
+
+        <div class="service-option-data"
+        >
+            <span i18n>From: </span> {{service.locationFrom | countryName}}
+        </div>
+        <div class="service-option-data"
+             *ngIf="service.type === serviceTypes.p2p">
+            <span i18n>To: </span>
+            <span *ngFor="let location of service.locationTos;">
+                    {{location | countryName}}<br/>
+            </span>
+        </div>
+    </div>
+
+    <div class="service-col-box text-center col-lg-2 col-md-2 col-sm-2 col-xs-4 col-12">
+
+
+        <div>
+            <img src="assets/images/home-buyer/Lwf-services-icon-measure.svg"/>
+        </div>
+
+        <div class="service-option-title">
+            <span class="i18n">Max Size</span>
+            <hr class="bottom-hr-blue">
+        </div>
+
+        <div class="service-option-data">
+            {{service.maxSize | maxSize:profile.measuresSetting}}
+        </div>
+
+    </div>
+
+    <div *ngIf="service.type === serviceTypes.p2p"
+         class="service-col-box text-center col-lg-2 col-md-2 col-sm-2 col-xs-4 col-12">
+
+        <div>
+            <img src="assets/images/home-buyer/Lwf-services-icon-WEIGHT.svg"/>
+        </div>
+
+        <div class="service-option-title">
+            <span class="i18n">Max Weight</span>
+            <hr class="bottom-hr-blue">
+        </div>
+
+        <div class="service-option-data">
+            {{service.maxWeight | maxWeight:profile.measuresSetting}}
+        </div>
+
+    </div>
+
+    <div *ngIf="service.type === serviceTypes.cll"
+         class="service-col-box text-center col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12 hidden-xs visible-mobile">
+
+        <div>
+            <img src="assets/images/home-buyer/LWF-services-icon-time.svg"/>
+        </div>
+
+        <div class="service-option-title">
+            <span class="i18n">Time Slots</span>
+            <hr class="bottom-hr-blue">
+        </div>
+
+        <div id="service-option-weekdays-mobile" class="service-option-data">
+            <span [ngClass]="service.sunday ? 'active-time-slot' : '' " i18n>S </span>
+            <span [ngClass]="service.monday ? 'active-time-slot' : '' " i18n>M </span>
+            <span [ngClass]="service.tuesday ? 'active-time-slot' : '' " i18n>T </span>
+            <span [ngClass]="service.wednesday ? 'active-time-slot' : '' " i18n>W </span>
+            <span [ngClass]="service.thursday ? 'active-time-slot' : '' " i18n>T</span>
+            <span [ngClass]="service.friday ? 'active-time-slot' : '' " i18n>F</span>
+            <span [ngClass]="service.saturday ? 'active-time-slot' : '' " i18n>S</span>
+        </div>
+        <div id="service-option-timeslots-mobile" class="service-option-data">
+            <div>
+                <div [ngClass]="service.deliveryOnDawn ? 'active-time-slot' : '' " i18n>Dawn</div>
+                <div [ngClass]="service.deliveryOnMorning ? 'active-time-slot' : '' " i18n>Morning</div>
+                <div [ngClass]="service.deliveryOnLunchTime ? 'active-time-slot' : '' " i18n>Lunchtime</div>
+            </div>
+            <div>
+                <div [ngClass]="service.deliveryOnAfternoon? 'active-time-slot' : '' " i18n>Afternoon</div>
+                <div [ngClass]="service.deliveryOnEvening ? 'active-time-slot' : '' " i18n>Evening</div>
+                <div [ngClass]="service.deliveryOnNight ? 'active-time-slot' : '' " i18n>Night</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-col-box col-lg-2 col-md-2 col-sm-2 col-xs-4 col-12 text-center">
+
+        <div class="text-center">
+            <div>
+                <img src="assets/images/home-buyer/LWF_services-icon-check.svg"/>
+            </div>
+
+            <div class="service-option-title">
+                <span class="i18n">Options</span>
+                <hr class="bottom-hr-blue">
+            </div>
+        </div>
+        <span class="clearfix"></span>
+        <div *ngIf="service.acceptedPacksFromPrivate">
+            <span i18n>Private</span>
+        </div>
+
+        <div *ngIf="service.acceptedPacksFromCompany">
+            <span i18n>Company</span>
+        </div>
+
+        <div *ngIf="service.totalAssurance">
+            <span i18n>Full Assurance</span>
+        </div>
+
+        <div *ngIf="service.addPartnerForwarder">
+            <span i18n>Partner Forwarder</span>
+        </div>
+
+        <div *ngIf="service.sunday">
+            <span i18n>Sunday</span>
+        </div>
+
+        <div *ngIf="emptyOptions()">
+            <span i18n>No Options</span>
+        </div>
+        <span class="clearfix"></span>
+    </div>
+
+
+    <div *ngIf="service.type === serviceTypes.cll"
+         class="service-col-box text-center col-lg-4 col-md-4 col-sm-4 col-xs-8 col-12 visible-xs hidden-mobile">
+
+        <div>
+            <img src="assets/images/home-buyer/LWF-services-icon-time.svg"/>
+        </div>
+
+        <div class="service-option-title">
+            <span class="i18n">Time Slots</span>
+            <hr class="bottom-hr-blue">
+        </div>
+
+        <div id="service-option-weekdays" class="service-option-data">
+            <span [ngClass]="service.sunday ? 'active-time-slot' : '' " i18n>S </span>
+            <span [ngClass]="service.monday ? 'active-time-slot' : '' " i18n>M </span>
+            <span [ngClass]="service.tuesday ? 'active-time-slot' : '' " i18n>T </span>
+            <span [ngClass]="service.wednesday ? 'active-time-slot' : '' " i18n>W </span>
+            <span [ngClass]="service.thursday ? 'active-time-slot' : '' " i18n>T</span>
+            <span [ngClass]="service.friday ? 'active-time-slot' : '' " i18n>F</span>
+            <span [ngClass]="service.saturday ? 'active-time-slot' : '' " i18n>S</span>
+        </div>
+        <div id="service-option-timeslots" class="service-option-data">
+            <div>
+                <div [ngClass]="service.deliveryOnDawn ? 'active-time-slot' : '' " i18n>Dawn</div>
+                <div [ngClass]="service.deliveryOnMorning ? 'active-time-slot' : '' " i18n>Morning</div>
+                <div [ngClass]="service.deliveryOnLunchTime ? 'active-time-slot' : '' " i18n>Lunchtime</div>
+            </div>
+            <div>
+                <div [ngClass]="service.deliveryOnAfternoon? 'active-time-slot' : '' " i18n>Afternoon</div>
+                <div [ngClass]="service.deliveryOnEvening ? 'active-time-slot' : '' " i18n>Evening</div>
+                <div [ngClass]="service.deliveryOnNight ? 'active-time-slot' : '' " i18n>Night</div>
+            </div>
+        </div>
+    </div>
+    <div class="service-col-box text-center col-lg-2 col-md-2 col-sm-2 col-xs-4 col-12">
+
+        <div>
+            <img src="assets/images/services/price-icn.svg"/>
+        </div>
+
+        <div class="service-option-title">
+            <span class="i18n">Price</span>
+            <hr class="bottom-hr-blue">
+        </div>
+
+        <div *ngIf="!service.addPartnerForwarder">
+            <div class="service-option-data"
+                 *ngIf="service.type == 'p2p-freight' && service.priceCheapEnabled">
+                <span i18n>Cheap:</span> BC {{service.priceCheap | l10nDecimal:defaultLocale:'1.2-2'}}
+            </div>
+            <div class="service-option-data"
+                 *ngIf="service.type == 'p2p-freight' && service.priceStandardEnabled">
+                <span i18n>Standard:</span> BC {{service.priceStandard | l10nDecimal:defaultLocale:'1.2-2'}}
+            </div>
+            <div class="service-option-data"
+                 *ngIf="service.type == 'p2p-freight' && service.priceExpressEnabled">
+                <span i18n>Express:</span> BC {{service.priceExpress | l10nDecimal:defaultLocale:'1.2-2'}}
+            </div>
+
+            <div class="service-option-data"
+                 *ngIf="service.type == 'package-collecting'">
+                <span i18n>Price:</span> BC {{service.price | l10nDecimal:defaultLocale:'1.2-2'}}
+            </div>
+        </div>
+
+        <div *ngIf="service.addPartnerForwarder">
+            <div class="service-option-data"
+                 *ngIf="service.type == 'p2p-freight'">
+                <span i18n>Margin:</span> {{service.partnerForwarderMargin | l10nDecimal:defaultLocale:'1.2-2'}}%
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

@@ -1,0 +1,114 @@
+{% extends "admin/base_colorbox.html" %}
+{% load i18n %}
+
+{% block extrajs %}
+    <script>
+        function validateForm(event) {
+            var form = $('#formCatchLwfb');
+            var amount = $('#amount').val();
+            var managerId = $('#manager').val();
+            var errorContainer = $('#formErrors');
+            var valid = true;
+
+            errorContainer.html('&nbsp;');
+
+            if (!$.isNumeric(amount)) {
+                errorContainer.html('Not a valid amount!');
+                valid = false;
+            }
+
+            if (managerId == '' || managerId == 0) {
+                errorContainer.html('Please select a receiver manager!');
+                valid = false;
+            }
+
+            if (valid) {
+                var conf = confirm("Are you sure to proceed?");
+                if (conf) {
+                    return true;
+                } else {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return false;
+                }
+            } else {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            }
+        }
+
+        $(document).ready(function(){
+            $('#formCatchLwfb').on('submit',function(e) {
+                return validateForm(e);
+            });
+        });
+    </script>
+{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div class="txt-success"></div>
+    <div id="catch_lwfb">
+        <h1>Send Bc</h1>
+        <div class="clear">&nbsp;</div>
+        <div class="clear">
+            User: {{ userToSend.username }}
+        </div>
+        <div class="clear">
+            Wallet: {{ walletToSend.profile }}
+        </div>
+        <div class="clear">
+            Balance: {{ walletToSend.credit }}
+        </div>
+        <div class="clear">&nbsp;</div>
+        <form id="formCatchLwfb" method="POST"  action="{{ request.path }}?userId={{ userToSend.id }}">
+            <div class="clear">
+                <label for="amount">Number of Bc to send</label>
+                <input type="number" id="amount" name="amount" min="0" value="{% if request.POST.amount %}{{ request.POST.amount }}{% endif %}" />
+            </div>
+            <div class="clear">
+                <label for="manager">Manager (on self wallet)</label>
+                <select name="manager" id="manager">
+                    {% for manager in managers %}
+                        <option value="{{ manager.id }}" {% if manager.id|lower == request.POST.manager|lower %}selected="selected"{% endif %}>{{ manager.username }} ({{manager.wallet.credit}} Bc)</option>
+                    {% empty %}
+                        <option value="0">No Managers Found</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% csrf_token %}
+            <div class="clear">&nbsp;</div>
+
+            <div class="clear txt-error" id="formErrors">&nbsp;</div>
+
+
+            {% if request.GET.success %}
+                <div class="clear txt-success">
+                    Success!
+                </div>
+            {% else %}
+                {% if outofcash %}
+                    <div class="clear txt-error">
+                        Not enough credit on {{ managerToCatch.username }} wallet: {{ walletToCatch.profile }} ({{ walletToCatch.credit }} Bc)
+                    </div>
+                {% endif %}
+                {% if samewallet %}
+                    <div class="clear txt-error">
+                        Transaction is not possible on same wallets!
+                    </div>
+                {% endif %}
+            {% endif %}
+
+
+            <div class="clear">&nbsp;</div>
+
+            <div class="clear">
+                <input type="submit" value="Submit" />
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,206 @@
+<form [formGroup]="orderCompletionForm">
+    <div>
+        <section class="order-data">
+            <span class="order-state"><span i18n>Order State</span>: <span class="highlight_3 text-uppercase"> <strong
+                    i18n>New</strong></span></span>
+        </section>
+
+        <section id="goods-settings">
+            <div class="section-title-box text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+                <h4 class="section-title text-uppercase" i18n>Goods</h4>
+                <img src="../../../../assets/images/orders/goods-icon.svg">
+            </div>
+
+            <div class="goods-info col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+                <div><span i18n>Goods Value</span>: <strong i18n>
+                    {{orderCompletionForm.get("goodValue").value |
+                    l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}}
+                </strong></div>
+                <div><span i18n>Size</span>: <strong i18n>{{orderCompletionForm.controls['parcelSize'].value |
+                    maxSize:profile.measuresSetting}}</strong></div>
+                <div><span i18n>Weight</span>: <strong i18n>{{orderCompletionForm.controls['parcelWeight'].value |
+                    maxWeight:profile.measuresSetting}}</strong></div>
+                <div><span i18n>Buy goods from</span>: <strong i18n>{{orderCompletionForm.controls['buyGoodsFrom'].value
+                    ? 'Private' : 'Company'}}</strong>
+                </div>
+            </div>
+
+            <div class="goods-data col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+                <label class="text-uppercase" i18n> Completion Goods Data</label>
+                <div>
+                    <label i18n>Goods Type</label>
+                    <mat-form-field floatLabel="never">
+                        <mat-select name="goods-type"
+                                    placeholder="Select Good Type"
+                                    formControlName="goodType">
+                            <mat-option *ngFor="let goodType of goodTypes"
+                                        [value]="goodType" i18n>
+                                {{goodType | goodType}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Please select the type of your good
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div style="display: none;">
+                    <label i18n> Total Insurance:</label><br>
+                    <mat-radio-group formControlName="totalInsurance">
+                        <mat-radio-button [value]="true" i18n>Yes</mat-radio-button>
+                        <mat-radio-button [value]="false" i18n>No</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="delivery-date-wrapper">
+                    <label i18n>Delivery to Forwarder</label>
+                    <mat-form-field floatLabel="never" class="delivery-date">
+                        <input matInput
+                               placeholder="Choose a date"
+                               [matDatepicker]="picker"
+                               [min]="minDate"
+                               formControlName="forwarderDeliveryDate"
+                               (dateChange)="setEstimatedDate($event)">
+                        <mat-datepicker-toggle matSuffix
+                                               [for]="picker">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker
+                                #picker></mat-datepicker>
+                        <mat-error>
+                            Please select a date
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </section>
+
+        <section id="forwarding-settings">
+            <div class="section-title-box text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+                <h4 class="section-title text-uppercase" i18n>Forwarding</h4>
+                <img src="../../../../assets/images/orders/forwarder-icon.svg">
+            </div>
+
+            <div class="forwarding-info col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+                <div><span i18n>Forwarder</span>: <strong i18n>{{service.profile.user.username}}</strong></div>
+                <div><span i18n>Service</span>: <strong i18n>{{service.type | serviceName}}</strong></div>
+                <div><span i18n>Feedback</span>: <strong i18n>{{service.profile.feedback |
+                    l10nDecimal:defaultLocale:'1.2-2'}}/5</strong></div>
+            </div>
+
+            <div class="forwarding-data col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+                <label i18n> Shipping Mode:</label>
+                <div *ngIf="!service.addPartnerForwarder">
+                    <mat-radio-group class="shipping-mode-radio"
+                                     formControlName="shippingMode">
+                        <mat-radio-button
+                                *ngIf="service.priceExpressEnabled"
+                                [value]="shippingModes.EXPRESS"
+                                (click)="setPrice(service.priceExpress, shippingModes.EXPRESS)">
+                            <span i18n>Express (3-6 days)</span>: <strong i18n>BC {{service.priceExpress |
+                            l10nDecimal:defaultLocale:'1.2-2'}}</strong>
+                        </mat-radio-button>
+                        <mat-radio-button
+                                *ngIf="service.priceStandardEnabled"
+                                [value]="shippingModes.STANDARD"
+                                (click)="setPrice(service.priceStandard, shippingModes.STANDARD)">
+                            <span i18n>Standard (6-15 days)</span>: <strong i18n>BC {{service.priceStandard |
+                            l10nDecimal:defaultLocale:'1.2-2'}}</strong>
+                        </mat-radio-button>
+                        <mat-radio-button
+                                *ngIf="service.priceCheapEnabled"
+                                [value]="shippingModes.CHEAP"
+                                (click)="setPrice(service.priceCheap, shippingModes.CHEAP)">
+                            <span i18n>Cheap (15-30 days)</span>: <strong i18n>BC {{service.priceCheap |
+                            l10nDecimal:defaultLocale:'1.2-2'}}</strong>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div *ngIf="service.addPartnerForwarder">
+                    <mat-radio-group class="shipping-mode-radio"
+                                     formControlName="shippingMode">
+                        <mat-radio-button
+                                [value]="shippingModes.EXPRESS"
+                                i18n>Express (3-6 days)
+                        </mat-radio-button>
+                        <!--<mat-radio-button-->
+                        <!--[value]="shippingModes.STANDARD" i18n>-->
+                        <!--Standard (6-15 days)-->
+                        <!--</mat-radio-button>-->
+                    </mat-radio-group>
+                    <div class="weight-selection">
+                        <label i18n>
+                            Weight
+                            <span *ngIf="profile.measuresSetting === 'metric'">(Kg)</span>
+                            <span *ngIf="profile.measuresSetting === 'imperial'">(lbs)</span>
+                        </label>
+                        <mat-form-field floatLabel="never">
+                            <mat-select name="Weight in Kgs"
+                                        placeholder="Weight in Kgs"
+                                        formControlName="shippingWeight"
+                                        (selectionChange)="setForwarderPartnerPrice()">
+                                <mat-option *ngFor="let weight of weights"
+                                            [value]="weight.weight" i18n>
+                                    &le; {{weight.weight | convertWeight:profile.measuresSetting}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="orderCompletionForm.hasError('weightError')">
+                                Weight is higher than permitted
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="clearfix"></div>
+
+        </section>
+
+        <section id="receiving-settings">
+            <div class="section-title-box text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+                <h4 class="section-title text-uppercase" i18n>Receiving</h4>
+                <img src="../../../../assets/images/orders/receiver-icon.svg">
+            </div>
+
+            <div class="receiving-info col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+                <div><span i18n>Receiving</span>: <strong i18n>{{profile.user.first_name}} {{profile.user.last_name}}</strong></div>
+                <div><span i18n>To</span>: <strong i18n>
+                    {{deliveryAddress.street}},
+                    {{deliveryAddress.zipCode}}- {{deliveryAddress.city}} -
+                    {{deliveryAddress.region}}- {{deliveryAddress.country}}
+                </strong>
+                </div>
+            </div>
+
+            <div class="receiving-info col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+                <div><span i18n>Date arrive to Receiving</span>: <strong i18n>
+                    {{orderCompletionForm.controls['estimatedDate'].value |
+                    l10nDate:defaultLocale:'shortDate'}} </strong></div>
+            </div>
+
+            <div class="clearfix"></div>
+        </section>
+
+        <section id="total-price">
+            <span i18n>Total Price:</span>
+            <span class="highlight_3" i18n> <strong>BC {{totalPrice | l10nDecimal:defaultLocale:'1.2-2'}} ({{priceAmount | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}})</strong></span>
+        </section>
+    </div>
+
+    <div class="stepper-btn">
+        <button mat-button
+                color="cancel"
+                class="text-uppercase"
+                (click)="abortOrder()"
+                i18n>
+            Cancel
+        </button>
+        <button mat-button
+                color="primary"
+                class="text-uppercase"
+                matStepperNext>
+            <span i18n>Next</span>
+        </button>
+    </div>
+
+</form>

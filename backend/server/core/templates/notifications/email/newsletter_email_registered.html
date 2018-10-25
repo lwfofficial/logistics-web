@@ -1,0 +1,27 @@
+{% extends 'base_email.html' %}
+
+{% block title %}
+    <title>Newsletter registration</title>
+{% endblock %}
+
+{% block container %}
+    <div class="text-center">
+        <h1>
+            A new user just registered to the LWF Newsletter
+        </h1>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="email-body">
+        <div class="email-message">
+            <div>Dear Manager,</div>
+            <div>You can find below the details about the registered email.</div>
+        </div>
+        <div class="email-data">
+            <div>
+                <span class="text-uppercase"> Email: </span>
+                <span class="highlight">{{ email }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base_email.html' %}
+
+
+{% block title %}
+    <title>Withdraw request confirm</title>
+{% endblock %}
+
+
+{% block container %}
+<div class="text-center">
+    <h1>
+        Local World Forwarders
+    </h1>
+    <hr class="bottom-hr-orange"/>
+</div>
+
+<div class="email-body">
+    <div class="email-message">
+        <div>Dear {{ user.first_name }},</div>
+        <br/>
+        <div>
+            To confirm your withdraw request of {{ amount|floatformat:2 }} Bc ({{ cryptoAmount|floatformat:8 }} {{ currency }}) please click on the following link:
+            <a href="{{ confirmation_link }}">Confirmation Link</a></div>
+        <div>you will receive the corresponding amount in {{ currency }} (1 {{ currency }} = {{ freezedUsd|floatformat:2 }}$ | 1 {{ currency }} = {{ freezedEur|floatformat:2 }}€)<br/></div>
+        <div>Best Regards,</div>
+        <div>LWF Team</div>
+    </div>
+</div>
+
+
+{% endblock %}

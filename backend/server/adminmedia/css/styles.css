@@ -1,0 +1,29 @@
+.clear {
+    clear: both;
+}
+
+.float_left {
+    float:left;
+}
+
+.float_right {
+    float:right;
+}
+
+.txt-center {
+    text-align: center;
+}
+
+.txt-bold {
+    font-weight: bold;
+}
+
+.txt-error {
+    font-weight: bold;
+    color: red;
+}
+
+.txt-success {
+    font-weight: bold;
+    color: green;
+}

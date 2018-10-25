@@ -1,0 +1,30 @@
+<div id="withdraw-confirm-page" class="container-fluid">
+
+    <div id="withdraw-confirm-container"
+         class="row">
+        <progress-spinner #withdrawConfirmSpinner></progress-spinner>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row" *ngIf="!loading && !error">
+            <div class="row text-center header-text-uppercase">
+                <p i18n>Withdraw request</p>
+            </div>
+            <div><p class="row text-center" i18n>Withdraw request successfully confirmed!</p>
+            </div>
+        </div>
+        <div class="row text-center" *ngIf="!loading && error">
+            <h1 class="col-md-12 header-text-uppercase" i18n>Sorry, Withdraw Request is not valid!</h1>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+
+
+    </div>
+
+
+</div>
+

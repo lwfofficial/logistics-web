@@ -1,0 +1,44 @@
+{% extends 'base_email.html' %}
+
+{% block title %}
+<title>Order Status Change</title>
+{% endblock %}
+
+{% block container %}
+<div class="text-center">
+    <h1>
+        The
+        {% if order.service.type == 'p2p-freight' %}
+        P2P Freight Forwarding
+        {% elif order.service.type == 'package-collecting' %}
+        Package Collecting
+        {% elif order.service.type == 'express-delivery' %}
+        Express Delivery
+        {% endif %}
+        order is changed to {{ order.state }}
+    </h1>
+    <hr class="bottom-hr-orange"/>
+</div>
+<div class="email-body">
+    <div class="email-message">
+        <div>Dear {{ order.service.profile.user.first_name }},</div>
+        <div>
+            the status of the
+            {% if order.service.type == 'p2p-freight' %}
+            P2P Freight Forwarding
+            {% elif order.service.type == 'package-collecting' %}
+            Package Collecting
+            {% elif order.service.type == 'express-delivery' %}
+            Express Delivery
+            {% endif %}
+            order N°
+            <span class="highlight">{{ order.id }}</span>
+            is changed to {{ order.state }}
+        </div>
+        <div class="text-center highlight-1">{{ order.state }}</div>
+        <div>Click on the following link to go to the detail page: <a href="{{ orderLink }}">Your Order</a></div>
+        <div>Best Regards,</div>
+        <div>LWF Team</div>
+    </div>
+</div>
+{% endblock %}

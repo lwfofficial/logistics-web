@@ -1,0 +1,56 @@
+{% extends 'base_email.html' %}
+
+{% block title %}
+<title>New Order</title>
+{% endblock %}
+
+{% block container %}
+<div class="text-center">
+    <h1>
+        There's new
+        {% if order.service.type == 'p2p-freight' %}
+        P2P Freight Forwarding
+        {% elif order.service.type == 'package-collecting' %}
+        Package Collecting
+        {% elif order.service.type == 'express-delivery' %}
+        Express Delivery
+        {% endif %}
+        order.
+    </h1>
+    <hr class="bottom-hr-orange"/>
+</div>
+<div class="email-body">
+    <div class="email-message">
+        <div>Dear {{ order.service.profile.user.first_name }},</div>
+        <div>
+            there's new order by user <b>{{ order.profile.user.username }}</b>
+        </div>
+        <br/>
+        <div>
+            Chosen service:
+            {% if order.service.type == 'p2p-freight' %}
+                P2P Freight Forwarding
+            {% elif order.service.type == 'package-collecting' %}
+                Package Collecting
+            {% elif order.service.type == 'express-delivery' %}
+                Express Delivery
+            {% endif %} - {{order.service.title}}
+            <br/>
+        </div>
+        <div>
+
+        </div>
+        {% if order.service.type == 'p2p-freight' %}
+            <div>
+                To: {{order.deliveryAddress}}
+                <br/>
+            </div>
+        {% endif %}
+
+        <br/><br/>
+        <div>Click on the following link to go to the detail page: <a href="{{ orderLink }}">Your Order</a></div>
+        <div>Best Regards,</div>
+        <div>LWF Team</div>
+    </div>
+</div>
+{% endblock %}

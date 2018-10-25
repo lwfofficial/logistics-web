@@ -1,0 +1,183 @@
+<div id="order-status-container"
+     class="container-fluid" *ngIf="profile && order">
+
+     <order-status *ngIf="profile && order" [order]="order"
+                  [profile]="profile"></order-status>
+
+    <section id="order-status-detail-p2p"
+             class="order-status-detail container"
+             *ngIf="isP2POrder">
+        <div class="detail-header">
+            <div class="highlight_3 text-uppercase">
+                <strong i18n>Order Details</strong>
+            </div>
+            <div class="bottom-border"></div>
+            <div class="highlight_3">
+                <strong><span i18n>Order N.:</span><span> {{order.id}} </span></strong>
+            </div>
+        </div>
+        <div class="detail-content">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                <div class="highlight_3 text-uppercase">
+                    <strong i18n>Goods</strong>
+                </div>
+                <div><span i18n>Goods Value:</span><strong> {{goodValue |
+                    l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}} </strong></div>
+                <div><span i18n>Size:</span><strong> {{order.service.maxSize |
+                    maxSize:profile.measuresSetting}}</strong></div>
+                <div *ngIf="!order.service.addPartnerForwarder"><span i18n>Weight:</span><strong>
+                    {{order.service.maxWeight | maxWeight:profile.measuresSetting}}</strong></div>
+                <div *ngIf="order.service.addPartnerForwarder"><span i18n>Weight:</span>
+                    <strong> {{order.shippingWeight| convertWeight:profile.measuresSetting}}</strong>
+                </div>
+                <div><span i18n>Buy goods from:</span><strong>
+                    {{order.service.acceptedPacksFromCompany ? 'Company': 'Private'}}</strong></div>
+                <div><span i18n>Goods type:</span><strong> {{order.goodType | goodType}}</strong></div>
+                <div><span i18n>Delivery to Forwarder:</span><strong>
+                    {{order.forwarderDeliveryDate | l10nDate:defaultLocale:'shortDate'}}</strong>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                <div class="highlight_3 text-uppercase">
+                    <strong i18n>Forwarding</strong>
+                </div>
+                <div><span i18n>Forwarder:</span><strong> {{order.service.profile.user.username}}</strong></div>
+                <div><span i18n>Service:</span><strong> {{order.service.type | serviceName}}</strong></div>
+                <div><span i18n>Feedback:</span><strong> {{order.service.profile.feedback |
+                    l10nDecimal:defaultLocale:'1.2-2'}}/5</strong></div>
+                <div *ngIf="order.profileForwarderAddress"><span i18n>Address:</span>
+                    <strong>
+                        {{order.profileForwarderAddress}}
+                    </strong>
+                </div>
+                <div><span i18n>Price:</span><strong> BC {{order.totalPrice |
+                    l10nDecimal:defaultLocale:'1.2-2'}}</strong></div>
+                <div><span i18n>Shipping Mode:</span><strong> {{order.shippingMode | shippingMode}}</strong></div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                <div class="highlight_3 text-uppercase">
+                    <strong i18n>Receiving</strong>
+                </div>
+                <div><span i18n>Receiving:</span><strong> {{order.profile.user.username}}</strong></div>
+                <div><span i18n>Full Name:</span>
+                    <strong i18n>
+                        {{order.profile.user.first_name}}
+                        {{order.profile.user.last_name}}
+                    </strong>
+                </div>
+                <div *ngIf="order.deliveryAddress"><span i18n>To:</span>
+                    <strong>
+                        {{order.deliveryAddress}}
+                    </strong>
+                </div>
+                <div><span i18n>Feedback:</span><strong> {{order.profile.feedback |
+                    l10nDecimal:defaultLocale:'1.2-2'}}/5 </strong> <a
+                        (click)="openBuyerCard(order.profile, true)">View</a></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </section>
+    <!-- END ORDER STATUS DETAIL P2P -->
+
+    <!-- ORDER STATUS DETAIL PKG-COLLECTING-->
+    <section id="order-status-detail"
+             class="order-status-detail container"
+             *ngIf="isCLLOrder">
+        <div class="detail-header">
+            <div class="highlight_3 text-uppercase">
+                <strong i18n>Order Details</strong>
+            </div>
+            <div class="bottom-border"></div>
+            <div class="highlight_3">
+                <strong><span i18n>Order N.:</span><span> {{order.id}} </span></strong>
+            </div>
+        </div>
+        <div class="detail-content">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                <div class="highlight_3 text-uppercase">
+                    <strong i18n>Goods</strong>
+                </div>
+                <div><span i18n>Size:</span><strong> {{order.service.maxSize |
+                    maxSize:profile.measuresSetting}}</strong></div>
+                <div><span i18n>Weight:</span><strong> {{order.service.maxWeight |
+                    maxWeight:profile.measuresSetting}}</strong></div>
+                <div><span i18n>Buy goods from:</span><strong>
+                    {{order.service.acceptedPacksFromCompany ? 'Company': 'Private'}}</strong></div>
+                <div><span i18n>Goods type:</span><strong> {{order.goodType | goodType}}</strong></div>
+                <div><span i18n>Delivery to Collector:</span><strong>
+                    {{order.forwarderDeliveryDate | l10nDate:defaultLocale:'shortDate'}}</strong>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                <div class="highlight_3 text-uppercase">
+                    <strong i18n>Collecting</strong>
+                </div>
+                <div><span i18n>Collector:</span><strong> {{order.service.profile.user.username}}</strong></div>
+                <div><span i18n>Service:</span><strong> {{order.service.type | serviceName}}</strong></div>
+                <div><span i18n>Feedback:</span><strong> {{order.service.profile.feedback |
+                    l10nDecimal:defaultLocale:'1.2-2'}}/5</strong></div>
+                <div *ngIf="order.profileForwarderAddress"><span i18n>Address:</span>
+                    <strong>
+                        {{order.profileForwarderAddress}}
+                    </strong>
+                </div>
+                <div><span i18n>Price:</span><strong> BC {{order.totalPrice |
+                    l10nDecimal:defaultLocale:'1.2-2'}}</strong></div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                <div class="highlight_3 text-uppercase">
+                    <strong i18n>Pick Up</strong>
+                </div>
+                <div>
+                    <span i18n>Receiving:</span>
+                    <strong> {{order.profile.user.username}}</strong>
+                </div>
+                <div><span i18n>Full Name:</span>
+                    <strong i18n>
+                        {{order.profile.user.first_name}}
+                        {{order.profile.user.last_name}}
+                    </strong>
+                </div>
+                <div>
+                    <span i18n>Preferred weekdays:</span>
+                    <div class="collecting-pref">
+                        <!-- FOR WEEKDAY IN WEEKDAYS create those spans -->
+                        <span i18n *ngIf="order.service.sunday">Sun</span>
+                        <span i18n *ngIf="order.service.monday">Mon</span>
+                        <span i18n *ngIf="order.service.tuesday">Tue</span>
+                        <span i18n *ngIf="order.service.wednesday">Wed</span>
+                        <span i18n *ngIf="order.service.thursday">Thu</span>
+                        <span i18n *ngIf="order.service.friday">Fri</span>
+                        <span i18n *ngIf="order.service.saturday">Sat</span>
+                        <!-- END -->
+                    </div>
+                </div>
+                <div>
+                    <span i18n>Preferred time slots:</span>
+                    <div class="collecting-pref">
+                        <!-- FOR TIMESLOT IN TIMESLOTS create those spans -->
+                        <span i18n *ngIf="order.service.deliveryOnDawn">Dawn</span>
+                        <span i18n *ngIf="order.service.deliveryOnMorning">Morning</span>
+                        <span i18n *ngIf="order.service.deliveryOnAfternoon">Afternoon</span>
+                        <span i18n *ngIf="order.service.deliveryOnEvening">Evening</span>
+                        <span i18n *ngIf="order.service.deliveryOnNight">Night</span>
+                        <!-- END -->
+                    </div>
+                </div>
+                <div>
+                    <span i18n>Feedback:</span>
+                    <strong> {{order.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </section>
+    <!-- END ORDER STATUS DETAIL PKG-COLLECTING -->
+
+
+</div>
+<order-notes [profile]="profile"
+             [order]="order"
+             *ngIf="profile && order"></order-notes>

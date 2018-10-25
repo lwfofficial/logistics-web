@@ -1,0 +1,274 @@
+<!-- ORDER ISSUE PAGE -->
+
+<div id="order-issue-container"
+     class="container"
+     *ngIf="issue && profile">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="row-title" i18n>Order Issue</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+    <div class="info-header">
+        <div>
+            <span i18n>Order Number:</span>
+            <span class="highlight_3">
+                <strong i18n>{{issue.order.id}}</strong>
+            </span>
+        </div>
+
+        <div>
+            <span i18n>
+                Issue opened by 
+                <span class="highlight_3">
+                    <strong>{{issue.profile.user.username}}</strong>
+                </span>
+                on
+                <span class="highlight_3">
+                        <strong>{{issue.dateCreated | l10nDate:defaultLocale:'shortDate'}}</strong>
+                </span> 
+            </span>
+        </div>
+
+        <div>
+            <span i18n>
+                Order issue: 
+                <span class="highlight_3 text-uppercase">
+                    <strong>{{issue.state}}</strong>
+                </span>
+            </span>
+        </div>
+
+        <div>
+            <button *ngIf="issue.state == 'OPEN' && profile.id == issue.profile.id" class="text-uppercase"
+                    type="button"
+                    color="cancel"
+                    (click)="openDialog()"
+                    mat-button>
+                Close Issue
+            </button>
+        </div>
+    </div>
+    <div class="issue-info">
+        <div i18n>
+            Recorded Order Status:
+            <span class="text-uppercase">
+                <strong>{{issue.order.state}}</strong>
+            </span>
+        </div>
+
+        <div i18n>
+            Issue reason:
+            <span class="highlight_3">
+                <strong>{{issue.type | issueType}}</strong>
+            </span>
+        </div>
+        <div class="issue-notes">
+            {{issue.description}}
+        </div>
+    </div>
+
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title class="text-uppercase" i18n>
+                    Order Details
+                </mat-panel-title>
+                <mat-panel-description>
+                    <div class="bottom-border"></div>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <!-- ORDER STATUS DETAIL P2P-->
+            <section id="order-status-detail-p2p"
+                     class="order-status-detail"
+                     *ngIf="isP2POrder">
+
+                <div class="detail-content">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                        <div class="highlight_3 text-uppercase">
+                            <strong i18n>Goods</strong>
+                        </div>
+                        <div><span i18n>Goods Value:</span><strong i18n>{{goodValue | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}}</strong></div>
+                        <div><span i18n>Size:</span><strong i18n> {{issue.order.service.maxSize | maxSize:profile.measuresSetting}}</strong></div>
+                        <div *ngIf="!issue.order.service.addPartnerForwarder"><span i18n>Weight:</span><strong> {{issue.order.service.maxWeight | maxWeight:profile.measuresSetting}}</strong></div>
+                        <div *ngIf="issue.order.service.addPartnerForwarder"><span i18n>Weight:</span><strong> {{issue.order.shippingWeight | convertWeight:profile.measuresSetting}}</strong></div>
+                        <div><span i18n>Buy goods from:</span><strong i18n>
+                            {{issue.order.service.acceptedPacksFromCompany ? 'Company': 'Private'}}</strong></div>
+                        <div><span i18n>Goods type:</span><strong i18n> {{issue.order.goodType | goodType}}</strong>
+                        </div>
+                        <div><span i18n>Delivery to Forwarder:</span><strong i18n>
+                            {{issue.order.forwarderDeliveryDate | l10nDate:defaultLocale:'shortDate'}}</strong>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                        <div class="highlight_3 text-uppercase">
+                            <strong i18n>Forwarding</strong>
+                        </div>
+                        <div><span i18n>Forwarder:</span>
+                            <strong i18n> {{issue.order.service.profile.user.username}}</strong></div>
+                        <div><span i18n>Full Name:</span>
+                            <strong i18n>
+                                {{issue.order.service.profile.user.first_name}}
+                                {{issue.order.service.profile.user.last_name}}
+                            </strong>
+                        </div>
+                        <div><span i18n>Service:</span>
+                            <strong i18n> {{issue.order.service.type | serviceName}}</strong>
+                        </div>
+                        <div><span i18n>Feedback:</span>
+                            <strong i18n> {{issue.order.service.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong>
+                        </div>
+                        <div *ngIf="issue.order.service.profile.defaultAddress"><span i18n>Address:</span>
+                            <strong i18n>
+                                {{issue.order.service.profile.defaultAddress.street}},
+                                {{issue.order.service.profile.defaultAddress.zipCode}} -
+                                {{issue.order.service.profile.defaultAddress.city}}
+                                - {{issue.order.service.profile.defaultAddress.region}} -
+                                {{issue.order.service.profile.defaultAddress.country}}
+                            </strong>
+                        </div>
+                        <div><span i18n>Price:</span><strong i18n> BC {{issue.order.totalPrice | l10nDecimal:defaultLocale:'1.2-2'}}</strong>
+                        </div>
+                        <div><span i18n>Shipping Mode:</span>
+                            <strong i18n> {{issue.order.shippingMode | shippingMode}}</strong></div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                        <div class="highlight_3 text-uppercase">
+                            <strong i18n>Receiving</strong>
+                        </div>
+                        <div><span i18n>Receiving:</span><strong i18n> {{issue.order.profile.user.username}}</strong>
+                        </div>
+                        <div><span i18n>Full Name:</span>
+                            <strong i18n>
+                                {{issue.order.profile.user.first_name}}
+                                {{issue.order.profile.user.last_name}}
+                            </strong>
+                        </div>
+                        <div *ngIf="issue.order.profile.defaultAddress"><span i18n>To:</span>
+                            <strong i18n>
+                                {{issue.order.profile.defaultAddress.street}},
+                                {{issue.order.profile.defaultAddress.zipCode}} -
+                                {{issue.order.profile.defaultAddress.city}}
+                                - {{issue.order.profile.defaultAddress.region}} -
+                                {{issue.order.profile.defaultAddress.country}}
+                            </strong>
+                        </div>
+                        <div><span i18n>Feedback:</span><strong i18n> {{issue.order.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </section>
+            <!-- END ORDER STATUS DETAIL P2P -->
+
+            <!-- ORDER STATUS DETAIL PKG-COLLECTING-->
+            <section id="order-status-detail"
+                     class="order-status-detail"
+                     *ngIf="isCLLOrder">
+                <div class="detail-content">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                        <div class="highlight_3 text-uppercase">
+                            <strong i18n>Goods</strong>
+                        </div>
+                        <div><span i18n>Size:</span><strong i18n> {{issue.order.service.maxSize | maxSize:profile.measuresSetting}}</strong>
+                        </div>
+                        <div><span i18n>Weight:</span>
+                            <strong i18n> {{issue.order.service.maxWeight | maxWeight:profile.measuresSetting}}</strong>
+                        </div>
+                        <div><span i18n>Buy goods from:</span><strong i18n>
+                            {{issue.order.service.acceptedPacksFromCompany ? 'Company': 'Private'}}</strong></div>
+                        <div><span i18n>Goods type:</span><strong i18n> {{issue.order.goodType | goodType}}</strong>
+                        </div>
+                        <div><span i18n>Delivery to Collector:</span><strong i18n>
+                            {{issue.order.forwarderDeliveryDate | l10nDate:defaultLocale:'shortDate'}}</strong>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                        <div class="highlight_3 text-uppercase">
+                            <strong i18n>Collecting</strong>
+                        </div>
+                        <div><span i18n>Forwarder:</span>
+                            <strong i18n> {{issue.order.service.profile.user.username}}</strong></div>
+                        <div><span i18n>Full Name:</span>
+                            <strong i18n>
+                                {{issue.order.service.profile.user.first_name}}
+                                {{issue.order.service.profile.user.last_name}}
+                            </strong>
+                        </div>
+                        <div><span i18n>Service:</span>
+                            <strong i18n> {{issue.order.service.type | serviceName}}</strong>
+                        </div>
+                        <div><span i18n>Feedback:</span>
+                            <strong i18n> {{issue.order.service.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong>
+                        </div>
+                        <div *ngIf="issue.order.service.profile.defaultAddress"><span i18n>Address:</span>
+                            <strong i18n>
+                                {{issue.order.service.profile.defaultAddress.street}},
+                                {{issue.order.service.profile.defaultAddress.zipCode}} -
+                                {{issue.order.service.profile.defaultAddress.city}}
+                                - {{issue.order.service.profile.defaultAddress.region}} -
+                                {{issue.order.service.profile.defaultAddress.country}}
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                        <div class="highlight_3 text-uppercase">
+                            <strong i18n>Pick Up</strong>
+                        </div>
+                        <div>
+                            <span i18n>Receiving:</span>
+                            <strong i18n> {{issue.order.profile.user.username}}</strong>
+                            <div><span i18n>Full Name:</span>
+                                <strong i18n>
+                                    {{issue.order.profile.user.first_name}}
+                                    {{issue.order.profile.user.last_name}}
+                                </strong>
+                            </div>
+                        </div>
+                        <div>
+                            <span i18n>Preferred weekdays:</span>
+                            <div class="collecting-pref">
+                                <!-- FOR WEEKDAY IN WEEKDAYS create those spans -->
+                                <span i18n *ngIf="issue.order.service.sunday">Sun</span>
+                                <span i18n *ngIf="issue.order.service.monday">Mon</span>
+                                <span i18n *ngIf="issue.order.service.tuesday">Tue</span>
+                                <span i18n *ngIf="issue.order.service.wednesday">Wed</span>
+                                <span i18n *ngIf="issue.order.service.thursday">Thu</span>
+                                <span i18n *ngIf="issue.order.service.friday">Fri</span>
+                                <span i18n *ngIf="issue.order.service.saturday">Sat</span>
+                                <!-- END -->
+                            </div>
+                        </div>
+                        <div>
+                            <span i18n>Preferred time slots:</span>
+                            <div class="collecting-pref">
+                                <!-- FOR TIMESLOT IN TIMESLOTS create those spans -->
+                                <span i18n *ngIf="issue.order.service.deliveryOnDawn">Dawn</span>
+                                <span i18n *ngIf="issue.order.service.deliveryOnMorning">Morning</span>
+                                <span i18n *ngIf="issue.order.service.deliveryOnAfternoon">Afternoon</span>
+                                <span i18n *ngIf="issue.order.service.deliveryOnEvening">Evening</span>
+                                <span i18n *ngIf="issue.order.service.deliveryOnNight">Night</span>
+                                <!-- END -->
+                            </div>
+                        </div>
+                        <div>
+                            <span i18n>Feedback:</span>
+                            <strong i18n> {{issue.order.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </section>
+            <!-- END ORDER STATUS DETAIL PKG-COLLECTING -->
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <chat [profile]="profile"
+          [chat]="issue.chat"
+          [enabled]="issue.state == issueStatus.open"
+          [issue]="issue">
+    </chat>
+
+</div>
+
+<!-- END ORDER ISSUE PAGE -->

@@ -1,0 +1,263 @@
+<profile-info [(profile)]="profile"
+              [(wallet)]="wallet"
+              [editAvatar]="true"></profile-info>
+<verification-warning-launcher *ngIf="profile && !docsSubmitted" [profile]="profile" style="display:none;"></verification-warning-launcher>
+
+<div class="container-fluid">
+    <div id="account-info" class="row">
+
+        <div class="row text-center header-text-uppercase">
+            <h2 class="row-title" i18n>Account Details</h2>
+            <hr class="bottom-hr-orange"/>
+        </div>
+
+        <div *ngIf="profile && profile.user"
+             id="account-container"
+             class="row">
+
+            <div id="personal-details" class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+
+                <div>
+                    <h4 i18n>PERSONAL DETAILS</h4>
+                </div>
+                <label i18n>First Name</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="First Name"
+                           name="name"
+                           type="text"
+                           [value]="profile.user.first_name"
+                           [readonly]="readOnly.info">
+                </mat-form-field>
+                <label i18n>Last Name</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Last Name"
+                           name="lastname"
+                           type="text"
+                           [value]="profile.user.last_name"
+                           [readonly]="readOnly.info">
+                </mat-form-field>
+
+                <label i18n>Date of Birth</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Date of Birth"
+                           name="dob"
+                           type="text"
+                           [value]="profile.dob | l10nDate:defaultLocale:'shortDate'"
+                           [readonly]="readOnly.info">
+                </mat-form-field>
+
+                <label i18n>Email</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Email"
+                           name="email"
+                           type="email"
+                           [value]="profile.user.email"
+                           [readonly]="readOnly.info">
+                </mat-form-field>
+
+                <label i18n>Mobile</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Mobile"
+                           name="mobile"
+                           type="text"
+                           [value]="profile.mobile"
+                           [readonly]="readOnly.info">
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                <div>
+                    <h4 class="text-uppercase" i18n>Main Address</h4>
+                </div>
+                <form id="address-details" [formGroup]="addressesForm[0]">
+                    <label i18n>Street</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Street"
+                               name="street"
+                               type="text"
+                               formControlName="street"
+                               [readonly]="readOnly.info">
+                    </mat-form-field>
+
+                    <label i18n>City</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="City"
+                               name="city"
+                               type="text"
+                               formControlName="city"
+                               [readonly]="readOnly.info">
+                    </mat-form-field>
+
+                    <label i18n>Zip Code</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Zip Code"
+                               name="zipCode"
+                               type="text"
+                               formControlName="zipCode"
+                               [readonly]="readOnly.info">
+                    </mat-form-field>
+
+                    <label i18n>Region</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Region"
+                               name="region"
+                               type="text"
+                               formControlName="region"
+                               [readonly]="readOnly.info">
+                    </mat-form-field>
+
+                    <label i18n>Country</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Country"
+                               name="country"
+                               type="text"
+                               formControlName="country"
+                               [readonly]="readOnly.info">
+                    </mat-form-field>
+
+                </form>
+                <div class="clearfix"></div>
+                <div *ngIf="addressesForm[0]"
+                     id="address-info" class="col-md-10 col-sm-10 col-xs-12 col-12">
+
+                    <div id="add-address">
+                        <h4 class="text-uppercase" i18n>Additional Addresses</h4>
+                        <div class="rm-add-btn-container">
+                            <button id="add-slot-btn"
+                                    color="cancel"
+                                    type="button"
+                                    (click)="addAddress()"
+                                    mat-button><i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <mat-accordion>
+                            <mat-expansion-panel *ngFor="let address of profile.addresses">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title i18n>
+                                        {{address.street}}
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <p>
+                                    <a (click)="editAddress(address)" i18n>
+                                        {{address.street}}
+                                        {{address.zipCode}}- {{address.city}} -
+                                        {{address.region}}- {{address.country}}
+                                    </a>
+                                </p>
+                            </mat-expansion-panel>
+
+                        </mat-accordion>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mobile-clear"></div>
+
+            <div id="forwarder-info" class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                <h4 class="text-uppercase" i18n>Settings</h4>
+                <section id="settings">
+                    <form [formGroup]="settingsForm">
+                        <label i18n>Language</label>
+                        <mat-form-field floatLabel="never">
+                            <mat-select placeholder="Select your language"
+                                        (selectionChange)="updateSetting('languageSetting',$event.value)"
+                                        formControlName="languageSetting"
+                                        #countrySelect>
+                                <mat-option value="en" i18n>
+                                    English
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <span i18n>Please select a language</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <label i18n>Currency</label>
+
+                        <mat-form-field floatLabel="never">
+                            <mat-select placeholder="Select your currency"
+                                        (selectionChange)="updateSetting('currencySetting',$event.value)"
+                                        formControlName="currencySetting"
+                                        #countrySelect>
+                                <mat-option value="EUR" i18n>
+                                    Euro
+                                </mat-option>
+                                <mat-option value="USD" i18n>
+                                    Dollar
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <span i18n>Please select a language</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <label i18n>Units</label>
+                        <mat-form-field floatLabel="never">
+                            <mat-select placeholder="Select Units"
+                                        (selectionChange)="updateSetting('measuresSetting',$event.value)"
+                                        formControlName="measuresSetting"
+                                        #countrySelect>
+                                <mat-option value="metric" i18n>
+                                    Metric
+                                </mat-option>
+                                <mat-option value="imperial" i18n>
+                                    Imperial
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <span i18n>Please select a language</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </form>
+                </section>
+                <section id="security-deposit">
+                    <div *ngIf="profile.forwarderData.verified">
+                        <h4 class="text-uppercase" i18n>Security Deposit
+                            <i class="fal fa-info-circle"
+                               [matTooltipClass]="'security-deposit-help'"
+                               matTooltip="In order to be a LWF Forwarder you must deposit a security amount of
+                                       BC. Increase the amount of your deposit to upgrade your level and the
+                                       value of manageable goods."></i>
+                        </h4>
+                    </div>
+                    <div class="forwarder-status">
+                        <div class="caution" *ngIf="profile.forwarderData.verified">
+                            <!-- <p *ngFor="let wallet of wallets">{{wallet.deposit}} {{wallet.currency}}</p> -->
+                            <div class="bundle-credit" i18n>Balance: <strong>BC {{wallet.deposit |
+                                l10nDecimal:defaultLocale:'1.2-2'}}</strong></div>
+                            <button mat-button
+                                    (click)="openCautionDialog()"
+                                    color="secondary"
+                                    [class.btn-disabled]="wallet.credit === '0.00'"
+                                    [disabled]="wallet.credit === '0.00'">
+                                <span class="text-uppercase" i18n>Deposit Now</span>
+                            </button>
+                            <div class="no-credits" *ngIf="wallet.credit === '0.00'">You don't have enough credits to make a deposit, please
+                                <a [routerLink]="'/wallets'">click here</a> to buy Bundle credits
+                            </div>
+                        </div>
+
+                        <div class="manageable-goods" *ngIf="profile.forwarderData.verified && profile.currencySetting">
+                            <div class="status-title" i18n>Max value of manageable goods</div>
+                            <div class="bundle-credit" i18n>{{maxGoodValue |
+                                l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

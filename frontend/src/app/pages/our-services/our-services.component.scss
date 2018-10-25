@@ -1,0 +1,220 @@
+p {
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.title-boxed h3 {
+  font-weight: 700;
+  font-size: 3rem;
+  color: #FFFFFF;
+}
+
+.title-unboxed h3 {
+  font-weight: 700;
+  font-size: 3rem;
+  color: #005DA1;
+  &:first-child {
+    padding-bottom: 40px;
+  }
+}
+
+#services-container {
+  h2 {
+    color: #005DA1;
+  }
+  padding-top: 20px;
+  .row {
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+/* SERVICES-ROW */
+
+#services-row {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  flex-wrap: wrap;
+  padding: 0 20px 0 20px;
+  >div{
+    flex-basis:27%;
+    margin:0 10px;
+  }
+  .inst-delivery-icon{
+    margin-left:-22px;
+  }
+  a{
+    color: #585A63;
+    text-decoration: none;
+  }
+  img {
+    height: 150px;
+    margin-top: 50px;
+  }
+  .slogan {
+    text-align: center;
+    h4 {
+      margin: 15px 0;
+    }
+
+  }
+}
+
+#best-logistic-row {
+  padding: 25px 80px 50px 80px;
+  h4{
+    margin-top:30px;
+  }
+}
+#goods-row{
+  ul{
+    li{
+      margin:10px 0;
+    }
+  }
+}
+#goods-row,
+#goods-row-2,
+#goods-row-3 {
+  padding-left: 80px !important;
+  padding-right: 80px !important;
+}
+
+/* #services-container .header-text-uppercase {
+      font-size: 2.5rem;
+  } */
+
+#services-container {
+  color: #585A63;
+}
+
+#express-delivery,
+#p2p-freight-box,
+#packaging-box {
+  height: 100vh;
+  max-height: 450px;
+  top: 0;
+  font-size: 4rem;
+  font-weight: bold;
+  padding: 50px 0 0 80px;
+  color: white;
+}
+
+#p2p-freight-box,
+#packaging-box {
+  background: #F1A426;
+  color: white;
+}
+
+#p2p-freight-box img,
+#express-delivery img,
+#packaging-box img {
+  margin-left: 10px;
+  height: 170px;
+  margin-bottom: 40px;
+}
+
+#express-delivery {
+  background: #005DA1;
+}
+
+#delivery-img,
+#freight-img,
+#packaging-img {
+  height: 450px;
+  overflow: hidden;
+}
+
+#freight-img {
+  background-image: url("../../../assets/images/services/p2p_forwarding.png");
+  background-size: cover;
+  background-position: center;
+}
+
+#delivery-img {
+  background-image: url("../../../assets/images/services/express_delivery.png");
+  background-size: cover;
+  background-position: center;
+}
+
+#packaging-img {
+  background-image: url("../../../assets/images/services/package_collect.png");
+  background-size: cover;
+  background-position: center;
+}
+
+#delivery-img img,
+#freight-img img,
+#packaging-img img {
+  width: 729px;
+  height: 450px;
+}
+
+#goods-row,
+#goods-row-2,
+#goods-row-3 {
+  padding: 40px 0;
+}
+
+#delivery-row,
+#goods-row,
+#goods-row-2,
+#goods-row-3,
+#packaging-row {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#goods-row,
+#goods-row-3,
+#packaging-row,
+#goods-row-2 {
+  background: #F6F8FA;
+}
+
+/*MEDIA QUERY*/
+
+@media (max-width: 900px) {
+  .title-boxed h3 {
+    font-size: 2.5rem;
+  }
+  #p2p-freight-box img,
+  #express-delivery img,
+  #packaging-box img {
+    margin-left: 10px;
+    height: auto;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  #p2p-freight-box,
+  #express-delivery,
+  #packaging-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@media (max-width: 576px) {
+  #services-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+
+  #best-logistic-row {
+    padding: 25px 40px 50px 40px;
+  }
+  #goods-row,
+  #goods-row-2,
+  #goods-row-3 {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+}

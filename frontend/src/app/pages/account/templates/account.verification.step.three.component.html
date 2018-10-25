@@ -1,0 +1,107 @@
+<div id="self-id-verification" class="container-fluid" *ngIf="profile">
+    <div class="verification-header">
+        <div class="verification-title" i18n>Self ID</div>
+        <div class="verification-status">
+            <span i18n>Status</span>:
+            <span class="status-progress"
+                  [ngClass]="verificationSelfieStatus()[1]" i18n>
+                {{verificationSelfieStatus()[0]}}
+            </span>
+        </div>
+        <div class="verification-dot">
+            <i class="material-icons" [ngClass]="verificationSelfieStatus()[1]">brightness_1</i>
+        </div>
+    </div>
+    <div id="self-id-upload-form">
+        <form (ngSubmit)="uploadSelfie(uploadForm)"
+              [formGroup]="uploadForm">
+            <div>
+                <div class="self-id-instruction-wrapper">
+                    <div>
+                        <div>
+                            <p class="instructions" i18n>
+                                You must take a picture of yourself with your chosen ID document and a paper with
+                                written the following text:
+                            </p>
+                        </div>
+                        <div>
+                            <p class="instructions code" i18n>
+                                {{textCode}}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="instructions" i18n>
+                                The picture must be take as the example image.<br/>
+                                The code above is generated randomly.
+                            </p>
+                        </div>
+                    </div>
+                    <button mat-button
+                            *ngIf="!showSpinner && !profile.forwarderData.verified"
+                            color="secondary"
+                            type="submit"
+                            [class.btn-disabled]="disableBtn"
+                            [disabled]="disableBtn"
+                            class="upload-btn widescreen-btn"
+                            i18n>
+                        Submit
+                    </button>
+                </div>
+                <div class="self-id-doc-pictures">
+                    <div class="selfie-doc-picture-wrapper">
+                        <div click="setSelfieDoc()">
+                            <avatar-image
+                                    class="center-text"
+                                    [editable]="!profile.SelfIDocVerified"
+                                    [id]="'userselfidoc'"
+                                    [altText]="'Your Self ID'"
+                                    [src]="SelfIDocImageSrc"
+                                    (click)="stopClickPropagation($event)"
+                                    (imageChanged)="setSelfIDocImage($event)"
+                                    [accept]="'.jpg, .jpeg, .png, .pdf'">
+                            </avatar-image>
+                        </div>
+                    </div>
+                    <div class="document-note" i18n>Uploaded file (jpg, png, pdf) <br/>Max 6MB</div>
+                </div>
+            </div>
+                <div class="text-center">
+                    <mat-spinner
+                            *ngIf="showSpinner"
+                            style="margin: 0 auto;"
+                            [diameter]="70">
+
+                    </mat-spinner>
+                    <button mat-button
+                            *ngIf="!showSpinner && !profile.docVerified"
+                            color="secondary"
+                            type="submit"
+                            [class.btn-disabled]="disableBtn"
+                            [disabled]="disableBtn"
+                            class="upload-btn mobile-btn"
+                            i18n>
+                        Submit
+                    </button>
+                </div>
+        </form>
+        <div class="alert alert-danger text-center alert-dismissable" [@transitionMessage]="showError1 || showError2 ? 'enter' : 'void'" *ngIf="showError1 || showError2">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" style="margin-top:-3px;" (click)="clearError()">
+                <i class="fa-2x far fa-times"></i>
+            </a>
+            <div *ngIf="uploadForm.get('nullSelfIDoc').errors
+                                        && uploadForm.get('nullSelfIDoc').errors.backend
+                                        && uploadForm.get('nullSelfIDoc').errors.backend.nullSelfIDoc"
+                       i18n>
+                {{uploadForm.get('nullSelfIDoc').errors.backend.nullSelfIDoc}}
+            </div>
+
+            <div *ngIf="uploadForm.get('invalidSelfIDoc').errors
+                                        && uploadForm.get('invalidSelfIDoc').errors.backend
+                                        && uploadForm.get('invalidSelfIDoc').errors.backend.invalidSelfIDoc"
+                       i18n>
+                {{uploadForm.get('invalidSelfIDoc').errors.backend.invalidSelfIDoc}}
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,48 @@
+.verification-warning-dialog {
+  .mat-dialog-container {
+    padding: 0;
+  }
+}
+
+#verification-warning-container {
+  text-align: center;
+
+  .mat-button .mat-button-wrapper > *,
+  .mat-fab .mat-button-wrapper > *,
+  .mat-flat-button .mat-button-wrapper > *,
+  .mat-icon-button .mat-button-wrapper > *,
+  .mat-mini-fab .mat-button-wrapper > *,
+  .mat-raised-button .mat-button-wrapper > *,
+  .mat-stroked-button .mat-button-wrapper > *{
+    vertical-align:top;
+  }
+
+  .row {
+    position: relative;
+    background-color: #F0F1F3;
+    padding: 10px 0;
+    button {
+      position: absolute;
+      color:#585A63;
+      top: 30px;
+      right: 20px;
+      border-radius: 100%;
+      padding: 0;
+      min-width: 24px;
+      width: 24px;
+      height: 24px;
+      display: block;
+
+      span {
+        height: 24px;
+      }
+    }
+  }
+  #verification-warning-inner-container {
+    padding: 30px 50px;
+    margin-top: 30px;
+    font-size: 1.3rem;
+    color: #585A63;
+    font-weight: 600;
+  }
+}

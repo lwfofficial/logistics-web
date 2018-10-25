@@ -1,0 +1,1 @@
+[{"model": "transactions.lwfwallet", "pk": 2, "fields": {"dateCreated": "2018-02-15T14:56:02Z", "dateUpdated": "2018-02-15T14:56:02Z", "name": "caution", "credit": 0.0}}, {"model": "transactions.lwfwallet", "pk": 3, "fields": {"dateCreated": "2018-02-15T14:56:54Z", "dateUpdated": "2018-02-15T14:56:54Z", "name": "insurance", "credit": 0.0}}]

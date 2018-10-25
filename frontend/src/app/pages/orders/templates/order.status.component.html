@@ -1,0 +1,238 @@
+<section id="order-status-info-buyer"
+         class="order-status-info">
+    <!--<div class="info-header">-->
+    <!--<div>-->
+    <!--<span i18n>Order Number:</span>-->
+    <!--<span class="highlight_3">-->
+    <!--<strong i18n>{{order.id}}</strong>-->
+    <!--</span>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <div class="info-wrapper container">
+        <div class="row header-text-uppercase text-center">
+            <h2 class="row-title" i18n>Order N. {{order.id}}</h2>
+            <hr class="bottom-hr-orange"/>
+        </div>
+        <div class="info-state">
+            <h4>Order Progress</h4>
+            <div class="status-info">
+                <div *ngIf="order.trackings.length > 0 && !order.trackings[0].fromForwarder
+                            && order.state === orderStatus.accepted">
+                    Tracking Info:
+                    <a *ngIf="order.trackings[0].link" href="{{order.trackings[0].link}}"
+                       target="_blank">
+                        <span i18n>{{order.trackings[0].courierName}}</span> - <span class="trn">{{order.trackings[0].trn}}</span>
+                    </a>
+                    <span *ngIf="!order.trackings[0].link">
+                          <span i18n>{{order.trackings[0].courierName}}</span> - <span class="trn">{{order.trackings[0].trn}}</span>
+                    </span>
+                </div>
+                <div *ngIf="order.trackings.length > 0 && order.trackings[0].fromForwarder
+                            && order.state === orderStatus.forwarded">
+                    Tracking Info:
+                    <a *ngIf="order.trackings[0].link" href="{{order.trackings[0].link}}"
+                       target="_blank">
+                        <span i18n>{{order.trackings[0].courierName}}</span> - <span class="trn">{{order.trackings[0].trn}}</span>
+                    </a>
+                    <span *ngIf="!order.trackings[0].link">
+                          <span i18n>{{order.trackings[0].courierName}}</span> - <span class="trn">{{order.trackings[0].trn}}</span>
+                    </span>
+                </div>
+                <div id="info-message">{{orderStatusInfo}}</div>
+            </div>
+            <section class="status-progress">
+                <div>
+                    <div [ngClass]="order.state === orderStatus.paid ? 'active' : 'inactive'">
+                        <div class="status-dot">1</div>
+                        <div class="status-title">paid</div>
+                    </div>
+                    <div class="line-divider"></div>
+                    <div *ngIf="order.state === orderStatus.refused"
+                         [ngClass]="order.state === orderStatus.refused ? 'refused' : 'inactive'">
+                        <div class="status-dot">2</div>
+                        <div class="status-title">refused</div>
+                    </div>
+                    <div *ngIf="order.state !== orderStatus.refused"
+                         [ngClass]="order.state === orderStatus.accepted ? 'active' : 'inactive'">
+                        <div class="status-dot">2</div>
+                        <div class="status-title">accepted</div>
+                    </div>
+                    <div *ngIf="order.state !== orderStatus.refused" class="line-divider"></div>
+                    <div *ngIf="order.state !== orderStatus.refused  && isP2POrder"
+                         [ngClass]="order.state === orderStatus.collecting ? 'active' : 'inactive'">
+                        <div class="status-dot">3</div>
+                        <div class="status-title">delivered</div>
+                    </div>
+                    <div *ngIf="order.state !== orderStatus.refused && isCLLOrder"
+                         [ngClass]="order.state === orderStatus.collecting ? 'active' : 'inactive collected'">
+                        <div class="status-dot">3</div>
+                        <div class="status-title">collected</div>
+                    </div>
+                    <div *ngIf="order.state !== orderStatus.refused" class="line-divider"></div>
+                    <div *ngIf="order.state !== orderStatus.refused && isP2POrder"
+                         [ngClass]="order.state === orderStatus.forwarded ? 'active' : 'inactive forwarded'">
+                        <div class="status-dot">4</div>
+                        <div class="status-title">forwarded</div>
+                    </div>
+                    <div *ngIf="order.state !== orderStatus.refused && isP2POrder" class="line-divider"></div>
+                    <div *ngIf="order.state !== orderStatus.refused"
+                         [ngClass]="order.state === orderStatus.received ? 'received' : 'inactive'">
+                        <div class="status-dot" *ngIf="isCLLOrder">4</div>
+                        <div class="status-dot" *ngIf="isP2POrder">5</div>
+                        <div class="status-title">received</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="info-dates">
+            <div *ngIf="(order.state === orderStatus.forwarded
+                 || order.state === orderStatus.received) && isP2POrder">
+                <span i18n>Forwarded date:</span>
+                <span class="highlight_3">
+                   <strong i18n>{{order.forwardedDate | l10nDate:defaultLocale:'shortDate'}}</strong>
+                </span>
+            </div>
+            <div>
+                <span i18n>Estimated time arrival:</span>
+                <span class="highlight_3">
+                   <strong i18n>{{order.estimatedDate | l10nDate:defaultLocale:'shortDate'}}</strong>
+                </span>
+            </div>
+        </div>
+        <section class="status-buttons">
+            <div>
+                <button mat-button
+                        color="cancel"
+                        *ngIf="order.state === orderStatus.paid &&
+                               isForwarder &&
+                               !order.issue"
+                        (click)="openActionDialog('refuse')"
+                        class="text-uppercase"
+                        i18n>
+                    Refuse
+                </button>
+                <button mat-button
+                        color="secondary"
+                        *ngIf="order.state === orderStatus.paid &&
+                               isForwarder &&
+                               !order.issue"
+                        class="text-uppercase"
+                        (click)="openActionDialog('accept')"
+                        i18n>
+                    Accept
+                </button>
+                <button mat-button
+                        color="cancel"
+                        *ngIf="order.state === orderStatus.accepted &&
+                               isBuyer &&
+                               !order.issue"
+                        class="text-uppercase"
+                        (click)="updateTrackingInfo()"
+                        i18n>
+                    <span *ngIf="order.trackings.length === 0">Enter Tracking Info</span>
+                    <span *ngIf="order.trackings.length > 0">Update Tracking Info</span>
+                </button>
+                <button mat-button
+                        color="secondary"
+                        *ngIf="order.state === orderStatus.accepted &&
+                               isForwarder &&
+                               isP2POrder &&
+                               !order.issue"
+                        class="full-width text-uppercase"
+                        (click)="openActionDialog('delivered')"
+                        i18n>
+                    Delivered
+                </button>
+                <button mat-button
+                        color="secondary"
+                        *ngIf="order.state === orderStatus.accepted &&
+                               isForwarder &&
+                               isCLLOrder &&
+                               !order.issue"
+                        class="text-uppercase"
+                        (click)="openActionDialog('delivered')">
+                    <span i18n>Collected</span>
+                </button>
+                <button mat-button
+                        color="secondary"
+                        *ngIf="order.state === orderStatus.collecting &&
+                               isForwarder &&
+                               isP2POrder &&
+                               !order.issue"
+                        class="text-uppercase"
+                        (click)="openActionDialog('forwarded')"
+                        i18n>
+                    Forwarded
+                </button>
+                <button mat-button
+                        color="cancel"
+                        *ngIf="order.state === orderStatus.forwarded &&
+                               isForwarder &&
+                               !order.issue"
+                        class="text-uppercase"
+                        (click)="updateTrackingInfo()"
+                        i18n>
+                    <span *ngIf="order.trackings.length === 0 || (order.trackings.length > 0 && !this.order.trackings[0].fromForwarder)">Enter Tracking Info</span>
+                    <span *ngIf="order.trackings.length > 0 && this.order.trackings[0].fromForwarder">Update Tracking Info</span>
+                </button>
+                <button mat-button
+                        color="finalize"
+                        *ngIf="(order.state === orderStatus.forwarded ||
+                               (order.state === orderStatus.collecting &&
+                               isCLLOrder)) &&
+                               isBuyer &&
+                               !order.issue"
+                        class="text-uppercase"
+                        (click)="openActionDialog('finalize')"
+                        i18n>
+                    Finalize Order
+                </button>
+                <button mat-button
+                        color="cancel"
+                        *ngIf="order.state === orderStatus.received &&
+                               !order.feedback.buyer &&
+                               isBuyer &&
+                               !order.issue"
+                        class="text-uppercase leave-feedback"
+                        (click)="leaveFeedback()"
+                        i18n>
+                    Leave Feedback
+                </button>
+                <button mat-button
+                        color="cancel"
+                        *ngIf="order.state === orderStatus.received &&
+                               !order.feedback.forwarder &&
+                               isForwarder &&
+                               !order.issue"
+                        class="text-uppercase leave-feedback"
+                        (click)="leaveFeedback()"
+                        i18n>
+                    Leave Feedback
+                </button>
+                <button mat-button
+                        color="cancel"
+                        *ngIf="order.state === orderStatus.refused &&
+                               isForwarder &&
+                               !order.issue"
+                        class="text-uppercase leave-feedback"
+                        (click)="insertRefuseReason()"
+                        i18n>
+                    Enter refuse reason
+                </button>
+                <button mat-button class="issue-opened text-uppercase"
+                        *ngIf="order.issue"
+                        (click)="openIssue()"><span i18n>Manage Issue</span></button>
+            </div>
+        </section>
+    </div>
+    <div class="container status-issue">
+        <a class="issue-link"
+           *ngIf="!order.issue"
+           (click)="openIssue()" i18n>Problems with your order?</a>
+    </div>
+</section>
+
+
+
+

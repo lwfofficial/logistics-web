@@ -1,0 +1,1 @@
+[{"model": "core.address", "pk": 1, "fields": {"street": "Unknow", "city": "Unknow", "zipCode": "00000", "region": "Unknow", "country": "US"}}]

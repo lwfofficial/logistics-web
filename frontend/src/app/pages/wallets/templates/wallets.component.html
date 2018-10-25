@@ -1,0 +1,60 @@
+<profile-info [profile]="profile"
+              [wallet]="wallet"></profile-info>
+<verification-warning-launcher *ngIf="profile && !docsSubmitted" [profile]="profile" style="display:none;"></verification-warning-launcher>
+<div id="wallets-container"
+     class="container">
+
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="row-title" i18n>WALLET</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div id="deposit-row" class="row">
+
+        <div id="operation-tab-group">
+
+            <mat-tab-group (selectedTabChange)="onLinkClick($event)" *ngIf="profile"  [(selectedIndex)]="selectedTabIndex" [ngClass]="profile.forwarderData.verified ? '' : 'buyer-label'">
+                <mat-tab >
+                    <ng-template mat-tab-label>
+                        <span class="text-uppercase text-center" i18n>
+                            Buy Credits
+                             <i class="fal fa-info-circle"
+                                [matTooltipClass]="'wallet-help'"
+                                matTooltip="You can buy bundle credits with cryptocurrency or
+                                with Paypal. If you choose one of the cryptocurrencies
+                                available a dialog will open with the address and a QR code
+                                that you can use to complete the transaction. If you choose
+                                Paypal you need to enter the amount you want to spend
+                                and you can continue the transaction on Paypal website by
+                                clicking the button in the dialog"></i>
+                        </span>
+                    </ng-template>
+
+                    <deposit-form [profile]="profile" (onPaymentReceived)="updateProfile()"></deposit-form>
+                </mat-tab>
+
+                <mat-tab *ngIf="profile.forwarderData.verified">
+                    <ng-template mat-tab-label>
+                        <span class="text-uppercase text-center" i18n>
+                            Withdrawal
+                            <i class="fal fa-info-circle"
+                               [matTooltipClass]="'wallet-help'"
+                               matTooltip="As a Forwarder/Package Collector you can withdraw
+                               money from your account. You can only withdraw the credits
+                               you earned by selling your services. To proceed with the withdrawal
+                               just fill in the form with the crypotcurrency you want your credits to
+                               be converted to, the amount of the withdrawal and the address
+                               of the cryptocurrency. Once you click submit a dialog will open with the
+                               summary of the transaction and a confirmation request."></i>
+                        </span>
+                    </ng-template>
+
+                        <withdrawal-form *ngIf="selectedTabIndex == 1" [profile]="profile" [wallet]="wallet" ></withdrawal-form>
+
+                </mat-tab>
+
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

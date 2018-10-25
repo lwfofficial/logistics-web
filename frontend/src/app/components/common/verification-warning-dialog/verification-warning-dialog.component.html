@@ -1,0 +1,32 @@
+<div id="verification-warning-container" class="container-fluid" *ngIf="profile">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="container-title row-title" i18n>Verification</h2>
+        <button mat-button (click)="closeDialog()">
+            <i matRipple class="material-icons">
+                close
+            </i>
+        </button>
+
+    </div>
+
+    <section id="verification-warning-inner-container">
+       <div>Welcome {{profile.user.name}},</div>
+        <p>
+            Thank you for signing up to LWF.<br/>
+            To start using LWF services you need to verify your identity in the Account Verification page.
+        </p>
+        <p>
+            The verification step is necessary to ensure safe deliveries....
+        </p>
+    </section>
+
+    <div class="verification-warning-btn">
+        <button mat-button
+                color="secondary"
+                [routerLink]="'/account/verification'"
+                (click)="closeDialog()" i18n>
+            Verify Now
+        </button>
+    </div>
+</div>

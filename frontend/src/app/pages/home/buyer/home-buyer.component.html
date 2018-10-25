@@ -1,0 +1,838 @@
+<div id="profile-credits-info" *ngIf="profile">
+    <verification-warning-launcher *ngIf="profile && !docsSubmitted" [profile]="profile" style="display:none;"></verification-warning-launcher>
+
+    <div class="credits-info-name">
+        Hello <a [routerLink]="'/account'" i18n> {{profile.user.username}}</a> |&nbsp;
+    </div>
+    <div class="credits-info-title">
+        <span class="credits-info-title-big" i18n> Your balance: </span>
+        <span class="credits-info-title-small" i18n>Your balance: </span>
+        <span class="credits-balance" i18n>
+            BC {{wallet.credit | l10nDecimal:defaultLocale:'1.2-2'}}
+        </span>
+    </div>
+</div>
+
+<div id="orders-container" class="container-fluid">
+    <div class="container">
+
+        <section id="order-list-container">
+
+            <div class="row header-text-uppercase text-center">
+                <h2 class="container-title row-title" i18n>My Orders</h2>
+                <hr class="bottom-hr-orange"/>
+            </div>
+
+            <div *ngIf="orders" class="orders-container">
+                <progress-spinner #orderSpinner></progress-spinner>
+                <mat-table #ordersTable
+                           matSort
+                           matSortActive="dateCreated"
+                           matSortDisableClear
+                           matSortDirection="asc"
+                           [dataSource]="orders">
+
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef>
+                            <span i18n>#</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="order-id-cell" i18n>
+                            {{order.id}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span i18n>Type</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let order" i18n>
+                            {{order.service.type | serviceShortName}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateCreated">
+                        <mat-header-cell class="hidden-mobile" mat-sort-header *matHeaderCellDef>
+                            <span i18n>Date</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-mobile" *matCellDef="let order" i18n> {{order.dateCreated |
+                            l10nDate:defaultLocale:'shortDate'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="state">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span i18n>State</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let order"
+                                  [ngClass]="order.state.toLowerCase()" i18n>
+                            {{order.state}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="price">
+                        <mat-header-cell class="hidden-xs" *matHeaderCellDef>
+                            <span i18n>Price</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-xs" *matCellDef="let order" i18n>
+                           BC {{order.totalPrice | l10nDecimal:defaultLocale:'1.2-2'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="view-details">
+                        <mat-header-cell class="text-center" *matHeaderCellDef>
+                        </mat-header-cell>
+                        <mat-cell class="text-center order-detail-btn" *matCellDef="let row">
+                            <i [ngClass]="expandedElement == row ? 'far fa-angle-up' : 'far fa-angle-down'"></i>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="expandedDetail">
+                        <mat-cell *matCellDef="let detail">
+
+                            <section class="orders-row-status-detail">
+                                <div class="detail-content">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                                        <div class="highlight_3 text-uppercase">
+                                            <strong i18n>Order Details</strong>
+                                        </div>
+                                        <div><span i18n>Service:</span><strong> {{detail.order.service.type |
+                                            serviceName}}</strong></div>
+                                        <div><span i18n>Order Creation Date:</span> <strong> {{detail.order.dateCreated
+                                            | l10nDate:defaultLocale:'shortDate'}}</strong></div>
+                                        <div><span i18n>Estimated Date Arrival:</span> <strong i18n>
+                                            {{detail.order.estimatedDate | l10nDate:defaultLocale:'shortDate'}}</strong></div>
+                                        <div *ngIf="detail.order.service.type == 'p2p-freight'"><span i18n>Shipping Mode:</span><strong
+                                                i18n>
+                                            {{detail.order.shippingMode | shippingMode}}</strong></div>
+                                        <div><span i18n>Price:</span><strong i18n> BC {{detail.order.totalPrice | l10nDecimal:defaultLocale:'1.2-2'}}</strong></div>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                                        <div class="highlight_3 text-uppercase">
+                                            <strong i18n>Your Details</strong>
+                                        </div>
+                                        <div><span i18n>Username:</span>
+                                            <strong i18n>
+                                                {{detail.order.profile.user.username}}
+                                            </strong>
+                                        </div>
+                                        <div *ngIf="detail.order.deliveryAddress"><span i18n>Address:</span>
+                                            <strong i18n>
+                                                {{detail.order.deliveryAddress}}
+                                            </strong>
+                                        </div>
+                                        <div>
+                                            <span i18n>Feedback:</span>
+                                            <strong i18n>
+                                                {{detail.order.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                                        <div class="highlight_3 text-uppercase">
+                                            <strong i18n>Forwarder Details</strong>
+                                        </div>
+
+                                        <div>
+                                            <span *ngIf="detail.order.service.type === 'p2p-freight'" i18n>Forwarder:</span>
+                                            <span *ngIf="detail.order.service.type === 'package-collecting'" i18n>Collector:</span>
+                                            <strong i18n>
+                                                {{detail.order.service.profile.user.username}}
+                                            </strong>
+                                        </div>
+                                        <div><span i18n>Full Name:</span>
+                                            <strong i18n>
+                                                {{detail.order.service.profile.user.first_name}}
+                                                {{detail.order.service.profile.user.last_name}}
+                                            </strong>
+                                        </div>
+                                        <div *ngIf="detail.order.profileForwarderAddress"><span i18n>Address:</span>
+                                            <strong i18n>
+                                                {{detail.order.profileForwarderAddress}}
+                                            </strong>
+                                        </div>
+                                        <div>
+                                            <span i18n>Feedback:</span>
+                                            <strong i18n>
+                                                {{detail.order.service.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5
+                                            </strong>
+                                            <a (click)="openForwarderCard(detail.order.service, true)" i18n>View</a>
+                                        </div>
+                                    </div>
+                                    <button mat-button color="secondary" *ngIf="detail.order.state !== 'NEW'" (click)="goToOrderDetail(detail.order)">
+                                        Go to Order Page
+                                    </button>
+                                    <button mat-button color="primary" *ngIf="detail.order.state !== 'NEW' && detail.order.state !== 'REFUSED' && detail.order.state !== 'PAID'" (click)="openOrderPaymentReportPdf(detail.order.id)">
+                                        View Report
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </section>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="ordersDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ordersDisplayedColumns;"
+                             matRipple
+                             class="orders-row"
+                             [class.expanded]="expandedElement == row"
+                             (click)="expandedElement == row ? expandedElement = null : expandedElement = row"
+                    ></mat-row>
+                    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+                             [@detailExpand]="row.order == expandedElement ? 'expanded' : 'collapsed'"
+                             style="overflow: hidden"></mat-row>
+
+                </mat-table>
+                <mat-paginator [length]="ordersCount" [pageSize]="maxPerPage">
+                </mat-paginator>
+            </div>
+        </section>
+
+        <section id="new-order-search">
+            <div class="row header-text-uppercase text-center">
+                <h2 class="container-title row-title" i18n>New Order</h2>
+                <hr class="bottom-hr-orange"/>
+            </div>
+
+            <div class="row" *ngIf="profile">
+                <div>
+                    <mat-tab-group
+                            id="new-order-form"
+                            (selectedTabChange)="resetSearchResultsOnTabChange(formDirective, formDirective1)">
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <span class="text-uppercase" i18n>P2P Freight Forwarding</span>
+                            </ng-template>
+                            <form id="forwarder-p2p-search-form"
+                                  (ngSubmit)="searchForwarder(newOrderP2PForm)"
+                                  [formGroup]="newOrderP2PForm"
+                                  #formDirective="ngForm">
+                                <div class="flex-form">
+                                    <div class="row">
+                                        <label [for]="'locationFrom'" class="location-label text-uppercase"
+                                               control="locationFrom" i18n>Place from </label>
+                                        <i class="material-icons">arrow_forward</i>
+
+                                        <mat-form-field floatLabel="never" formGroupName="locationFrom">
+                                            <mat-select placeholder="Merchant Delivery Address"
+                                                        (selectionChange)="setLocationFromP2P('locationFrom',$event)"
+                                                        [formControlName]="'countryName'"
+                                                        #countrySelect>
+                                                <ngx-mat-select-search [placeholderLabel]="'Search country'"
+                                                                       [clearSearchInput]="true"
+                                                                       [noEntriesFoundLabel]="'No country found'"
+                                                                       [formControl]="countryFilterCtrl">
+                                                </ngx-mat-select-search>
+                                                <mat-option *ngFor="let country of filteredCountries | async"
+                                                            [value]="country.name" i18n>
+                                                    {{country.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                <span i18n>Please select a country</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <i class=" location-to-arrow material-icons">arrow_forward</i>
+                                        <label [for]="'locationTo'" class="location-to text-uppercase"
+                                               control="locationTo"
+                                               i18n>to</label>
+                                        <mat-form-field floatLabel="never" formGroupName="locationTo">
+                                            <mat-select placeholder="Select your address"
+                                                        (selectionChange)="setLocationToP2P('locationTo',$event)"
+                                                        [formControlName]="'deliveryAddress'"
+                                                        #addressSelect>
+                                                <mat-option [value]="profile.defaultAddress" i18n>
+                                                    {{profile.defaultAddress.street}}, {{profile.defaultAddress.city}},
+                                                    {{profile.defaultAddress.zipCode}},
+                                                    {{profile.defaultAddress.region}},
+                                                    {{profile.defaultAddress.country}}
+                                                </mat-option>
+                                                <mat-option *ngFor="let address of addresses"
+                                                            [value]="address" i18n>
+                                                    {{address.street}}, {{address.city}}, {{address.zipCode}},
+                                                    {{address.region}}, {{address.country}}
+                                                </mat-option>
+                                                <mat-option class="add-address-link" routerLink="/account" value="add-address">
+                                                    <i class="material-icons">
+                                                        add
+                                                    </i>
+                                                    Add a new address
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                <span i18n>Please select an address</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <label for="goods-value" class="goods-value-label text-uppercase"
+                                               control="goods-value" i18n>Goods Value ({{profile | goodValueSymbol}})</label>
+                                        <mat-form-field floatLabel="never" id="goods-value">
+
+                                            <input matInput
+                                                   placeholder="Estimated value in {{profile | currencyFullName}}"
+                                                   type="number"
+                                                   min="1"
+                                                   formControlName="maxGoodValue">
+                                            <mat-error>
+                                                <span i18n>Please select a value higher than zero!</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="row">
+                                        <label for="p2p-size" class="size-label text-uppercase" i18n>Size</label>
+                                        <mat-form-field floatLabel="never" id="p2p-size">
+                                            <mat-select placeholder="Select the max size of the parcel"
+                                                        formControlName="maxSize">
+                                                <mat-option *ngFor="let size of sizes"
+                                                            [value]="size" i18n>
+                                                    {{size | maxSize:profile.measuresSetting}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                <span i18n>Please select the max size of your parcel!</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <label for="p2p-weight" class="weight-label text-uppercase" i18n>Weight</label>
+                                        <mat-form-field floatLabel="never" id="p2p-weight">
+                                            <mat-select placeholder="Select the max weight of the parcel (Kg)"
+                                                        formControlName="maxWeight">
+                                                <mat-option *ngFor="let weight of weights"
+                                                            [value]="weight" i18n>
+                                                    {{weight | maxWeight:profile.measuresSetting}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                <span i18n>Please select the max weight of your parcel!</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <label class="goods-from-label text-uppercase" i18n> Buy Goods From</label>
+                                        <section class="checkbox-section goods-from">
+                                            <mat-radio-group
+                                                    formControlName="acceptedPacksFromPrivateOrCompany">
+                                                <mat-radio-button [value]="true" color="primary" i18n>
+                                                    Private
+                                                </mat-radio-button>
+                                                <mat-radio-button [value]="false" color="primary" i18n>
+                                                    Company
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-10 col-lg-push-3 col-md-push-3 col-sm-push-3 col-xs-push-3 col-push-1">
+                                        <button mat-button class="full-width"
+                                                color="primary"
+                                                type="submit">
+                                            <span i18n>Find Forwarder</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <span class="text-uppercase" i18n>Package Collecting</span>
+                            </ng-template>
+                            <form id="forwarder-cll-search-form"
+                                  (ngSubmit)="searchPackageCollectorSearch(newOrderCLLForm)"
+                                  [formGroup]="newOrderCLLForm"
+                                  #formDirective1="ngForm">
+                                <div class="flex-form">
+                                    <div class="row">
+                                        <label for="pkg-cll-pickup"
+                                               class="location-label text-uppercase"
+                                               control="pkg-cll-pickup" i18n>Pick Up Point</label>
+                                        <geocomplete [id]="'pkg-cll-pickup'"
+                                                     [placeHolder]="'State which location you need your package picked up from'"
+                                                     (optionSelected)="setLocationCLL('locationFrom',$event)"
+                                                     #fromSearchCll
+                                                     ngDefaultControl>
+                                        </geocomplete>
+                                        <label for="pkg-cll-size" class="size-label text-uppercase" i18n>Size</label>
+                                        <mat-form-field floatLabel="never" id="pkg-cll-size">
+                                            <mat-select placeholder="Select the package size"
+                                                        formControlName="maxSize">
+                                                <mat-option *ngFor="let size of sizes"
+                                                            [value]="size" i18n>
+                                                    {{size | maxSize:profile.measuresSetting}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                <span i18n>Please select the size of your parcel!</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <label for="pkg-cll-weight" class="weight-label text-uppercase"
+                                               i18n>Weight</label>
+                                        <mat-form-field floatLabel="never" id="pkg-cll-weight">
+                                            <mat-select placeholder="Select the package weight"
+                                                        formControlName="maxWeight">
+                                                <mat-option *ngFor="let weight of weights"
+                                                            [value]="weight" i18n>
+                                                    {{weight | maxWeight:profile.measuresSetting}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                <span i18n>Please select the weight of your parcel!</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="row">
+                                        <label class="pkg-cll-weekdays-label text-uppercase" i18n>
+                                            Preferred Week days for pick up
+                                        </label>
+                                        <section class="checkbox-section weekdays">
+
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="sunday"
+                                                       value="sunday"/>
+                                                <span class="label__text">
+                                                    <span class="label__check"
+                                                          title="Sunday"
+                                                          [class.invalid]="newOrderCLLForm.hasError('weekdaysError') &&
+                                                              newOrderCLLForm.controls['sunday'].touched" i18n>
+                                                        S
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="monday"
+                                                       value="monday"/>
+                                                <span class="label__text">
+                                                    <span class="label__check"
+                                                          title="Monday"
+                                                          [class.invalid]="newOrderCLLForm.hasError('weekdaysError') &&
+                                                              newOrderCLLForm.controls['monday'].touched" i18n>
+                                                        M
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="tuesday"
+                                                       value="tuesday"/>
+                                                <span class="label__text">
+                                                    <span class="label__check"
+                                                          title="Tuesday"
+                                                          [class.invalid]="newOrderCLLForm.hasError('weekdaysError') &&
+                                                                              newOrderCLLForm.controls['tuesday'].touched"
+                                                          i18n>
+                                                       T
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="wednesday"
+                                                       value="wednesday"/>
+                                                <span class="label__text">
+                                                    <span class="label__check"
+                                                          title="Wednesday"
+                                                          [class.invalid]="newOrderCLLForm.hasError('weekdaysError') &&
+                                                                              newOrderCLLForm.controls['wednesday'].touched"
+                                                          i18n>
+                                                       W
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="thursday"
+                                                       value="thursday"/>
+                                                <span class="label__text">
+                                                    <span class="label__check"
+                                                          title="Thursday"
+                                                          [class.invalid]="newOrderCLLForm.hasError('weekdaysError') &&
+                                                                                              newOrderCLLForm.controls['thursday'].touched"
+                                                          i18n>
+                                                       T
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="friday"
+                                                       value="friday"/>
+                                                <span class="label__text">
+                                                    <span class="label__check"
+                                                          title="Friday"
+                                                          [class.invalid]="newOrderCLLForm.hasError('weekdaysError') &&
+                                                                                              newOrderCLLForm.controls['friday'].touched"
+                                                          i18n>
+                                                       F
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="saturday"
+                                                       value="saturday"/>
+                                                <span class="label__text">
+                                                    <span class="label__check"
+                                                          title="Saturday"
+                                                          [class.invalid]="newOrderCLLForm.hasError('weekdaysError') &&
+                                                                                      newOrderCLLForm.controls['saturday'].touched"
+                                                          i18n>
+                                                       S
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <div class="form-error-wrapper">
+                                                <div class="form-error" *ngIf="newOrderCLLForm.hasError('weekdaysError') &&
+                                                        newOrderCLLForm.controls['sunday'].touched"
+                                                     [@transitionMessages]="showDaysError ? 'enter' : 'void'">
+                                                    <mat-error>
+                                                        <span i18n>Please select at least a day!</span>
+                                                    </mat-error>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <label class="pkg-cll-timeslots-label text-uppercase" i18n>Preferred time
+                                            slots</label>
+                                        <section class="checkbox-section time-slots">
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="deliveryOnDawn"
+                                                       value="dawn"/>
+                                                <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="newOrderCLLForm.hasError('timeslotsError') &&
+                                                              newOrderCLLForm.controls['deliveryOnDawn'].touched" i18n>
+                                       Dawn
+                                    </span>
+                                 </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="deliveryOnMorning"
+                                                       value="morning"/>
+                                                <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="newOrderCLLForm.hasError('timeslotsError') &&
+                                                              newOrderCLLForm.controls['deliveryOnMorning'].touched"
+                                          i18n>
+                                       Morning
+                                    </span>
+                                 </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="deliveryOnLunchTime"
+                                                       value="lunchtime"/>
+                                                <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="newOrderCLLForm.hasError('timeslotsError') &&
+                                                              newOrderCLLForm.controls['deliveryOnLunchTime'].touched"
+                                          i18n>
+                                       Lunchtime
+                                    </span>
+                                 </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="deliveryOnAfternoon"
+                                                       value="afternoon"/>
+                                                <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="newOrderCLLForm.hasError('timeslotsError') &&
+                                                              newOrderCLLForm.controls['deliveryOnAfternoon'].touched"
+                                          i18n>
+                                       Afternoon
+                                    </span>
+                                 </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="deliveryOnEvening"
+                                                       value="evening"/>
+                                                <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="newOrderCLLForm.hasError('timeslotsError') &&
+                                                              newOrderCLLForm.controls['deliveryOnEvening'].touched"
+                                          i18n>
+                                       Evening
+                                    </span>
+                                 </span>
+                                            </label>
+                                            <label class="label">
+                                                <input class="label__checkbox"
+                                                       type="checkbox"
+                                                       formControlName="deliveryOnNight"
+                                                       value="night"/>
+                                                <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="newOrderCLLForm.hasError('timeslotsError') &&
+                                                              newOrderCLLForm.controls['deliveryOnNight'].touched" i18n>
+                                       Night
+                                    </span>
+                                 </span>
+                                            </label>
+                                            <div class="form-error-wrapper">
+                                                <div class="form-error" *ngIf="newOrderCLLForm.hasError('timeslotsError') &&
+                                                              newOrderCLLForm.controls['deliveryOnDawn'].touched"
+                                                     [@transitionMessages]="showTimeError ? 'enter' : 'void'">
+                                                    <mat-error>
+                                                        <span i18n>Please select at least a time slot!</span>
+                                                    </mat-error>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <label class="goods-from-label text-uppercase" i18n> Buy Goods From</label>
+                                        <section class="checkbox-section goods-from">
+                                            <mat-radio-group
+                                                    formControlName="acceptedPacksFromPrivateOrCompany">
+                                                <mat-radio-button [value]="true" color="primary" i18n>Private
+                                                </mat-radio-button>
+                                                <mat-radio-button [value]="false" color="primary" i18n>Company
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-10 col-lg-push-3 col-md-push-3 col-sm-push-3 col-xs-push-3 col-push-1">
+                                        <button mat-button
+                                                class="full-width"
+                                                color="primary"
+                                                type="submit">
+                                            <span i18n>Find Forwarder</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-tab>
+                    </mat-tab-group>
+
+                </div>
+
+            </div>
+            <div id="local-forwarders-container" class="row">
+                <div class="forwarder-inner-container" [@forwarderSearch]="searchDone ? 'enter' : 'void'">
+                    <mat-card class="forwarder"
+                         *ngFor="let forwarder of forwarders"
+                         (click)="openForwarderCard(forwarder)">
+                        <div class="forwarder-avatar">
+                            <img [src]="forwarder.profile.avatarImage ? forwarder.profile.avatarImage : defaultForwarderImageSrc"
+                                 [class]="forwarder.profile.avatarImage ? 'avatar-forwarder-search-img' : 'default-search-img'">
+                        </div>
+                        <div *ngIf="forwarder.type === 'p2p-freight'">
+                            <div>
+                                <p class="forwarder-username" i18n>{{forwarder.profile.user.username}}</p>
+                                <p><span i18n>Service name</span>: <strong i18n>{{forwarder.title}}</strong></p>
+                                <p><span i18n>Price</span>: <strong>
+                                    <span i18n>BC {{forwarder.lowestPrice | l10nDecimal:defaultLocale:'1.2-2'}}</span>
+                                    <span *ngIf="!forwarder.addPartnerForwarder" i18n> - BC {{forwarder.highestPrice | l10nDecimal:defaultLocale:'1.2-2'}}</span>
+                                </strong>
+                                </p>
+                                <p><span i18n>Feedback</span>:
+                                    <strong i18n>
+                                        {{forwarder.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}
+                                    </strong>
+                                    <i class="material-icons">star</i>
+                                </p>
+                                <div *ngIf="!forwarder.addPartnerForwarder">
+                                    <div><span i18n>Shipping</span>: <br/>
+                                        <span *ngIf="forwarder.priceCheapEnabled">
+                                            <strong i18n>Cheap</strong>
+                                        </span>
+                                        <span *ngIf="forwarder.priceStandardEnabled">
+                                            <strong i18n> - Standard</strong>
+                                        </span>
+                                        <span *ngIf="forwarder.priceExpressEnabled">
+                                            <strong i18n> - Express</strong>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div *ngIf="forwarder.addPartnerForwarder">
+                                    <div><span i18n>Shipping</span>: <br/>
+                                        <strong i18n> Partner - Premium</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="forwarder-cll" *ngIf="forwarder.type === 'package-collecting'">
+                            <div *ngIf="forwarder.type === 'package-collecting'">
+                                <p class="forwarder-username" i18n>{{forwarder.profile.user.username}}</p>
+                                <p><span i18n>Service name</span>: <strong i18n>{{forwarder.title}}</strong></p>
+                                <p><span i18n>Price</span>:
+                                    <strong>
+                                        <span i18n>BC {{forwarder.price | l10nDecimal:defaultLocale:'1.2-2'}}</span>
+                                    </strong>
+                                </p>
+                                <p><span i18n>Feedback</span>:
+                                    <strong i18n>
+                                        {{forwarder.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}
+                                    </strong>
+                                    <i class="material-icons">star</i>
+                                </p>
+                            </div>
+                        </div>
+                    </mat-card>
+                    <div *ngIf="searchError.error"
+                         class="search-error" i18n>
+                        No {{searchError.value}} found according to your search
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <section id="map-container">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="map-header-row map-title" i18n>LWF Active Forwarders in the World</span>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="localForwarders">
+                <agm-map [latitude]="localForwarders.length > 0 ? localForwarders[0].lat : ''"
+                         [longitude]="localForwarders.length > 0 ? localForwarders[0].lng : ''"
+                         [zoom]="zoom"
+                         [minZoom]="2">
+                    <agm-marker *ngFor="let localForwarder of localForwarders"
+                                [title]="localForwarder.title"
+                                [latitude]="localForwarder.lat"
+                                [longitude]="localForwarder.lng">
+                        <agm-info-window *ngIf="!localForwardersMock">
+                            <div class="username" i18n>{{localForwarder.username}}</div>
+                        </agm-info-window>
+                    </agm-marker>
+
+                </agm-map>
+            </div>
+        </section>
+    </div>
+
+    <section id="buyer-feedback-card-container" *ngIf="profile && profile.buyerFeedback.length > 0">
+        <div class="row header-text-uppercase text-center">
+            <h2 class="container-title row-title" i18n>Your Feedback</h2>
+            <hr class="bottom-hr-orange"/>
+        </div>
+
+        <div class="feedback-card">
+            <div class="feedback-score">
+                <div class="highlight_3 row-title">
+                    <span i18n>Feedback Rating</span>
+                    <i class="fal fa-info-circle"
+                       matTooltip="Your feedback rating is calculated by the average
+                       between your buyer score and forwarder score"
+                       *ngIf="isForwarder"></i>
+                </div>
+                <i class="material-icons">star</i>
+                <div class="score-value" i18n>
+                    <star-rating
+                            labelPosition="left"
+                            starType="svg"
+                            staticColor="ok"
+                            size="medium"
+                            [rating]="profile.feedback"
+                            readOnly="true">
+                    </star-rating> {{profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</div>
+                <div class="review-count" i18n>{{profile.buyerFeedback.length}} Reviews</div>
+            </div>
+            <div class="feedback-list">
+                <div *ngFor="let feedback of feedbacks"
+                     class="single-review">
+                    <p class="highlight_3 row-title" i18n>{{feedback.username}}</p>
+                    <star-rating
+                            labelPosition="left"
+                            starType="svg"
+                            staticColor="ok"
+                            size="medium"
+                            [rating]="feedback.score"
+                            readOnly="true">
+                    </star-rating>
+                    <p i18n>
+                        {{feedback.text | slice:0:100}}
+                    </p>
+                    <p i18n>{{feedback.dateCreated | l10nDate:defaultLocale:'shortDate'}}</p>
+                </div>
+
+                <mat-paginator [length]="length"
+                               [hidePageSize]="true"
+                               [pageSize]="pageSize"
+                               (page)="changePage($event)">
+                </mat-paginator>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="event-list-container">
+
+            <div class="row header-text-uppercase text-center">
+                <h2 class="container-title row-title" i18n>Report</h2>
+                <hr class="bottom-hr-orange"/>
+            </div>
+
+            <div *ngIf="events" class="events-container">
+                <progress-spinner #eventSpinner></progress-spinner>
+                <mat-table #eventsTable matSort matSortActive="dateCreated" matSortDisableClear matSortDirection="asc"
+                           [dataSource]="events">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef>
+                            <span i18n>Event</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let event" i18n> {{event.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!--<ng-container matColumnDef="forwarder">
+                        <mat-header-cell class="hidden-xs" mat-sort-header *matHeaderCellDef>
+                            <span i18n>Forwarder</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-xs" *matCellDef="let event"> {{event.profile ?
+                            event.profile.user.username : ''}}
+                        </mat-cell>
+                    </ng-container>-->
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell class="hidden-xs" mat-sort-header *matHeaderCellDef>
+                            <span i18n>Description</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-xs" *matCellDef="let event" i18n> {{event.description}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span i18n>Type</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let event" i18n> {{event.type}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateCreated">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef>
+                            <span i18n>Date</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let event" i18n> {{event.dateCreated | l10nDate:defaultLocale:'short'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="eventsDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: eventsDisplayedColumns;"></mat-row>
+
+                </mat-table>
+                <mat-paginator [length]="eventsCount" [pageSize]="maxPerPage" #eventsPaginator>
+                </mat-paginator>
+
+            </div>
+
+        </section>
+    </div>
+</div>
+

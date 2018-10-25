@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   height="20"
+   width="20"
+   id="svg3789"
+   version="1.1"
+   viewBox="0 0 20.000001 19.999999">
+  <metadata
+     id="metadata3793">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Forwarder-find</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3775">
+    <style
+       id="style3773">.cls-1{fill:#165d9c;}.cls-2{fill:#ffb219;}</style>
+  </defs>
+  <title
+     id="title3777">Forwarder-find</title>
+  <g
+     transform="translate(-3.31,-3.33)"
+     data-name="Layer 2"
+     id="Layer_2">
+    <g
+       id="graphic">
+      <path
+         style="fill:#165d9c"
+         id="path3779"
+         d="m 13.31,3.33 a 10,10 0 1 0 10,10 10,10 0 0 0 -10,-10 z M 10,21.55 V 17.76 H 8.87 V 21 A 8.92,8.92 0 0 1 7.76,20.24 v -3.83 a 0.56,0.56 0 0 1 0.42,-0.54 l 3.09,-0.77 a 1.91,1.91 0 0 0 1.49,1 v 2.27 h 1.11 v -2.32 a 1.91,1.91 0 0 0 1.49,-1 l 3.09,0.77 a 0.56,0.56 0 0 1 0.42,0.54 v 3.84 a 8.93,8.93 0 0 1 -1.11,0.76 v -3.2 h -1.11 v 3.79 a 8.81,8.81 0 0 1 -6.66,0 z m 2.22,-7.83 v -0.54 l 0.18,0.14 h 1.86 l 0.18,-0.14 v 1.24 c 0,0.1 -0.1,0.57 -1.11,0.57 -1.01,0 -1.1,-0.48 -1.11,-0.56 z M 13.89,8.88 V 7.77 h -3.08 a 2.37,2.37 0 0 1 2,-1.11 h 1.6 a 0.56,0.56 0 0 1 0.56,0.56 v 4.15 l -1.11,0.85 h -1.1 L 11.65,11.37 V 8.88 Z M 20,19.18 V 16.41 A 1.66,1.66 0 0 0 18.74,14.79 L 15.54,14 V 12.34 L 16.1,11.92 V 7.21 A 1.67,1.67 0 0 0 14.43,5.54 h -1.6 A 3.48,3.48 0 0 0 9.44,8.19 L 9.27,8.88 h 1.27 v 3 L 11.1,12.3 V 14 l -3.18,0.8 a 1.66,1.66 0 0 0 -1.26,1.62 v 2.77 a 8.89,8.89 0 1 1 13.33,0 z"
+         class="cls-1" />
+      <path
+         style="fill:#ffb219"
+         id="path3781"
+         d="m 13.31,33.51 c -8.8733333,1.353334 -4.4366667,0.676667 0,0 z"
+         class="cls-2" />
+    </g>
+  </g>
+</svg>

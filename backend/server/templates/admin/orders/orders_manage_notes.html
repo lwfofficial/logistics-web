@@ -1,0 +1,56 @@
+{% extends "admin/base_colorbox.html" %}
+{% load i18n %}
+
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css"
+          href="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH }}/adminmedia/css/orders.css?v=
+              {{ randomStr }}{% else %}/adminmedia/css/courier.css?v={{ randomStr }}{% endif %}"/>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH }}/adminmedia/js/oders.js?v=
+        {{ randomStr }}{% else %}/adminmedia/js/orders.js?v={{ randomStr }}{% endif %}"></script>
+    <script>
+        $(document).ready(function () {
+            console.log("init");
+        })
+    </script>
+{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+    <div id="order-content-main">
+        <h2>Order {{ order.id }}</h2>
+        <div>
+            <form action="{% if settings.REST_FRAMEWORK_CUSTOM_PATH != '' %}/{{ settings.REST_FRAMEWORK_CUSTOM_PATH }}/admin/adminSendOrderNote{% else %}/admin/adminSendOrderNote{% endif %}"
+                  method="post"
+                  id="file-upload-form"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {% endfor %}
+
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit"
+                        class="btn btn-primary"
+                        id='upload-btn'>Update
+                </button>
+            </form>
+        </div>
+
+        <div id="response-container" class="float_left">
+            <p id="response-text"></p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,138 @@
+[
+  {
+    "model": "core.configuration",
+    "pk": 1,
+    "fields": {
+      "key": "p2p_forwarding_cheap_eta",
+      "value": "20"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 2,
+    "fields": {
+      "key": "p2p_forwarding_standard_eta",
+      "value": "15"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 3,
+    "fields": {
+      "key": "p2p_forwarding_express_eta",
+      "value": "7"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 4,
+    "fields": {
+      "key": "forwarding_fee_percentage_level_1",
+      "value": "8"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 5,
+    "fields": {
+      "key": "btc_deposit_percentage",
+      "value": "6.5"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 6,
+    "fields": {
+      "key": "paypal_deposit_percentage",
+      "value": "8.5"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 7,
+    "fields": {
+      "key": "lwf_deposit_percentage",
+      "value": "4.5"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 8,
+    "fields": {
+      "key": "dhl_partner_fee",
+      "value": "8"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 9,
+    "fields": {
+      "key": "p2p_forwarder_maxgoodvalue_percentage",
+      "value": "300"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 10,
+    "fields": {
+      "key": "instant_delivery_order_minutes_expire",
+      "value": "10"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 11,
+    "fields": {
+      "key": "courier_partner_vat_percentage",
+      "value": "22"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 12,
+    "fields": {
+      "key": "courier_partner_duty_percentage",
+      "value": "4"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 13,
+    "fields": {
+      "key": "courier_partner_gas_percentage",
+      "value": "10"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 14,
+    "fields": {
+      "key": "max_order_notes",
+      "value": "10"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 15,
+    "fields": {
+      "key": "enable_closed_signup_list",
+      "value": "False"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 16,
+    "fields": {
+      "key": "courier_partner_vat_percentage_3C",
+      "value": "16.75"
+    }
+  },
+  {
+    "model": "core.configuration",
+    "pk": 17,
+    "fields": {
+      "key": "mobileapp_enabled",
+      "value": "True"
+    }
+  }
+]

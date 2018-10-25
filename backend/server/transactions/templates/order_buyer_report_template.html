@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report n. {{ transaction.receiptSequence }}</title>
+    <link href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed:400,600,700"
+          rel="stylesheet">
+    <style type="text/css">
+        @page {
+            size: A4 portrait;
+            margin-top: 1.0cm;
+            margin-bottom: 1.0cm;
+        }
+
+        body {
+            font-family: 'Barlow Semi Condensed', sans-serif;
+            padding: 30px;
+            font-size: 16px;
+        }
+
+        body > div {
+            position: relative;
+            top: 100px;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        header {
+
+        }
+
+        header div {
+            color: #005da1;
+            text-align: right;
+        }
+
+        header img {
+            float: left;
+            width: 150px;
+        }
+
+        .customer-info {
+            float: right;
+            text-align: left;
+            margin-bottom: 50px;
+            font-size: 18px;
+        }
+
+        .highlight {
+            color: #005da1;
+        }
+
+        .title {
+            font-size: 24px;
+            color: #005da1;
+            font-weight: 600;
+        }
+
+        .invoice-data {
+            border-top: 2px solid #005da1;
+            border-bottom: 2px solid #005da1;
+            font-size: 18px;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        .invoice-data-details {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .invoice-data-details div {
+            line-height: 1.5;
+        }
+
+        .invoice-data-details > div {
+            float: left;
+            margin: 0 40px 0 0;
+        }
+
+        .invoice-total {
+            display: block;
+            background-color: #f0f1f3;
+            -webkit-print-color-adjust: exact;
+            padding: 5px 20px;
+            margin: 30px 0;
+            text-align: right;
+        }
+
+        .invoice-total div:first-of-type {
+            float: left;
+        }
+
+        .invoice-total .total-amount {
+            text-align: right;
+            color: #005da1;
+        }
+
+        .invoice-payment {
+            padding: 20px;
+        }
+
+        .invoice-notes {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div><img src="{{ baseUrl }}emailmedia/assets/lwf-logo.svg"></div>
+    <div>
+        <div>LWF Logistic LTDN</div>
+        <div>Shelton Street Covent Garden 71-75</div>
+        <div>WC2H 9JQ London - United Kingdom</div>
+        <div>P.IVA piccola impresa esonarata</div>
+    </div>
+</header>
+<div>
+    <div class="customer-info">
+        <div>
+            <div class="title" i18n>Customer</div>
+            <div>{{ transaction.inWallet.profile.user.first_name }} {{ transaction.inWallet.profile.user.last_name }}</div>
+            <div>{{ transaction.inWallet.profile.defaultAddress.street }}</div>
+            <div>{{ transaction.inWallet.profile.defaultAddress.zipcode }} {{ transaction.inWallet.profile.defaultAddress.city }}</div>
+            <div i18n>{{ transaction.inWallet.profile.defaultAddress.country }}</div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div>
+        <div class="title">Report n. {{ transaction.receiptSequence }}</div>
+        <div class="invoice-data">
+            <div class="invoice-data-details">
+                <div>
+                    <div i18n>Cost without fees</div>
+                    <div class="highlight">Bc {{ transaction.amount | floatformat:2 }}</div>
+                </div>
+                <div>
+                    <div i18n>Transaction fee {{ transaction.feePercentage }}%</div>
+                    <div class="highlight">Bc {{ transaction.feeAmount | floatformat:2}}</div>
+                </div>
+                <div>
+                    <div i18n>Conversion rate</div>
+                    <div class="highlight">1Bc = 1$</div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="invoice-total">
+                <div>Total Paid</div>
+                <span class="total-amount">Bc {{ totalPaid | floatformat:2}}</span>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="invoice-payment" i18n>
+                Payment method:
+                <span class="highlight"><strong>{{ paymentMethod }}</strong></span>
+            </div>
+        </div>
+
+        {% if transaction.infos %}
+            <div class="invoice-notes">
+                <div i18n>DETAILS</div>
+                {% for info in transaction.infos %}
+                    <p>
+                        {{ info.description }} : {{ info.cost | floatformat:2}}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+</body>
+</html>

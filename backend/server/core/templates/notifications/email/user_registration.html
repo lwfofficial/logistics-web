@@ -1,0 +1,36 @@
+{% extends 'base_email.html' %}
+
+
+{% block title %}
+    <title>Registration mail</title>
+{% endblock %}
+
+
+{% block container %}
+<div class="text-center">
+    <h1>
+        Welcome to Local World Forwarders
+    </h1>
+    <hr class="bottom-hr-orange"/>
+</div>
+
+<div class="email-body">
+    <div class="email-message">
+        <div>Dear {{ user.first_name }},</div>
+        <div>
+            Thanks for registering to
+            <span class="highlight">Local World Forwarders</span>,
+            your favorite logistic system.
+        </div>
+        <br/>
+        <div>
+            To confirm your email and complete your registration please click on the following link:
+            <a href="{{ confirmation_link }}">Confirmation Link</a></div>
+        <br/>
+        <div>Best Regards,</div>
+        <div>LWF Team</div>
+    </div>
+</div>
+
+
+{% endblock %}

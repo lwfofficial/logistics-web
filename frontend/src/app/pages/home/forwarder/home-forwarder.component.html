@@ -1,0 +1,340 @@
+<profile-info [profile]="profile"
+              [wallet]="wallet"></profile-info>
+<div id="orders-container" class="container-fluid">
+
+    <div class="container">
+        <section id="graph-container">
+            <div class="row header-text-uppercase text-center">
+                <h2 class="container-title row-title" i18n>Graph</h2>
+                <hr class="bottom-hr-orange"/>
+            </div>
+            <div>
+                <chart [options]="graphOptions"></chart>
+            </div>
+        </section>
+
+        <section id="order-list-container">
+
+            <div class="row header-text-uppercase text-center">
+                <h2 class="container-title row-title" i18n>Order List</h2>
+                <hr class="bottom-hr-orange"/>
+            </div>
+
+            <div *ngIf="orders" class="orders-container">
+                <progress-spinner #orderSpinner></progress-spinner>
+                <mat-table #ordersTable
+                           matSort
+                           matSortActive="dateCreated"
+                           matSortDisableClear
+                           matSortDirection="asc"
+                           [dataSource]="orders">
+
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef>
+                            <span i18n>#</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let order"
+                                  class="order-id" i18n> {{order.id}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!--<ng-container matColumnDef="forwarder">-->
+                    <!--<mat-header-cell class="hidden-xs" mat-sort-header *matHeaderCellDef>-->
+                    <!--<span i18n>Buyer</span>-->
+                    <!--</mat-header-cell>-->
+                    <!--<mat-cell class="hidden-xs" *matCellDef="let order" (click)="openBuyerCard(order.profile)"> {{order.profile.user.username}}-->
+                    <!--</mat-cell>-->
+                    <!--</ng-container>-->
+
+                    <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span i18n>Type</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let order" i18n> {{order.service.type | serviceShortName}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateCreated">
+                        <mat-header-cell class="hidden-mobile" mat-sort-header *matHeaderCellDef>
+                            <span i18n>Date</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-mobile" *matCellDef="let order" i18n>
+                            {{order.dateCreated | l10nDate:defaultLocale:'shortDate'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="state">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span i18n>State</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let order"
+                                  [ngClass]="order.state.toLowerCase()" i18n>
+                            {{order.state}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!--<ng-container matColumnDef="eta">-->
+                    <!--<mat-header-cell class="hidden-xs" *matHeaderCellDef>-->
+                    <!--<span i18n>ETA</span>-->
+                    <!--</mat-header-cell>-->
+                    <!--<mat-cell class="hidden-xs" *matCellDef="let order"> {{order.estimatedDate | date:'yyyy-MM-dd'}}-->
+                    <!--</mat-cell>-->
+                    <!--</ng-container>-->
+                    <ng-container matColumnDef="price">
+                        <mat-header-cell class="hidden-xs" *matHeaderCellDef>
+                            <span i18n>Price</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-xs" *matCellDef="let order" i18n>
+                           BC {{order.totalPrice | l10nDecimal:defaultLocale:'1.2-2'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="view-details">
+                        <mat-header-cell class="text-center" *matHeaderCellDef>
+                        </mat-header-cell>
+                        <mat-cell class="text-center order-detail-btn" *matCellDef="let row">
+                            <i [ngClass]="expandedElement == row ? 'far fa-angle-up' : 'far fa-angle-down'"></i>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="expandedDetail">
+                        <mat-cell *matCellDef="let detail">
+
+                            <section class="orders-row-status-detail">
+                                <div class="detail-content">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                                        <div class="highlight_3 text-uppercase">
+                                            <strong i18n>Order Details</strong>
+                                        </div>
+                                        <div><span i18n>Service:</span><strong i18n> {{detail.order.service.type |
+                                            serviceName}}</strong></div>
+                                        <div><span i18n>Order Creation Date:</span> <strong i18n>
+                                            {{detail.order.dateCreated | l10nDate:defaultLocale:'shortDate'}}</strong></div>
+                                        <div><span i18n>Estimated Date Arrival:</span> <strong i18n>
+                                            {{detail.order.estimatedDate | l10nDate:defaultLocale:'shortDate'}}</strong></div>
+                                        <div *ngIf="detail.order.service.type == 'p2p-freight'"><span i18n>Shipping Mode:</span><strong
+                                                i18n> {{detail.order.shippingMode | shippingMode}}</strong></div>
+                                        <div><span i18n>Price: </span><strong i18n>BC {{detail.order.totalPrice | l10nDecimal:defaultLocale:'1.2-2'}} </strong></div>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                                        <div class="highlight_3 text-uppercase">
+                                            <strong i18n>Your Details</strong>
+                                        </div>
+                                        <div><span i18n>Username:</span><strong i18n>
+                                            {{detail.order.service.profile.user.username}}</strong></div>
+                                        <div *ngIf="detail.order.profileForwarderAddress"><span i18n>Address:</span>
+                                            <strong i18n>
+                                                {{detail.order.profileForwarderAddress}}
+                                            </strong>
+                                        </div>
+                                        <div>
+                                            <span i18n>Feedback: </span>
+                                            <strong i18n>{{detail.order.service.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                                        <div class="highlight_3 text-uppercase">
+                                            <strong i18n>Buyer Details</strong>
+                                        </div>
+                                        <div><span i18n>Username:</span><strong i18n>
+                                            {{detail.order.profile.user.username}}</strong></div>
+                                        <div><span i18n>Full Name:</span>
+                                            <strong i18n>
+                                                {{detail.order.profile.user.first_name}}
+                                                {{detail.order.profile.user.last_name}}
+                                            </strong>
+                                        </div>
+                                        <div *ngIf="detail.order.deliveryAddress"><span i18n>Address:</span>
+                                            <strong i18n>
+                                                {{detail.order.deliveryAddress}}
+                                            </strong>
+                                        </div>
+                                        <div>
+                                            <span i18n>Feedback: </span>
+                                            <strong i18n>{{detail.order.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5 </strong>
+                                            <a (click)="openBuyerCard(detail.order.profile, true)" i18n>View</a>
+                                        </div>
+                                    </div>
+                                    <button mat-button color="secondary" *ngIf="detail.order.state !== 'NEW'" (click)="goToOrderDetail(detail.order)">
+                                        Go to Order Page
+                                    </button>
+                                    <button mat-button color="primary" *ngIf="detail.order.state === 'RECEIVED'" (click)="openOrderPaymentReportPdf(detail.order.id)">
+                                        View Report
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </section>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="ordersDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ordersDisplayedColumns;"
+                             matRipple
+                             class="orders-row"
+                             [class.expanded]="expandedElement == row"
+                             (click)="expandedElement == row ? expandedElement = null : expandedElement = row">
+                    </mat-row>
+                    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+                             [@detailExpand]="row.order == expandedElement ? 'expanded' : 'collapsed'"
+                             style="overflow: hidden"></mat-row>
+
+
+                </mat-table>
+                <mat-paginator [length]="ordersCount" [pageSize]="maxPerPage">
+                </mat-paginator>
+            </div>
+        </section>
+    </div>
+    <section id="active-services" *ngIf="services">
+        <div class="row header-text-uppercase text-center">
+            <h2 class="container-title row-title" i18n>Your Services</h2>
+            <hr class="bottom-hr-orange"/>
+        </div>
+        <div id="no-services" *ngIf="services.length === 0">
+            <img width="150" class="mobile-img" src="assets/images/dashboard/lwf-services-1.png">
+            <div class="no-service-info">
+                <div i18n>You have not activated any services yet!</div>
+                <div i18n>
+                    Create your first service to allow customer to find you and start
+                    earning with LWF.
+                </div>
+            </div>
+            <div>
+                <button mat-button color="secondary" [routerLink]="'/services'">
+                    <span i18n>Create Service</span>
+                </button>
+            </div>
+            <div class="link-to-guide">
+                <a href="#"> Services guide</a>
+            </div>
+        </div>
+        <div [ngClass]="services.length <= 3 ? 'services-container-centered' : 'services-container'">
+            <div *ngFor="let service of services" [routerLink]="'/services'">
+                <div class="service-img">
+                    <img [src]="service.type | serviceIcon"/>
+                </div>
+                <div class="service-title">
+                    <div i18n> {{service.title}}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="feedback-card-container">
+        <div class="row header-text-uppercase text-center">
+            <h2 class="container-title row-title" i18n>Your Feedback</h2>
+            <hr class="bottom-hr-orange"/>
+        </div>
+
+        <div class="feedback-card" *ngIf="profile">
+            <div class="feedback-score">
+                <div class="highlight_3 row-title" i18n>
+                    Feedback Rating
+                    <i class="fal fa-info-circle"
+                       matTooltip="Your total score is calculated by doing the average
+                       between your buyer score and forwarder score"></i>
+                </div>
+                <i class="material-icons">star</i>
+                <div class="score-value" i18n>
+                    <star-rating
+                            labelPosition="left"
+                            starType="svg"
+                            staticColor="ok"
+                            size="medium"
+                            [rating]="profile.feedback"
+                            readOnly="true">
+                    </star-rating> {{profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5
+                </div>
+                <div class="review-count" i18n>{{profile.forwarderFeedback.length}} Reviews</div>
+            </div>
+            <div class="feedback-list">
+                <div *ngFor="let feedback of feedbacks"
+                     class="single-review">
+                    <p class="highlight_3 row-title" i18n>{{feedback.username}}</p>
+                    <star-rating
+                            labelPosition="left"
+                            starType="svg"
+                            staticColor="ok"
+                            size="medium"
+                            [rating]="feedback.score"
+                            readOnly="true">
+                    </star-rating>
+                    <p i18n>
+                        {{feedback.text | slice:0:100}}
+                    </p>
+                    <p i18n>{{feedback.dateCreated | l10nDate:defaultLocale:'mediumDate'}}</p>
+                </div>
+
+                <mat-paginator [length]="length"
+                               [hidePageSize]="true"
+                               [pageSize]="pageSize"
+                               (page)="changePage($event)">
+                </mat-paginator>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="event-list-container">
+
+            <div class="row header-text-uppercase text-center">
+                <h2 class="container-title row-title" i18n>Report</h2>
+                <hr class="bottom-hr-orange"/>
+            </div>
+
+            <div *ngIf="events" class="events-container">
+                <progress-spinner #eventSpinner></progress-spinner>
+                <mat-table #eventsTable matSort matSortActive="dateCreated" matSortDisableClear matSortDirection="asc"
+                           [dataSource]="events">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef>
+                            <span i18n>Event</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let event" i18n> {{event.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <!--<ng-container matColumnDef="forwarder">
+                        <mat-header-cell class="hidden-xs" mat-sort-header *matHeaderCellDef>
+                            <span i18n>Forwarder</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-xs" *matCellDef="let event"> {{event.profile ? event.profile.user.username : ''}}
+                        </mat-cell>
+                    </ng-container>-->
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell class="hidden-xs" mat-sort-header *matHeaderCellDef>
+                            <span i18n>Description</span>
+                        </mat-header-cell>
+                        <mat-cell class="hidden-xs" *matCellDef="let event" i18n> {{event.description}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span i18n>Type</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let event" i18n> {{event.type}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateCreated">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef>
+                            <span i18n>Date</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let event" i18n> {{event.dateCreated | l10nDate:defaultLocale:'short'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="eventsDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: eventsDisplayedColumns;"></mat-row>
+
+                </mat-table>
+                <mat-paginator [length]="eventsCount" [pageSize]="maxPerPage" #eventsPaginator>
+                </mat-paginator>
+
+            </div>
+        </section>
+    </div>
+</div>

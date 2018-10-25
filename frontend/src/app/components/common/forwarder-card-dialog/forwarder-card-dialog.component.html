@@ -1,0 +1,130 @@
+<div id="forwarder-card-container" class="container-fluid">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="container-title row-title" i18n>{{forwarder.profile.user.username}}</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="forwarder-card-inner-container">
+        <div class="forwarder-profile">
+            <div class="profile-avatar">
+                <avatar-image
+                        [editable]="false"
+                        [src]="forwarderImage">
+                </avatar-image>
+            </div>
+            <div>
+                <p class="forwarder-username">
+                    <strong i18n>{{forwarder.profile.user.username}}</strong>
+                </p>
+                <p>
+                    <span i18n>Service type</span>: <strong class="text-uppercase" i18n>{{forwarder.type}}</strong>
+                </p>
+                <p>
+                    <span i18n>Service name</span>: <strong i18n>{{forwarder.title}}</strong>
+                </p>
+
+                <p *ngIf="forwarder.type === 'p2p-freight'">
+                    <span i18n>Price</span>:
+                    <strong>
+                        <span i18n>BC {{forwarder.lowestPrice | l10nDecimal:defaultLocale:'1.2-2'}}</span>
+                        <span *ngIf="!forwarder.addPartnerForwarder" >
+                            - <span i18n>BC {{forwarder.highestPrice | l10nDecimal:defaultLocale:'1.2-2'}}</span>
+                        </span>
+                    </strong>
+                </p>
+                <p *ngIf="forwarder.type === 'package-collecting'">
+                    <span i18n>Price</span>:
+                    <strong>
+                        <span i18n>BC {{forwarder.price | l10nDecimal:defaultLocale:'1.2-2'}}</span>
+                    </strong>
+                </p>
+                <p class="forwarder-feedback-score">
+                    <span i18n>Feedback</span>:
+                    <strong i18n>
+                        {{forwarder.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}
+                    </strong>
+                    <i class="material-icons">star</i>
+                </p>
+                <p *ngIf="forwarder.type === 'p2p-freight'">
+                    <span i18n>Shipping</span>:<br/>
+                    <span *ngIf="forwarder.priceCheapEnabled">
+                        <strong i18n>Cheap</strong>
+                    </span>
+                    <span *ngIf="forwarder.priceStandardEnabled">
+                        <strong> - <span i18n>Standard</span></strong>
+                    </span>
+                    <span *ngIf="forwarder.priceExpressEnabled">
+                        <strong> - <span i18n>Express</span></strong>
+                    </span>
+                    <span *ngIf="forwarder.addPartnerForwarder">
+                        <strong><span i18n>Express</span></strong>
+                    </span>
+                </p>
+                <p *ngIf="forwarder.type === 'package-collecting' && forwarder.profile.defaultAddress">
+                    <span i18n>Address</span>:
+                    <strong i18n>
+                        {{forwarder.profile.defaultAddress.street}},
+                        {{forwarder.profile.defaultAddress.zipCode}} - {{forwarder.profile.defaultAddress.city}} -
+                        {{forwarder.profile.defaultAddress.region}}- {{forwarder.profile.defaultAddress.country}}
+                    </strong>
+                </p>
+                <div i18n>Active Services</div>
+                <div class="active-services">
+                    <div *ngIf="forwarder.lowestPrice > 0"><img src="assets/images/services/p2p_y.png" alt="P2P Freight"></div>
+                    <div *ngIf="forwarder.priceExpressEnabled"><img src="assets/images/services/icn_express_y.png" alt="Express Delivery"></div>
+                    <div *ngIf="forwarder.price > 0"><img src="assets/images/services/icn_collecting_y.png" alt="Package Collecting"></div>
+                </div>
+            </div>
+        </div>
+        <div class="forwarder-reviews-container">
+            <div class="forwarder-reviews-header">
+                <div class="highlight_3 row-title" i18n>Reviews</div>
+                <div class="bottom-border"></div>
+            </div>
+
+            <div>
+                <div *ngFor="let feedback of feedbacks"
+                     class="single-feedback">
+                    <p class="highlight_3 row-title" i18n>{{feedback.username}}</p>
+                    <p>
+                        <star-rating
+                                labelPosition="top"
+                                starType="svg"
+                                staticColor="ok"
+                                size="medium"
+                                [rating]="feedback.score"
+                                readOnly="true">
+                        </star-rating>
+                    </p>
+                    <p i18n>
+                        {{feedback.text | slice:0:100}}
+                    </p>
+                    <p i18n>{{feedback.dateCreated | l10nDate:defaultLocale:'shortDate'}}</p>
+                </div>
+
+                <mat-paginator [length]="length"
+                               [hidePageSize]="true"
+                               [pageSize]="pageSize"
+                               (page)="changePage($event)">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+
+    <div class="forwarder-card-btn">
+        <button mat-button
+                color="cancel"
+                (click)="closeDialog()" i18n>
+            Close
+        </button>
+        <button mat-button
+                *ngIf="!data.readOnly"
+                [disabled]="!profile.docVerified"
+                [class.btn-disabled]="!profile.docVerified"
+                color="secondary"
+                (click)="createNewOrder(forwarder)" i18n>
+            Choose
+        </button>
+    </div>
+</div>

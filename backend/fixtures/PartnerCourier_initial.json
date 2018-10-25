@@ -1,0 +1,1 @@
+[{"model": "core.partnercourier", "pk": 1, "fields": {"dateCreated": "2018-05-08T14:56:02Z", "name": "DHL"}},{"model": "core.partnercourier", "pk": 2, "fields": {"dateCreated": "2018-05-08T14:56:02Z", "name": "SDA"}}]

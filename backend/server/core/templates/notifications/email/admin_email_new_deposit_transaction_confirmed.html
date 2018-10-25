@@ -1,0 +1,42 @@
+{% extends 'base_email.html' %}
+
+{% block title %}
+<title>New Deposit confirmed</title>
+{% endblock %}
+
+{% block container %}
+    <div class="text-center">
+        <h1>
+            New Deposit Transaction confirmed
+        </h1>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="email-body">
+        <div class="email-message">
+            <div>Dear Manager</div>
+            <div>A new <strong>{{ transaction.currency }}</strong> deposit transaction has been confirmed.</div>
+            <div>You can find below all the details about your deposit</div>
+        </div>
+        <div class="email-data">
+            <div>
+                <span class="text-uppercase"> Username: </span>
+                <span class="highlight">{{ transaction.wallet.profile.user.username }}</span>
+            </div>
+            <div>
+                <span class="text-uppercase"> hash: </span>
+                <span class="highlight">{{ transaction.hash }}</span>
+            </div>
+
+            <div>
+                <span class="text-uppercase"> address: </span>
+                <span class="highlight">{{ transaction.address.address }}</span>
+            </div>
+
+            <div>
+                <span class="text-uppercase"> Amount: </span>
+                <span class="highlight">{{ transaction.amount }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

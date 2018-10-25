@@ -1,0 +1,68 @@
+<div id="account-verification-container">
+
+    <div class="row text-center header-text-uppercase">
+        <h2 class="row-title" i18n>Account Verification</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div id="verification-terms"
+         class="row">
+        <div class="col-md-11 col-md-push-1 col-sm-12 col-xs-12 col-12">
+
+            <p i18n>
+                In order to be a LWF Forwarder, your account must be verified in 3 steps: ID verification, Address
+                verification, Selfie ID.
+            </p>
+            <p i18n>
+                If you use LWF as a customer/buyer only, you simply need the ID verification.
+            </p>
+            <p class="agreement">
+                <span i18n>By following the verification procedure you agree to</span>
+                <a href="https://www.lwf.io/docs/terms.pdf" target="_blank" i18n> our terms and conditions</a>.
+            </p>
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div *ngIf="profile">
+
+
+            <account-verification-step-one [profile]="profile"
+                                           [user]="user"
+                                           [submitStatus]="submitStatus"></account-verification-step-one>
+            <div id="forwarder-verification" *ngIf="!submitStatus.proofOfResidence && !submitStatus.selfidoc">
+                <div class="images-wrapper">
+                    <div>
+                        <img width="150" src="../../../../assets/images/account/address-doc.svg"/>
+                        <img width="150" src="../../../../assets/images/account/selfie2.svg"/>
+                    </div>
+                </div>
+                <div i18n>
+                    Continue with the verification to become a Local Forwarder,<br/>
+                    we just need a proof of residence and a picture with your ID.
+                </div>
+                <button mat-button
+                        color="secondary"
+                        class="upload-btn"
+                        (click)="showVerification()"
+                        i18n>
+                    Continue Verification
+                </button>
+            </div>
+            <div id="forwarder-verification-steps" *ngIf="showForwarderVerification" [@showVerification]="showForwarderVerification ? 'enter' : 'void'">
+                <account-verification-step-two [profile]="profile"
+                                               [user]="user"
+                                               [submitStatus]="submitStatus"></account-verification-step-two>
+
+
+                <account-verification-step-three [profile]="profile"
+                                                 [user]="user"
+                                                 [submitStatus]="submitStatus"></account-verification-step-three>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,192 @@
+.mat-card-content{
+  word-wrap: break-word;
+  word-break: break-all;
+}
+#issue-comments {
+  border: 1px solid #9B9DA0;
+  min-height: 500px;
+  .issue-comments-title {
+    background-color: #F5F7FA;
+  }
+  
+}
+#issue-comments-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.message-header-image {
+  display: flex;
+  flex-direction: column;
+  background-size: cover;
+}
+
+#issue-comments-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 600px;
+  &::-webkit-scrollbar{
+    width:10px;
+    background-color: #F5F7FA;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color:#d1d8db;
+  }
+}
+
+.message-card {
+  box-shadow: none !important;
+  max-width:400px;
+  margin: 30px;
+  padding: 0 10px;
+  border:1px solid #D6D8DA;
+  border-radius:5px !important;
+  img{
+    padding: 0 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.user-message {
+  align-self:flex-end;
+  mat-card {
+    background-color: #F9F0E4;
+  }
+}
+
+.other-message {
+  mat-card {
+    background-color: #E6EEF9;
+  }
+}
+
+.admin-message {
+  mat-card {
+    background-color: #DEFAEA;
+  }
+}
+.send-message-container{
+  width:100%;
+  background-color: #F5F7FA;
+  padding:20px;
+  .send-message{
+    display:flex;
+    input[type=text]{
+      display:block;
+      border:1px solid #9B9DA0;
+      width:99%;
+      height:40px;
+      border-radius:20px;
+      padding:0 90px 0 20px;
+      &:focus{
+        outline-color:transparent;
+      }
+    }
+  .message-btn{
+      margin-left:-90px;  
+      padding:0;
+      display:flex;
+      justify-content: space-around;
+      align-items:center;
+      .attach-btn{
+        order:1;
+      }
+      .send-message-btn{
+        order:2;
+      }
+  }
+    .mat-button{
+      line-height:1;
+      width:24px;
+      height:24px;
+      padding:0;
+      color: #054781;
+      min-width:0;
+      margin:0 5px;
+      &:hover{
+        color:#F7A800;
+      }
+      .mat-button-ripple{
+        display:none;
+      }
+    }
+  }
+  .chat-message-error{
+    font-size:0.875rem;
+  }
+  .upload-image{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin:20px auto;
+    .mat-error{
+      flex-basis:100%;
+      text-align: center;
+      font-size:0.875rem;
+      margin-bottom:1em;
+    }
+    .avatar{
+      width:150px;
+      height: auto;
+    }
+  }
+}
+
+// LIGHTBOX STYLES
+.lightboxOverlay{
+  background:#fff;
+}
+.lightbox{
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+  justify-content: flex-end;
+  .lb-outerContainer{
+    display:flex !important;
+    align-items:center;
+    justify-content: center;
+    border-bottom:1px solid #9B9DA0;
+    border-left:1px solid #9B9DA0;
+    border-right:1px solid #9B9DA0;
+    border-radius:0;
+    order:2;
+    max-height:700px;
+    .lb-container{
+      img{
+        max-width:600px;
+        max-height:600px;
+      }
+    }
+  }
+  .lb-dataContainer{
+    border-top:1px solid #9B9DA0;
+    border-left:1px solid #9B9DA0;
+    border-right:1px solid #9B9DA0;
+    color:#585A63;
+    background-color:#fff;
+    border-radius:0;
+    min-height:70px;
+    .lb-close{
+      position: relative;
+      top: 15px;
+      right: 20px;
+      background:transparent;
+      text-decoration: none;
+      &:before{
+        border-radius:100%;
+        box-shadow: 0px 2px 10px 1px #585A63;
+        font-family:'Material Icons';
+        content: '\E5CD';
+        font-size: 2rem;
+        top: 15px;
+        position: relative;
+        color:#585A63;
+      }
+    }
+  }
+}
+
+// END LIGHTBOX STYLES

@@ -1,0 +1,350 @@
+<div id="package-collecting-form-container"
+     class="">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 class="row-title" i18n>Package Collecting</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div id="package-collecting-form"
+         class="row">
+
+        <form (ngSubmit)="addService(addServiceForm)"
+              [formGroup]="addServiceForm"
+              #addServiceFormElement="ngForm">
+
+            <div>
+                <input type="hidden" name="profileForwarderAddress" formControlName="profileForwarderAddress" [ngModel]="service.profileForwarderAddress"/>
+                <label class="input-label">Title</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Insert a title for your service"
+                           name="title"
+                           type="text"
+                           formControlName="title">
+                    <mat-error>
+                        Please enter a title for your service
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <label class="input-label">From</label>
+                <mat-form-field floatLabel="never">
+                    <mat-select [placeholder]="'Select the city where the parcel will be delivered from'"
+                                value="selectedFromCity"
+                                (selectionChange)="setLocationFrom($event)"
+                                formControlName="locationFromSelect">
+                        <mat-option *ngFor="let city of forwarderCities"
+                                    [value]="city">
+                            {{city.name}} ({{city.countryCode}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please Select the city
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <section id="size-weight">
+                <div>
+                    <label class="input-label">Max Size</label>
+                    <mat-form-field floatLabel="never">
+                        <mat-select [placeholder]="service.maxSize ? '' : 'Max Size'" formControlName="maxSize">
+                            <mat-option *ngFor="let size of sizes"
+                                        [value]="size">
+                                {{size | maxSize:profile.measuresSetting}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Please select the max size you accept
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label class="input-label">Max Weight</label>
+                    <mat-form-field floatLabel="never">
+                        <mat-select [placeholder]="service.maxWeight ? '' : 'Max Weight' "
+                                    formControlName="maxWeight">
+                            <mat-option *ngFor="let weight of weights"
+                                        [value]="weight">
+                                {{weight | maxWeight:profile.measuresSetting}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Please select the max weight you accept
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </section>
+            <section id="cll-price">
+                <label class="input-label">Price (BC)</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Enter amount"
+                           name="price"
+                           type="number"
+                           formControlName="price">
+                    <mat-error>
+                        Please enter an amount > 0
+                    </mat-error>
+                </mat-form-field>
+            </section>
+            <section id="checkbox-cll-service">
+                <div>
+                    <p class="service-label-blue" i18n>
+                        Delivery On
+                    </p>
+
+                    <section class="checkbox-section weekdays">
+                        <label class="label">
+                            <input class="label__checkbox" type="checkbox" value="sunday" formControlName="sunday"/>
+                            <span class="label__text">
+                        <span class="label__check"
+                              title="Sunday"
+                              [class.invalid]="addServiceForm.hasError('weekdaysError') &&
+                                                    addServiceForm.controls['sunday'].touched">
+                           S
+                        </span>
+                     </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox" type="checkbox" value="monday" formControlName="monday"/>
+                            <span class="label__text">
+                        <span class="label__check"
+                              title="Monday"
+                              [class.invalid]="addServiceForm.hasError('weekdaysError') &&
+                                                    addServiceForm.controls['sunday'].touched">
+                           M
+                        </span>
+                     </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox" type="checkbox" value="tuesday" formControlName="tuesday"/>
+                            <span class="label__text">
+                        <span class="label__check"
+                              title="Tuesday"
+                              [class.invalid]="addServiceForm.hasError('weekdaysError') &&
+                                                    addServiceForm.controls['sunday'].touched">
+                           T
+                        </span>
+                     </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox" type="checkbox" value="wednesday"
+                                   formControlName="wednesday"/>
+                            <span class="label__text">
+                        <span class="label__check"
+                              title="Wednesday"
+                              [class.invalid]="addServiceForm.hasError('weekdaysError') &&
+                                                    addServiceForm.controls['sunday'].touched">
+                           W
+                        </span>
+                     </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox" type="checkbox" value="thursday" formControlName="thursday"/>
+                            <span class="label__text">
+                        <span class="label__check"
+                              title="Thursday"
+                              [class.invalid]="addServiceForm.hasError('weekdaysError') &&
+                                                    addServiceForm.controls['sunday'].touched">
+                           T
+                        </span>
+                     </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox" type="checkbox" value="friday" formControlName="friday"/>
+                            <span class="label__text">
+                        <span class="label__check"
+                              title="Friday"
+                              [class.invalid]="addServiceForm.hasError('weekdaysError') &&
+                                                    addServiceForm.controls['sunday'].touched">
+                           F
+                        </span>
+                     </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox" type="checkbox" value="saturday" formControlName="saturday"/>
+                            <span class="label__text">
+                        <span class="label__check"
+                              title="Saturday"
+                              [class.invalid]="addServiceForm.hasError('weekdaysError') &&
+                                                    addServiceForm.controls['sunday'].touched">
+                           S
+                        </span>
+                     </span>
+                        </label>
+                        <div class="form-error-wrapper">
+                            <div class="form-error" *ngIf="addServiceForm.hasError('weekdaysError') &&
+                                                       addServiceForm.controls['sunday'].touched"
+                                 [@transitionMessages]="showDaysError ? 'enter' : 'void'">
+                                <mat-error>
+                                    <span i18n>Please select at least a day!</span>
+                                </mat-error>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div>
+                    <p class="service-label-blue" i18n>
+                        Time Slots
+                    </p>
+                    <section class="checkbox-section time-slots">
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   formControlName="deliveryOnDawn"
+                                   value="dawn"/>
+                            <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="addServiceForm.hasError('timeslotsError') &&
+                                                    addServiceForm.controls['deliveryOnDawn'].touched">
+                                       Dawn
+                                    </span>
+                                 </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   formControlName="deliveryOnMorning"
+                                   value="morning"/>
+                            <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="addServiceForm.hasError('timeslotsError') &&
+                                                    addServiceForm.controls['deliveryOnDawn'].touched">
+                                       Morning
+                                    </span>
+                                 </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   formControlName="deliveryOnLunchTime"
+                                   value="lunchtime"/>
+                            <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="addServiceForm.hasError('timeslotsError') &&
+                                                    addServiceForm.controls['deliveryOnDawn'].touched">
+                                       Lunchtime
+                                    </span>
+                                 </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   formControlName="deliveryOnAfternoon"
+                                   value="afternoon"/>
+                            <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="addServiceForm.hasError('timeslotsError') &&
+                                                    addServiceForm.controls['deliveryOnDawn'].touched">
+                                       Afternoon
+                                    </span>
+                                 </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   formControlName="deliveryOnEvening"
+                                   value="evening"/>
+                            <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="addServiceForm.hasError('timeslotsError') &&
+                                                    addServiceForm.controls['deliveryOnDawn'].touched">
+                                       Evening
+                                    </span>
+                                 </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   formControlName="deliveryOnNight"
+                                   value="night"/>
+                            <span class="label__text">
+                                    <span class="label__check"
+                                          [class.invalid]="addServiceForm.hasError('timeslotsError') &&
+                                                    addServiceForm.controls['deliveryOnDawn'].touched">
+                                       Night
+                                    </span>
+                                 </span>
+                        </label>
+                        <div class="form-error-wrapper">
+                            <div class="form-error" *ngIf="addServiceForm.hasError('timeslotsError') &&
+                                                              addServiceForm.controls['deliveryOnDawn'].touched"
+                                 [@transitionMessages]="showTimeError ? 'enter' : 'void'">
+                                <mat-error>
+                                    <span i18n>Please select at least a time slot!</span>
+                                </mat-error>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div>
+                    <p class="service-label-blue" i18n>
+                        Package accepted from
+                    </p>
+
+                    <div>
+                        <section class="checkbox-section pack-accepted-from">
+                            <label class="label">
+                                <input class="label__checkbox"
+                                       type="checkbox"
+                                       value="private"
+                                       formControlName="acceptedPacksFromPrivate"/>
+                                <span class="label__text">
+                                 <span class="label__check"
+                                       [class.invalid]="addServiceForm.hasError('packError') &&
+                                                    addServiceForm.controls['acceptedPacksFromCompany'].touched">
+                                    Private
+                                 </span>
+                              </span>
+                            </label>
+                            <label class="label">
+                                <input class="label__checkbox"
+                                       type="checkbox"
+                                       value="company"
+                                       formControlName="acceptedPacksFromCompany"/>
+                                <span class="label__text">
+                                 <span class="label__check"
+                                       [class.invalid]="addServiceForm.hasError('packError') &&
+                                                    addServiceForm.controls['acceptedPacksFromCompany'].touched">
+                                    Company
+                                 </span>
+                              </span>
+                            </label>
+                            <div class="form-error-wrapper">
+                                <div class="form-error" *ngIf="addServiceForm.hasError('packError') &&
+                                                       addServiceForm.controls['acceptedPacksFromPrivate'].touched"
+                                     [@transitionMessages]="showPackError ? 'enter' : 'void'">
+                                    <mat-error>
+                                        <span i18n>Please select at least one option!</span>
+                                    </mat-error>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+            <span class="clearfix"></span>
+            <div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-6 col-lg-push-2 col-md-push-2 col-sm-push-2 col-xs-push-2 col-push-0">
+                    <button mat-button color="cancel" class="full-width" (click)="dialogRef.close()" type="button">
+                        <span i18n>Cancel</span>
+                    </button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-6 col-lg-push-2 col-md-push-2 col-sm-push-2 col-xs-push-2 col-push-0">
+                    <button mat-button color="secondary" class="full-width" type="submit">
+                        <span i18n *ngIf="!service.id">Add</span>
+                        <span i18n *ngIf="service.id">Update</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+</div>

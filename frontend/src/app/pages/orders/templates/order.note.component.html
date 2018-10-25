@@ -1,0 +1,114 @@
+<section id="order-status-uploads" class="container-fluid">
+    <div class="container">
+        <div class="uploads-header">
+            <div class="highlight_3 text-uppercase">
+                <strong i18n>Documents</strong>
+            </div>
+            <div class="bottom-border"></div>
+        </div>
+        <form (ngSubmit)="upload(uploadForm, formDirective)"
+              [formGroup]="uploadForm"
+              #formDirective="ngForm">
+            <div class="uploads-content">
+                <!--<avatar-image-->
+                <!--class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-6 col-lg-push-0 col-md-push-0 col-sm-push-0 col-xs-push-0 col-push-0"-->
+                <!--[id]="'new-note'"-->
+                <!--[src]="newNoteUploadSrc"-->
+                <!--(imageChanged)="setNewNoteUploadSrc($event)">-->
+                <!--</avatar-image>-->
+                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-12 col-lg-push-0 col-md-push-0 col-sm-push-0 col-xs-push-0 col-push-0 file-uploader">
+                    <file-uploader
+                            [id]="'new-note'"
+                            [src]="newNoteUploadSrc"
+                            (imageChanged)="setNewNoteUploadSrc($event)">
+                    </file-uploader>
+                    <div class="error-msg" [@transitionMessage]="errorTooBig ? 'enter' : 'void'" *ngIf="uploadForm.get('invalidNote').errors
+                                            && uploadForm.get('invalidNote').errors.backend
+                                            && uploadForm.get('invalidNote').errors.backend.invalidNote">
+                        {{uploadForm.controls['invalidNote'].errors.backend.invalidNote}}
+                    </div>
+                </div>
+                <div class="uploads-user-info col-lg-3 col-md-3 col-sm-3 col-xs-6 col-12">
+                    <div class="highlight_3">
+                        <span i18n>User: </span><strong>{{profile.user.username}}</strong>
+                    </div>
+                    <div class="highlight_3">
+                        <span i18n>Date: </span><strong i18n>{{newNoteDate |
+                        l10nDate:defaultLocale:'shortDate'}}</strong>
+                    </div>
+                    <div class="highlight_3">
+                        <span i18n>Status: </span><strong i18n>{{order.state}}</strong>
+                    </div>
+                </div>
+                <div class="uploads-user-notes col-lg-6 col-md-6 col-sm-5 col-xs-12 col-12">
+                    <label>Notes</label>
+                    <mat-form-field floatLabel="never">
+                    <textarea matInput
+                              placeholder="Write a note"
+                              name="noteText"
+                              formControlName="noteText"></textarea>
+                        <mat-error i18n>
+                            Please a note is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="clearfix"></div>
+                <!--<mat-error *ngIf="uploadForm.get('nullNote').errors-->
+                <!--&& uploadForm.get('nullNote').errors.backend-->
+                <!--&& uploadForm.get('nullNote').errors.backend.nullNote" i18n>-->
+                <!--{{uploadForm.get('nullNote').errors.backend.nullNote}}-->
+                <!--</mat-error>-->
+                <!--<mat-error *ngIf="uploadForm.get('invalidNote').errors-->
+                <!--&& uploadForm.get('invalidNote').errors.backend-->
+                <!--&& uploadForm.get('invalidNote').errors.backend.invalidNote" i18n>-->
+                <!--{{uploadForm.get('invalidNote').errors.backend.invalidNote}}-->
+                <!--</mat-error>-->
+
+
+                <div class="uploads-add-notes">
+                    <div class="new-note-border"></div>
+                    <mat-spinner
+                            *ngIf="showSpinner"
+                            style="margin: 0 auto;"
+                            [diameter]="70">
+
+                    </mat-spinner>
+                    <button *ngIf="!showSpinner" class="text-uppercase"
+                            type="submit"
+                            color="cancel"
+                            mat-button>
+                        Add Note
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div *ngFor="let note of order.notes" class="uploads-content">
+            <avatar-image
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-12 col-lg-push-0 col-md-push-0 col-sm-push-0 col-xs-push-0 col-push-0"
+                    (click)="downloadDocument(note.document)"
+                    [id]="'new-note-'+note.id"
+                    [editable]="false"
+                    [src]="note.document">
+            </avatar-image>
+            <div class="uploads-user-info col-lg-3 col-md-3 col-sm-3 col-xs-6 col-12">
+                <div class="highlight_3">
+                    <span i18n>User:</span> <strong>{{note.profile.user.username}}</strong>
+                </div>
+                <div class="highlight_3">
+                    <span i18n>Date:</span> <strong i18n>{{newNoteDate | l10nDate:defaultLocale:'shortDate'}}</strong>
+                </div>
+                <div class="highlight_3">
+                    <span i18n>Status:</span> <strong i18n>{{note.orderStatus}}</strong>
+                </div>
+            </div>
+            <div class="uploads-user-notes col-lg-6 col-md-6 col-sm-5 col-xs-12 col-12">
+                {{note.description}}
+            </div>
+            <div class="clearfix"></div>
+            <div class="uploads-add-notes">
+                <span> </span>
+                <div class="new-note-border"></div>
+            </div>
+        </div>
+    </div>
+</section>

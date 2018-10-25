@@ -1,0 +1,277 @@
+<div id="home-container">
+    <div id="title-row" class="row">
+        <div id="big-title" class="col-lg-12">
+            <h1 class="col-lg-12" i18n>The World has no borders.</h1>
+            <p class="col-lg-12" i18n>Like your favorite logistic system.</p>
+        </div>
+    </div>
+    <mat-card id="call-to-action" class="col-lg-3">
+
+        <progress-spinner #spinner></progress-spinner>
+
+        <div>
+            <img width="50" src="../../../../assets/images/forwarder-find.svg"/>
+            <h3 i18n>
+                Find the Local Forwarder that fits your needs
+            </h3>
+            <a pageScroll href="#quick-search-container">
+                <button mat-button
+                        color="primary"
+                        class="full-width">
+                    <span i18n>Find Forwarder</span>
+                </button>
+            </a>
+        </div>
+
+        <div id="registration-separator" class="table">
+            <hr class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-5">
+            <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-2 cell-middle hr-middle" i18n> or </span>
+            <hr class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-5">
+        </div>
+
+        <div>
+            <img width="50" src="../../../../assets/images/lwf-consegna.svg"/>
+            <h3 i18n>
+                Join us to start earning as Local Forwarder
+            </h3>
+            <!--<button mat-button
+                    color="secondary"
+                    class="full-width"
+                    [routerLink]="'/login'">
+                <span i18n>Become a Local Forwarder</span>
+            </button>-->
+            <button mat-button
+                    color="secondary"
+                    class="full-width"
+                    (click)="goToLanding()">
+                <span i18n>Become a Local Forwarder</span>
+            </button>
+        </div>
+    </mat-card>
+
+    <div class="clearboth"></div>
+    <div id="best-logistic-container" class="row text-center">
+        <div class="row">
+            <h3 class="row-title" i18n>OUR SERVICES</h3>
+            <hr class="bottom-hr-orange"/>
+        </div>
+        <div class="clearboth"></div>
+        <div class="inner-logistic-container">
+            <div class="best-logistic">
+                <div class="why-use">
+                    <img src="../../../assets/images/services/p2p_y.png"/>
+                    <h4 i18n>P2P Freight Forwarding</h4>
+                    <p i18n>International shipments without borders.</p>
+                </div>
+                <div class="logistic-info-container">
+                    <img src="../../../assets/images/p2p-forwarding2.jpg"/>
+                    <h4 i18n>If you can't get it, somebody can get it for you!</h4>
+                    <div class="logistic-info" i18n>
+                        Unfortunately many companies do not ship all over the world. There a way to overcome these
+                        barriers:
+                        the LWF P2P shipment service. <strong>Peer to peer</strong> shipment means that normal people
+                        like
+                        you and me, that live in a country where your desired item is available, can <strong>receive it
+                        on your
+                        behalf, repack it and send it to you.</strong> All through a website, simple and fast!<br/>
+                    </div>
+                </div>
+            </div>
+            <div class="best-logistic">
+                <div class="why-use">
+                    <img src="../../../assets/images/services/icn_express_y.png"/>
+                    <h4 i18n>Instant Delivery</h4>
+                    <p i18n>Need something? Get it right now!</p>
+                </div>
+                <div class="logistic-info-container">
+                    <img src="../../../assets/images/express delivery_home.jpg"/>
+                    <h4 i18n>Whatever you need, LWF can deliver it quickly!</h4>
+                    <div class="logistic-info" i18n>
+                        LWF Instant Delivery is a <strong>fast on-demand logistic service.</strong> LWF platform
+                        connects
+                        customers with local couriers who can deliver anything, <strong>whether for you or for your
+                        business.</strong> Start a delivery request specifying your address, parcel specifications and
+                        desired delivery time.
+                        Any available courier within the network can accept your request and <strong>carry out the
+                        delivery in minutes.</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="best-logistic">
+                <div class="why-use">
+                    <img src="../../../assets/images/services/icn_collecting_y.png"/>
+                    <h4 i18n>Package Collection</h4>
+                    <p i18n>You decide when and where pick up your package.</p>
+                </div>
+                <div class="logistic-info-container">
+                    <img src="../../../assets/images/package collect_home.jpg"/>
+                    <h4 i18n>Collect your parcel nearby, at your convenience</h4>
+                    <div class="logistic-info" i18n>
+                        How much time have you wasted in line at the post office to collect your parcels? Through the
+                        LWF
+                        <strong>network of private pick-up points,</strong> you can save time by collecting your package
+                        by
+                        the nearest
+                        point and at your convenience. Before placing an order online, check the LWF portal for private
+                        collectors <strong>available
+                        in your area or nearby.</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="quick-search-container" class="row">
+
+        <div class="row text-center">
+            <h3 class="row-title" i18n>FIND A FORWARDER</h3>
+            <hr class="bottom-hr-orange"/>
+        </div>
+
+        <div class="quick-search-wrapper">
+
+            <div class="quick-search-form">
+                <form class="quick-search-button"
+                      (ngSubmit)="quickSearch(quickSearchForm)"
+                      [formGroup]="quickSearchForm">
+                    <div>
+                        <label i18n>Where the goods need to be delivered from?</label>
+                        <mat-form-field floatLabel="never" class="full-width" formGroupName="from">
+                            <mat-select placeholder="Select delivery country"
+                                        (selectionChange)="setCountry('from',$event)"
+                                        [formControlName]="'countryName'"
+                                        #countryFromSelect>
+                                <ngx-mat-select-search [placeholderLabel]="'Search country'"
+                                                       [clearSearchInput]="true"
+                                                       [noEntriesFoundLabel]="'No country found'"
+                                                       [formControl]="countryFromFilterCtrl">
+                                </ngx-mat-select-search>
+                                <mat-option *ngFor="let country of filteredFromCountries | async"
+                                            [value]="country.name" i18n>
+                                    {{country.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label i18n>Where the goods need to be sent to?</label>
+                        <mat-form-field floatLabel="never" class="full-width" formGroupName="to">
+                            <mat-select placeholder="Select destination country"
+                                        (selectionChange)="setCountry('to',$event)"
+                                        [formControlName]="'countryName'"
+                                        #countryToSelect>
+                                <ngx-mat-select-search [placeholderLabel]="'Search country'"
+                                                       [clearSearchInput]="true"
+                                                       [noEntriesFoundLabel]="'No country found'"
+                                                       [formControl]="countryToFilterCtrl">
+                                </ngx-mat-select-search>
+                                <mat-option *ngFor="let country of filteredToCountries | async"
+                                            [value]="country.name" i18n>
+                                    {{country.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label i18n>Goods value?</label>
+                        <mat-form-field floatLabel="never" class="full-width">
+                            <mat-select placeholder="Goods value?"
+                                        formControlName="goods">
+                                <mat-option [value]="0">
+                                    <span i18n>High</span>
+                                </mat-option>
+                                <mat-option [value]="1">
+                                    <span i18n>Medium</span>
+                                </mat-option>
+                                <mat-option [value]="2">
+                                    <span i18n>Low</span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <button mat-button
+                                color="secondary"
+                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12"
+                                type="submit">
+                            <span i18n>Find your LWF Forwarder</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <mat-card class="quick-search-results"
+                      [@quickSearch]="searchDone ? 'enter' : 'void'">
+                <mat-card-title class="results-header" i18n>Available Forwarders</mat-card-title>
+                    <div class="results-wrapper" *ngIf="!notFound">
+                        <div class="results-content">
+                            <img width="80" src="../../../../assets/images/forwarder-find.svg"/>
+                            <div>
+                                <div class="search-highlight">
+                                    <span class="big-text" i18n>{{quickSearchResults.offers}}</span> <span i18n> Forwarders</span>
+                                </div>
+                                <div class="search-highlight" *ngIf="quickSearchResults.startPrice !== 0">
+                                    <span class="big-text search-price" i18n>{{quickSearchResults.startPrice | currency:' '}}</span> <span i18n> lowest price</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-button">
+                            <button mat-button
+                                    color="primary"
+                                    [disabled]="true"
+                                    class="full-width"
+                                    [routerLink]="'../login'">
+                                <span i18n>View More</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="notFound" class="not-found">
+                        <div i18n>No Forwarder has been found!</div>
+                        <div i18n>Please change your search data and try again.</div>
+                    </div>
+            </mat-card>
+
+        </div>
+
+    </div>
+
+    <div id="map-container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="map-title" i18n> LWF Active Forwarders around the world </span>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="localForwarders.length > 0">
+            <agm-map [latitude]="localForwarders[0].lat"
+                     [longitude]="localForwarders[0].lng"
+                     [zoom]="3"
+                     [minZoom]="2"
+                     [scrollwheel]="false">
+                <agm-marker *ngFor="let localForwarder of localForwarders"
+                            [title]="localForwarder.title"
+                            [latitude]="localForwarder.lat"
+                            [longitude]="localForwarder.lng">
+
+                    <agm-info-window *ngIf="!localForwardersMock">
+                        <div class="username" i18n>{{localForwarder.username}}</div>
+                        <div i18n><span>Feedback</span>: <strong >{{localForwarder.feedback}}</strong></div>
+                        <div i18n><span>Price</span>: <strong>{{localForwarder.price}}$</strong></div>
+                    </agm-info-window>
+                </agm-marker>
+            </agm-map>
+        </div>
+
+        <div class="row" *ngIf="localForwarders.length == 0">
+            <agm-map
+                    [zoom]="3">
+            </agm-map>
+        </div>
+    </div>
+
+    <home-partners></home-partners>
+
+
+</div>

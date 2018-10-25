@@ -1,0 +1,54 @@
+<div id="feedback-container"
+     *ngIf="profile">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="container-title row-title" i18n>Vote</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="forwarder-info">
+        <!-- <div><img [src]="profile.avatarImage ? profile.avatarImage: 'assets/images/account/default_avatar.png'">
+        </div> -->
+        <div class="profile-avatar">
+                <avatar-image
+                    [editable]="false"
+                    [src]="avatarImageSrc">
+                </avatar-image>
+        </div>   
+        <div class="forwarder-name" i18n> {{profile.user.username}}</div>
+        <div class="highlight_3"><span i18n>Feedback</span>: <strong i18n>{{profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong></div>
+    </div>
+
+
+    <form class="feedback-form"
+          (ngSubmit)="sendFeedback(feedbackForm)"
+          [formGroup]="feedbackForm">
+        <star-rating
+                labelText="Leave a feedback..."
+                labelPosition="top"
+                starType="svg"
+                staticColor="ok"
+                size="large"
+                speed="noticeable"
+                hoverEnabled="true"
+                (starClickChange)="onClick($event)"
+                (ratingChange)="onRatingChange($event)">
+        </star-rating>
+        <textarea placeholder="Write your feedback message"
+                  formControlName="text"></textarea>
+
+        <div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-6 col-lg-push-2 col-md-push-2 col-sm-push-2 col-xs-push-2 col-push-0">
+                <button mat-button color="cancel" class="full-width" (click)="dialogRef.close()">
+                    <span i18n>Close</span>
+                </button>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-6 col-lg-push-2 col-md-push-2 col-sm-push-2 col-xs-push-2 col-push-0">
+                <button mat-button color="secondary" class="full-width" type="submit">
+                    <span i18n>Vote</span>
+                </button>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>

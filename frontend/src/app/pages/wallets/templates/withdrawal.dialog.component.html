@@ -1,0 +1,98 @@
+<div id="withdrawal-modal-container"
+     class="container-fluid" *ngIf="!success">
+
+    <progress-spinner #spinner></progress-spinner>
+
+    <div class="row text-center header-text-uppercase">
+        <h3 class="row-title" i18n>Withdrawal</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="row text-center">
+        <p i18n>
+            You've decided to make a withdrawal of:
+        </p>
+        <p class="header-text-uppercase" i18n>
+            {{amount}} Bundle credits
+        </p>
+    </div>
+
+
+    <div class="row text-center">
+        <p i18n>
+            Withdrawal will be executed and sent to:
+        </p>
+        <p class="header-text text-breakword"> {{address}}</p>
+    </div>
+
+
+    <div class="row text-center">
+        <p i18n>
+            Usually withdrawal will be executed in 24/48 hours!
+        </p>
+    </div>
+
+    <div class="row text-center" *ngIf="error">
+        <p class="header-text-uppercase text-danger" i18n>
+            ERROR:
+        </p>
+        <p class="text-danger" i18n>
+            An error occurred when processing withdraw. Please, try later.
+        </p>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 col-4 col-md-push-3 col-sm-push-3 col-xs-push-2 col-push-2">
+            <button mat-button
+                    color="cancel"
+                    class="full-width"
+                    (click)="dialogRef.close()">
+                <span i18n>Cancel</span>
+            </button>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 col-4 col-md-push-3 col-sm-push-3 col-xs-push-2 col-push-2">
+            <button mat-button
+                    color="secondary"
+                    class="full-width"
+                    (click)="submit()">
+                <span i18n>Submit</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div id="withdrawal-modal-container-success"
+     class="container-fluid" *ngIf="success">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 class="row-title" i18n>Withdrawal</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="row text-center text-success">
+        <p i18n>
+            Thank you, the withdraw request is almost completed!
+        </p>
+    </div>
+
+    <div class="row text-center">&nbsp;</div>
+
+    <div class="row text-center">
+        <p i18n>
+            Please check your email and click on confirmation link!
+        </p>
+    </div>
+
+    <div class="row text-center">&nbsp;</div>
+
+    <div class="row text-center">
+        <button mat-button
+                color="secondary"
+                class="center-div"
+                (click)="dialogRef.close()">
+            <span i18n>Close</span>
+        </button>
+    </div>
+
+</div>

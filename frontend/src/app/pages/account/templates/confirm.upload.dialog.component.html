@@ -1,0 +1,63 @@
+<div id="confirm-delete-container"
+     class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 i18n>Upload Confirmed</h3>
+    </div>
+
+    <div class="row text-center" *ngIf="idDocs">
+        <p i18n>
+            Your documents have been submitted and are waiting for approval.
+            An administrator will approve your documents as soon as possible, it may take up to 48 hours.
+        </p>
+        <p>
+            If you want to become a Forwarder please complete the next two verification step, otherwise you can go back
+            to the homepage.
+        </p>
+    </div>
+    <div class="row text-center" *ngIf="residenceDocs">
+        <p i18n>
+            Your documents have been submitted and are waiting for approval.
+            An administrator will approve your documents as soon as possible, it may take up to 48 hours.
+        </p>
+        <p>
+            If you want to become a Forwarder please complete the Selfie ID verification step
+        </p>
+    </div>
+
+    <div class="row text-center" *ngIf="selfieDocs">
+        <p i18n>
+            Your documents have been submitted and are waiting for approval.
+            An administrator will approve your documents as soon as possible, it may take up to 48 hours.
+        </p>
+        <p>
+           To become a Forwarder, remember to complete all three verification steps. If you already have done that,
+           you just need to wait for approval. Thank you
+
+        </p>
+    </div>
+    <div class="dialog-btn">
+        <button mat-button
+                color="cancel"
+                (click)="goToHome()"
+                *ngIf="!residenceDocs"
+                type="button">
+            <span i18n>Go back to Homepage</span>
+        </button>
+        <button mat-button
+                color="secondary"
+                (click)="closeDialog()"
+                *ngIf="idDocs"
+                type="button">
+            <span i18n>Become a Forwarder</span>
+        </button>
+        <button mat-button
+                color="secondary"
+                (click)="closeDialog()"
+                *ngIf="!idDocs"
+                type="button">
+            <span i18n>Continue Verification</span>
+        </button>
+    </div>
+
+</div>

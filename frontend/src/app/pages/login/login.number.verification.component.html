@@ -1,0 +1,59 @@
+<div id="verify-mobile-modal-container"
+     class="container-fluid">
+    <div class="row text-center header-text-uppercase">
+        <p i18n>Login</p>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="row text-center claim">
+        <div>
+            <img src="assets/images/mobile_icon.png">
+        </div>
+        <span class="text-uppercase" i18n>Mobile Number Confirmation</span>
+    </div>
+
+    <div class="row text-center mobile-verification-msg">
+        <div i18n>A verification SMS has been sent to your mobile.</div>
+        <div class="mobile-verification-number" i18n>{{mobile}}</div>
+        <div i18n>Please check your mobile and enter the code provided!</div>
+    </div>
+
+    <div class="row text-center">
+        <div class="registration-container">
+            <form (ngSubmit)="confirmNumber(mobileVerificatonFrom)"
+                  [formGroup]="mobileVerificatonFrom">
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Code"
+                           name="code"
+                           type="text"
+                           maxlength="4"
+                           formControlName="code">
+                    <mat-error *ngIf="mobileVerificatonFrom.get('code').errors
+                                        && mobileVerificatonFrom.get('code').errors.backend
+                                        && mobileVerificatonFrom.get('code').errors.backend.code">
+                        Code is not correct
+                    </mat-error>
+                    <mat-error *ngIf="mobileVerificatonFrom.controls['code'].hasError('required')">
+                        Code is required
+                    </mat-error>
+                </mat-form-field>
+
+                <div>
+                    <div>
+                        <button mat-button
+                                color="secondary"
+                                type="submit"
+                                i18n>
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,77 @@
+<section id="issue-comments">
+    <div class="issue-comments-title row header-text-uppercase text-center">
+        <h3 i18n>Comments</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+    <div id="issue-comments-wrapper">
+        <div id="issue-comments-container"
+            class="row"
+            *ngIf="chat"
+            #comments>
+
+            <div [class]="'row ' + messageSenderClass(message)"
+                *ngFor="let message of chat.messages">
+                <chat-message
+                        [ngClass]="{'admin-message':message.adminMessage}"
+                        [dateTime]="message.dateCreated"
+                        [imageSrc]="message.image"
+                        [senderName]="message.sender.username"
+                        [text]="message.text"
+                        [avatarSrc]="message.senderAvatar"
+                        (click)="openImage(message)">
+                </chat-message>
+            </div>
+        </div>
+        <div class="send-message-container"
+             *ngIf="issue.state === 'OPEN'">
+            <form (ngSubmit)="uploadMessage(uploadForm)"
+                [formGroup]="uploadForm">
+                <div class="send-message">
+                    <input type="text"
+                        placeholder="Message"
+                        name="message"
+                        formControlName="message"/>
+                    <div class="message-btn">
+                        <button *ngIf="!showSpinner" 
+                                type="submit"
+                                class="send-message-btn"
+                                mat-button>
+                            <i class="material-icons">send</i>
+                        </button>
+                        <button *ngIf="!showSpinner"
+                                (click) ="showUploadImage($event)"
+                                class="attach-btn" 
+                                mat-button
+                                type="button">
+                            <i class="material-icons">attachment</i>
+                        </button>         
+                    </div>
+                </div>
+                <mat-error class="chat-message-error" [@transitionMessage]="otherError ? 'enter' : 'void'"
+                           *ngIf="otherError
+                                  && uploadForm.get('uploadError').errors
+                                  && uploadForm.get('uploadError').errors.backend
+                                  && uploadForm.get('uploadError').errors.backend.uploadError"
+                           i18n>
+                    {{uploadForm.get('uploadError').errors.backend.uploadError}}
+                </mat-error>
+                <div class="upload-image"
+                    *ngIf="this.showUpload">
+                        <avatar-image
+                            [id]="'attach-image'"
+                            [src]="newNoteUploadSrc"
+                            (imageChanged)="setNewNoteUploadSrc($event)">
+                        </avatar-image>
+                    <mat-error [@transitionMessage]="errorTooBig ? 'enter' : 'void'"
+                               *ngIf="errorTooBig
+                                      && uploadForm.get('uploadError').errors
+                                      && uploadForm.get('uploadError').errors.backend
+                                      && uploadForm.get('uploadError').errors.backend.uploadError"
+                               i18n>
+                        {{uploadForm.get('uploadError').errors.backend.uploadError}}
+                    </mat-error>
+                </div>  
+            </form>
+        </div>
+    </div>
+</section>

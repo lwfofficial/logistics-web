@@ -1,0 +1,70 @@
+<div id="update-tracking-info-form-container"
+     class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 i18n>Insert Tracking Info</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div id="express-delivery-form"
+         class="row">
+
+        <div id="p2p-freight-form">
+            <form (ngSubmit)="updateTrackingInfo(addTrackingInfo)"
+                  [formGroup]="addTrackingInfo">
+                <label>Courier Name</label>
+                <mat-form-field floatLabel="never">
+                    <mat-select name="courier"
+                                (selectionChange)="changedCourier($event)"
+                                placeholder="Select a courier"
+                                formControlName="courier">
+                        <mat-option *ngFor="let courier of courierTypes"
+                                    [value]="courier.id">
+                            {{courier.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <label *ngIf="showCustomCourier">Other Courier Name</label>
+                <mat-form-field *ngIf="showCustomCourier"
+                                floatLabel="never">
+                    <input matInput
+                           placeholder="Custom courier name"
+                           name="courierOther"
+                           type="text"
+                           maxLength="100"
+                           formControlName="courierOther">
+                </mat-form-field>
+                <label>Tracking Number</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="TRN (Tracking Number)"
+                           name="trn"
+                           type="text"
+                           maxLength="100"
+                           formControlName="trn">
+                </mat-form-field>
+                <label>Tracking Link</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Link (http://www.yourdomain.com/trackingInfo)"
+                           name="link"
+                           type="text"
+                           maxLength="255"
+                           formControlName="link">
+                </mat-form-field>
+                <span class="clearfix"></span>
+                <div>
+                    <button mat-button
+                            color="cancel"
+                            type="submit"
+                            class="full-width">
+                        <span i18n>Update Tracking Info</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div id="avatar-error-container"
+     class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 i18n>Upload Error</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div id="confirm-action"
+         class="row">
+        <div>{{errorMessage}}</div>
+        <div class="full-width confirm-buttons">
+            <button mat-button
+                    color="secondary"
+                    (click)="closeDialog()">
+                <span i18n>Close</span>
+            </button>
+        </div>
+    </div>
+</div>

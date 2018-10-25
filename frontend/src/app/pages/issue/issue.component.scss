@@ -1,0 +1,94 @@
+.info-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background-color: #F0F1F3;
+    padding: 20px;
+    margin-bottom: 5px;
+    line-height: 3;
+}
+
+// OPEN ORDER ISSUE PAGE STYLES
+
+#open-order-issue-container{
+    min-height:600px;
+    margin-bottom:30px;
+    .issue-title{
+        margin-top:30px;
+        margin-bottom:15px;
+        font-size:1.25rem;
+        padding:0 20px;
+    }
+
+    .mat-form-field{
+        padding:5px 20px;
+        textarea{
+            min-height:200px;
+            padding-left: 10px;
+        }
+    }
+    .mat-select-trigger,
+    .mat-form-field-label{
+        min-height:20px;
+    }
+    .issue-buttons{
+        display:flex;
+        justify-content: space-around;
+        button{
+            width:30%;
+        }
+    }
+}
+
+
+// ORDER ISSUE PAGE STYLES
+
+#order-issue-container{
+    min-height:600px;
+    margin-bottom:30px;
+    .issue-info{
+        padding:0 20px;
+        margin-bottom:30px;
+        div{
+            margin:20px 0;
+        }
+        .issue-notes{
+            font-size:0.875rem;
+        }
+    }
+    .mat-expansion-panel{
+        background:transparent;
+        border:1px solid #9B9DA0;
+        box-shadow: none;
+        margin-bottom:30px;
+        .mat-expansion-panel-header-title{
+            color: #005da1;
+            font-size:1.25rem;
+            font-weight:700;
+            flex-grow:0;
+            margin-right:0;
+            align-self: baseline;            
+        }
+        .mat-expansion-panel-header-description{
+            border-bottom: 3px solid #F7A800;
+            margin: 0 20px;
+            align-self: baseline;            
+        }
+        .order-status-detail{
+            border:0;
+        }
+    }
+}
+
+#close-issue-container{
+    #confirm-action{
+        font-size: 1.2rem;
+    }
+    .confirm-buttons{
+        display:flex;
+        justify-content: space-between;
+        margin-top:30px;
+    }
+}
+

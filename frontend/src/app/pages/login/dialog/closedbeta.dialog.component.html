@@ -1,0 +1,56 @@
+<div id="closedbeta-modal-container"
+     class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 class="row-title" i18n>Closed Beta</h3>
+        <hr class=" bottom-hr-orange"/>
+    </div>
+
+    <!--<div class="row text-center claim">-->
+    <!--<div>-->
+    <!--<img src="assets/images/email_icon.png">-->
+    <!--</div>-->
+    <!--<span class="text-uppercase" i18n>Closed Beta</span>-->
+    <!--</div>-->
+    <div *ngIf="!submitted">
+        <div class="row text-center">
+            <div i18n>
+                We are now in closed Beta, If you'd like updates about LWF please enter your email address to receive
+                our newsletter!
+            </div>
+            <form [formGroup]="newsletterForm"
+                  (ngSubmit)="addNewsletterEmail(newsletterForm)">
+                <label class="main-label">Email</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Email"
+                           type="email"
+                           autocapitalize="none"
+                           formControlName="email">
+
+                    <mat-error i18n>
+                        Please enter your email address
+                    </mat-error>
+                </mat-form-field>
+                <div class="submit-buttons-wrapper">
+                    <div class="row text-center">
+                        <button mat-button (click)="closeDialog()" color="cancel" i18n>Cancel</button>
+                    </div>
+                    <div class="row text-center">
+                        <button mat-button type="submit" color="secondary" i18n>OK</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+    <div *ngIf="submitted">
+        <div i18n>
+            Thank you, you will be receiving our newsletter from now on
+        </div>
+        <div class="row text-center">
+            <button mat-button color="secondary" (click)="closeDialog()" i18n>CLOSE</button>
+        </div>
+    </div>
+</div>

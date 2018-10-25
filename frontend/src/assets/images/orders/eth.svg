@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="64px" height="65px" viewBox="0 0 64 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>ETH</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="ORDER-PAYMENT" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1115.000000, -1209.000000)">
+        <g id="Credit-card-OPEN" transform="translate(-1.000000, 878.000000)">
+            <g id="Crypto-Closed-Copy" transform="translate(0.000000, 306.000000)">
+                <g id="Crypto-deposit">
+                    <g id="Crypto" transform="translate(871.000000, 25.000000)">
+                        <g id="ETH" transform="translate(245.000000, 0.000000)">
+                            <path d="M63.9722348,32.6605274 C63.9722348,50.5206517 49.716792,64.9988358 32.1314388,64.9988358 C14.546404,64.9988358 0.290642786,50.5206517 0.290642786,32.6605274 C0.290642786,14.800403 14.546404,0.322218905 32.1314388,0.322218905 C49.716792,0.322218905 63.9722348,14.800403 63.9722348,32.6605274" id="Fill-506" fill="#497391"></path>
+                            <polygon id="Fill-507" fill="#FFFFFF" points="18.033194 36.6674378 31.6903483 8.09557214 31.6903483 43.9687811"></polygon>
+                            <polygon id="Fill-508" fill="#FFFFFF" points="46.230193 36.6674378 32.5246408 43.9687811 32.5246408 8.08587065"></polygon>
+                            <polygon id="Fill-509" fill="#FFFFFF" points="18.033194 37.7126119 31.6903483 44.6575871 31.6903483 55.8252985"></polygon>
+                            <polygon id="Fill-510" fill="#FFFFFF" points="46.230193 37.7126119 32.5246408 55.8252985 32.5246408 44.6575871"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

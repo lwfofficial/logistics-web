@@ -1,0 +1,153 @@
+#registration-page {
+  background: linear-gradient(
+                  rgba(0, 93, 161, 1),
+                  rgba(5, 71, 129, 1));
+  height: 100%;
+  .logo {
+    display: block;
+    margin: 30px auto;
+    width: 200px;
+  }
+}
+
+input {
+  color: #005DA1;
+}
+
+form {
+  mat-form-field,
+  mat-checkbox {
+    padding: 10px;
+  }
+}
+
+#verify-mobile-modal-container {
+  background: #FFFFFF;
+  padding: 10px 30px;
+  color: #005DA1;
+  font-size: 1.125rem;
+  img {
+    margin: 20px 0;
+  }
+  .mobile-verification-msg .mobile-verification-number {
+    margin: 20px 0;
+  }
+  button {
+    margin-top: 15px;
+  }
+
+}
+
+#signup-container {
+  margin-right: 30px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: 30px;
+
+  .registration-container {
+    box-shadow: 0px 0px 20px #10285b;
+    border-radius: 5px;
+    max-width: 650px;
+    padding: 10px 0 0 0;
+    &::-webkit-scrollbar {
+      width: 5px;
+      background-color: #F5F7FA;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #d1d8db;
+    }
+    form {
+      background: #F0F1F3;
+      padding: 20px 10px;
+      .label {
+        display: block;
+      }
+      .mat-form-field {
+        display: block;
+        padding: 0;
+        margin-bottom: 10px;
+      }
+      .readonlyField {
+        .mat-form-field-infix {
+          background: transparent !important;
+          border: 0 !important;
+          input {
+            padding: 0;
+          }
+          .mat-form-field-label-wrapper {
+            label {
+              padding: 0;
+            }
+          }
+        }
+      }
+      .dial-code {
+        .mat-form-field-infix {
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+        img {
+          vertical-align: sub;
+        }
+        .full {
+          width: calc(100% - 16px);
+        }
+
+      }
+    }
+    .agreement {
+      .mat-checkbox {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.captcha {
+  height: 80px;
+  width: 300px;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+
+@media (max-width: 480px) {
+  .agreement {
+    font-size: 0.875rem;
+    .mat-checkbox-layout {
+      word-wrap: break-word;
+    }
+    .mat-checkbox {
+      padding: 0 !important;
+    }
+  }
+  .mat-dialog-container{
+    padding:15px !important;
+  }
+  .cdk-overlay-pane{
+    overflow:scroll;
+  }
+  .claim{
+    img{
+      height:150px;
+    }
+  }
+}
+
+@media (max-height: 705px) {
+  .mat-dialog-container{
+    padding:15px !important;
+  }
+  .cdk-overlay-pane{
+    overflow:scroll;
+  }
+  .claim{
+    img{
+      height:150px;
+    }
+  }
+}

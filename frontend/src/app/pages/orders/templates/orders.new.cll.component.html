@@ -1,0 +1,62 @@
+<div id="new-order-container"
+     class="container"
+     *ngIf="service && profile">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="row-title" i18n>New Order</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="row">
+        <mat-horizontal-stepper [linear]="true"
+                                #stepper="matHorizontalStepper"
+                                (selectionChange)="onStepChange($event)">
+            <mat-step label="Completion"
+                      [stepControl]="orderCompletionForm">
+                <new-order-cll-step-one
+                        [(orderCompletionForm)]="orderCompletionForm"
+                        [service]="service"
+                        [profile]="profile"
+                        [priceAmount]="priceAmount"
+                        (onAbort)="abortOrder()"></new-order-cll-step-one>
+            </mat-step>
+
+            <mat-step label="Review">
+                <new-order-cll-step-two [orderCompletionForm]="orderCompletionForm"
+                                        [service]="service"
+                                        [priceAmount]="priceAmount"
+                                        (onPriceConversion)="convertPrice($event)"
+                                        [profile]="profile"></new-order-cll-step-two>
+            </mat-step>
+
+            <mat-step label="Buy Credits"
+                      [completed]="isCreditValid">
+                <new-order-cll-step-three
+                        id="buy-credits"
+                        [orderCompletionForm]="orderCompletionForm"
+                        [service]="service"
+                        [profile]="profile"
+                        [wallet]="wallet"
+                        [priceAmount]="priceAmount"
+                        [orderId]="orderId"
+                        [(isCreditValid)]="isCreditValid"
+                        (onCreditChanged)="creditChangedHandler($event)"
+                        (onPaymentReceived)="updateProfile()">
+                </new-order-cll-step-three>
+            </mat-step>
+            <mat-step label="Payment">
+                <new-order-cll-step-four
+                        [orderCompletionForm]="orderCompletionForm"
+                        [service]="service"
+                        [profile]="profile"
+                        [wallet]="wallet"
+                        [orderId]="orderId"
+                        [priceAmount]="priceAmount"
+                        (onAbort)="abortOrder()"
+                        (onPay)="payOrder()">
+                </new-order-cll-step-four>
+            </mat-step>
+
+        </mat-horizontal-stepper>
+    </div>
+</div>

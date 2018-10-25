@@ -1,0 +1,26 @@
+<input type='file'
+       (change)="readURL($event)"
+       [disabled]="!editable"
+       style="display: none"
+       [id]="id+'_input'"
+       [accept]="accept"/>
+<div [id]="id+'_container'"
+     [ngClass]="editable ? 'editable' : ''">
+    <div class="avatar-wrapper">
+        <img *ngIf="isImage()"
+             class="avatar"
+             [src]="src"
+             [alt]=altText
+             [id]="id+'_img'"/>
+    <i *ngIf="!isImage()"
+       class="avatar"
+       [ngClass]="getFileType() | fileTypeIcon"></i>
+    </div>
+    <button mat-button
+            class="text-uppercase upload-file"
+            (click)="editable && click()"
+            type="button"
+            color="cancel">
+        Upload File
+    </button>
+</div>

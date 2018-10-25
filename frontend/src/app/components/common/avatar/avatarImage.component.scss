@@ -1,0 +1,51 @@
+#avatar-image {
+  width: 150px;
+  height: 150px;
+
+}
+
+.avatar {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+#account-verification-container{
+  .avatar{
+    width:150px;
+    height:auto;
+    object-fit: cover;
+  }
+}
+#avatar-image.editable:hover .edit {
+  display: block;
+}
+
+.edit {
+  padding-top: 7px;
+  padding-left: 25px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+  a {
+    color: #000;
+  }
+}
+
+.no-file-text{
+  margin-top:10px;
+  color:#585A63;
+  font-weight:600;
+}
+
+@media (max-width:768px){
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+}

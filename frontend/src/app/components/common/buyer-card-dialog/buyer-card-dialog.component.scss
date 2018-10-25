@@ -1,0 +1,137 @@
+#buyer-card-container{
+  h2{
+    margin-top:0 !important;
+  }
+  .container-title{
+    margin-top:0 !important;
+  }
+  .row-title{
+    margin-top:0 !important;
+  }
+}
+#buyer-card-inner-container {
+  .feedback-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 500px;
+    padding: 0 20px;
+    .feedback-score{
+      text-align:center;
+      flex-basis: 45%;
+      line-height:1.5;
+      .row-title{
+        font-size:1.5rem;
+        font-weight:600 !important;
+      }
+      .material-icons{
+        width:160px;
+        font-size:10rem;
+        color: #F7A800;
+      }
+      .score-value{
+        color: #005DA1;
+        font-size:2rem;
+        font-weight:700;
+      }
+      .review-count{
+        margin-top:20px;
+        color: #585A63;
+        font-size:1.25rem;
+        font-weight:600;
+      }
+    }
+    .feedback-list{
+      flex-basis: 55%;
+      height:100%;
+      align-self: flex-start;
+      display:flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: stretch;
+      flex-wrap: wrap;
+      padding-right:30px;
+      .single-review{
+        flex-basis:100%;
+        border-bottom:1px solid #9B9DA0;
+        margin-bottom:5px;
+        font-size:0.875rem;
+        .rating{
+          .star-container{
+            margin-left:0;
+          }
+          justify-content: flex-start;
+        }
+      }
+      .mat-paginator{
+        flex-basis: 100%;
+        align-self:flex-end;
+        background-color: transparent;
+      }
+    }
+  }
+}
+.buyer-card-btn{
+  margin-top:30px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  button{
+    margin-right: 30px;
+    width: 20%;
+    min-width: 150px;
+  }
+}
+
+@media (max-width:830px){
+  #buyer-card-container{
+    .forwarder-card-inner-container{
+      height: 100%;
+      .forwarder-profile{
+        flex-basis:100%;
+        border:0;
+        padding:0 30px;
+        margin-bottom:30px;
+      }
+      .forwarder-reviews-container{
+        flex-basis:100%;
+      }
+    }
+  }
+}
+@media (max-width:768px) {
+  #buyer-card-inner-container {
+    .feedback-card {
+      padding-top:30px;
+      height: 100%;
+      .feedback-score {
+        flex-basis: 100%;
+      }
+      .feedback-list {
+        flex-basis: 100%;
+      }
+    }
+  }
+}
+@media (max-width: 420px){
+  #buyer-card-container{
+    .forwarder-card-inner-container{
+      .forwarder-profile{
+        .profile-avatar{
+          margin:0 auto 0 auto;
+          width:100px;
+        }
+        .forwarder-username{
+          text-align: center;
+        }
+      }
+    }
+    .forwarder-card-btn{
+      justify-content: space-between;
+      button{
+        margin-right:0;
+      }
+    }
+  }
+}

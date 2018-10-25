@@ -1,0 +1,71 @@
+#verification-content-main {
+    width: 95%;
+    height: 80%;
+    padding: 2.8%;
+}
+
+.verification_data {
+    margin-bottom: 5px;
+}
+
+.user-image-container {
+    float: left;
+    width: 40%;
+    text-align: center;
+}
+
+.docfront-image-container {
+    float: left;
+    width: 49%;
+    text-align: center;
+}
+
+.docback-image-container {
+    float: left;
+    width: 49%;
+    text-align: center;
+}
+
+.proof-image-container {
+    float: left;
+    width: 49%;
+    text-align: center;
+}
+
+.selfid-image-container {
+    float: left;
+    width: 49%;
+    text-align: center;
+}
+
+.user-data-container {
+    float: left;
+    width: 58%;
+}
+
+.user-image-container img {
+    max-width: 98%;
+    max-height: 50px;
+}
+
+.docfront-image-container img {
+    max-width: 98%;
+    max-height: 100px;
+}
+
+.docback-image-container img {
+    max-width: 98%;
+    max-height: 100px;
+}
+
+.proof-image-container img {
+    max-width: 98%;
+    max-height: 100px;
+}
+
+
+.selfid-image-container img {
+    max-width: 98%;
+    max-height: 100px;
+}
+

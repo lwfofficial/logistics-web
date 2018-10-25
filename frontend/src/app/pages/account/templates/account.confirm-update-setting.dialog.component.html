@@ -1,0 +1,25 @@
+<div id="abort-modal-container"
+     class="container-fluid">
+
+    <progress-spinner #spinner></progress-spinner>
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="row-title" i18n>Confirm {{settingName | settingName}} change</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div class="row text-center highlight_3 abort-message">
+        <div i18n>Are you sure you want to change {{settingName | settingName}}?
+        </div>
+    </div>
+
+    <div class="row text-center text-danger" *ngIf="showError">
+        Sorry an error occurred, please try later.<br/>
+    </div>
+
+    <div class="row text-center abort-buttons">
+        <button mat-button color="cancel" (click)="closeDialog(true)">Yes</button>
+        <button mat-button color="secondary" (click)="closeDialog(false)">No</button>
+    </div>
+
+</div>

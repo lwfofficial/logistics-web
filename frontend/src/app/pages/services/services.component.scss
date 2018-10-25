@@ -1,0 +1,476 @@
+#services-container {
+  padding-top: 20px;
+  min-height: 800px;
+}
+
+#p2p-freight-form {
+  margin: 0 -15px;
+  display: flex;
+  justify-content: center;
+  form {
+    flex-basis: 100%;
+    max-width: 500px;
+    .input-label {
+      display: block;
+    }
+    .mat-form-field {
+      width: 100%;
+      display: block;
+      margin-bottom:10px;
+    }
+    #locationFrom-wrapper{
+      margin-bottom:10px;
+    }
+    .locationTos {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      .mat-form-field {
+        max-width: 410px;
+        display: block;
+      }
+    }
+    #size-weight {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      > div {
+        flex-basis: 45%;
+      }
+    }
+    #price-settings {
+      .price-settings-title{
+        color:#005da1;
+        text-transform: uppercase;
+        margin-bottom:10px;
+      }
+      .price-fields {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        > div {
+          flex-basis: 20%;
+          max-width: 130px;
+          label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+    .price-slide-toggle {
+      margin-top: 0;
+    }
+    #checkbox-p2p-service{
+      margin-top:20px;
+      margin-bottom:35px;
+      .form-error-wrapper {
+        position: relative;
+        flex-basis: 100%;
+        .form-error {
+          position: absolute;
+          width: 100%;
+          font-size: 75%;
+          overflow: hidden;
+          top: calc(100% - 0.266667em)
+        }
+      }
+    }
+    #forwarder-needed{
+      margin-top:20px;
+      margin-bottom:35px;
+      .form-error-wrapper {
+        position: relative;
+        flex-basis: 100%;
+        .form-error {
+          position: absolute;
+          width: 100%;
+          font-size: 75%;
+          overflow: hidden;
+          top: calc(100% - 1.466667em)
+        }
+      }
+    }
+  }
+}
+
+#package-collecting-form {
+  margin: 0 -15px;
+  display: flex;
+  justify-content: center;
+  form {
+    flex-basis: 100%;
+    max-width: 500px;
+    .input-label {
+      display: block;
+    }
+    .mat-form-field {
+      width: 100%;
+      display: block;
+      margin-bottom:10px;
+    }
+    .locationTos {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      .mat-form-field {
+        max-width: 410px;
+        display: block;
+      }
+    }
+    #size-weight {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      > div {
+        flex-basis: 45%;
+      }
+    }
+    #price-settings {
+      .price-settings-title{
+        color:#005da1;
+        text-transform: uppercase;
+        margin-bottom:10px;
+      }
+      .price-fields {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        > div {
+          flex-basis: 20%;
+          max-width: 130px;
+          label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+    .price-slide-toggle {
+      margin-top: 0;
+    }
+    #checkbox-cll-service{
+      margin-bottom:30px;
+      .form-error-wrapper {
+        position: relative;
+        flex-basis: 100%;
+        .form-error {
+          position: absolute;
+          width: 100%;
+          font-size: 75%;
+          overflow: hidden;
+          top: calc(100% - 0.166667em)
+        }
+      }
+    }
+  }
+}
+
+#package-collecting-form-container {
+  overflow: auto;
+}
+
+#service-enable-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background: #F0F1F3;
+  padding: 10px 30px 10px 30px;
+  font-size: 1.25rem;
+  color: #585A63;
+  border: 1px solid #d6d8da;
+  .service-enable-all {
+    width: 220px;
+    display: flex;
+    align-items: center;
+    > div {
+      flex-basis: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+  }
+  .service-create {
+    width: 320px;
+    form {
+      flex-basis: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      align-items: center;
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+    }
+  }
+}
+
+#service-create-form {
+  display: flex;
+  justify-content: center;
+  mat-form-field {
+    flex-basis: 300px;
+    flex-grow: 2;
+    margin-right: 20px;
+  }
+}
+
+#add-service-button {
+  font-size: 1.875rem;
+}
+
+.add-slot-row {
+  min-height: 50px;
+  margin-bottom: 20px;
+}
+
+.rm-add-btn-container {
+  padding-left: 0;
+  padding-right: 0;
+  width: 30px;
+  height: 30px;
+  margin: 0 7px;
+}
+
+#add-slot-btn,
+#remove-slot-btn {
+  margin-top: 0;
+  border-radius: 5px;
+  font-size: 1rem !important;
+  font-weight: 700;
+  min-width: 20px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  line-height: 1 !important;
+}
+
+.service-container {
+  background: #F0F1F3;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.service-label {
+  color: #585a63;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding-top: 20px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.service-label-blue {
+  margin-top: 10px;
+  color: #005DA1;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+}
+
+.service-col-box img {
+  width: 50px;
+}
+
+.service-first-col {
+  img {
+    width: 100px !important;
+  }
+  border: 1px solid #d6d8da;
+  border-collapse: collapse;
+  display: block;
+  min-height: 320px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+.service-col-box {
+  .bottom-hr-blue {
+    border-radius: 2px;
+    height: 4px;
+    width: 60px;
+  }
+  border: 1px solid #d6d8da;
+  border-collapse: collapse;
+  display: block;
+  min-height: 320px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  font-size: 1rem;
+  color: #585A63;
+  font-weight: 600;
+  img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.service-option-title {
+  padding-top: 20px;
+}
+
+.service-option-data {
+  font-size: 1.1rem;
+  color: #585A63;
+  font-weight: 600;
+}
+
+#service-option-weekdays {
+  span {
+    margin-right: 5px
+  }
+}
+#service-option-weekdays-mobile {
+  span {
+    margin-right: 5px
+  }
+}
+
+#service-option-timeslots {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  & > div {
+    text-align: center;
+    margin-right: 20px;
+  }
+}
+
+#service-option-timeslots-mobile {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  & > div {
+    text-align: center;
+    margin-right: 20px;
+  }
+}
+
+.active-time-slot {
+  color: #005DA1;
+  font-weight: 700;
+}
+
+.edit-service {
+  padding-top: 7px;
+  padding-left: 25px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  display: none;
+}
+
+.edit-timeslot {
+  padding-top: 7px;
+  padding-left: 25px;
+  position: absolute;
+  right: -15px;
+  bottom: 0;
+  cursor: pointer;
+  display: none;
+}
+
+.edit-service i {
+  margin-right: 15px;
+}
+
+.service-first-col:hover .edit-service {
+  display: block;
+}
+
+.timeslot {
+  &:hover .edit-timeslot {
+    display: block;
+  }
+  min-height: 100px;
+  display: block;
+  position: relative;
+}
+
+#service-list-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.warning-text {
+  font-size: 1.25rem;
+  color: #005DA1;
+  font-weight: 700;
+  padding: 0 15px;
+}
+
+.service-dialog {
+  .mat-dialog-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  #service-enable-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    .service-enable-all {
+      width: 320px;
+      margin-bottom: 15px
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .service-dialog{
+    .mat-dialog-container{
+      padding:30px;
+    }
+  }
+  #p2p-freight-form {
+    form {
+      #size-weight{
+        flex-wrap:wrap;
+        >div{
+          flex-basis:100%;
+          max-width:100%;
+        }
+      }
+      #price-settings {
+        .price-fields {
+          flex-wrap: wrap;
+          >div{
+            flex-basis:100%;
+            max-width:100%;
+          }
+        }
+      }
+    }
+  }
+  #package-collecting-form {
+    form {
+      #size-weight{
+        flex-wrap:wrap;
+        >div{
+          flex-basis:100%;
+          max-width:100%;
+        }
+      }
+    }
+  }
+  .service-first-col,
+  .service-col-box {
+    border-right: none;
+    border-bottom: 2px solid #d6d8da;
+    display: block;
+    min-height: 250px;
+    padding-top: 40px;
+  }
+}

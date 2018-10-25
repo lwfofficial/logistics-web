@@ -1,0 +1,182 @@
+<div id="withdrawal-form-container" *ngIf="profile && wallet">
+
+    <form (ngSubmit)="doOperation(operationForm)"
+          [formGroup]="operationForm" *ngIf="wallet.credit > 0 && userService.isForwarder(profile)">
+
+        <div id="withdrawal-form">
+            <section id="currency-field">
+                <label class="input-label">Currency</label>
+                <mat-form-field floatLabel="never">
+                    <mat-select
+                            placeholder="Currency"
+                            (selectionChange)="onChangeCurrency($event)"
+                            name="currency"
+                            id="wdcurrency"
+                            formControlName="currency">
+                        <mat-option *ngFor="let currency of currencies"
+                                    [value]="currency">
+                            {{currency}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please choose a cryptocurrency
+                    </mat-error>
+                </mat-form-field>
+            </section>
+            <section id="amount-field">
+                <label class="input-label">Bundle Credits</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Enter amount"
+                           name="amount"
+                           id="wdamount"
+                           type="number"
+                           min="0"
+                           step="1"
+                           (input)="onChangeAmount($event)"
+                           (change)="onChangeAmount($event)"
+                           formControlName="amount">
+                    <mat-hint align="start" *ngIf="currentWithdrawData.lwfbtocc">
+                        <span *ngIf="currentWithdrawData.currency === 'BTC'">
+                            ({{currentWithdrawData.lwfbtocc | l10nDecimal:defaultLocale:'1.8-8'}} {{currentWithdrawData.currency}})
+                        </span>
+                        <span *ngIf="currentWithdrawData.currency === 'LWF'">
+                            ({{currentWithdrawData.lwfbtocc | l10nDecimal:defaultLocale:'1.2-2'}} {{currentWithdrawData.currency}})
+                        </span>
+                    </mat-hint>
+                    <mat-error *ngIf="operationForm.get('amount').hasError('mismatch')">
+                        You have BC {{wallet.credit | l10nDecimal:defaultLocale:'1.2-2'}}, you cannot withdraw more credits than you own
+                    </mat-error>
+                    <mat-error *ngIf="!operationForm.get('amount').hasError('mismatch')">
+                        Please enter an amount
+                    </mat-error>
+                </mat-form-field>
+            </section>
+            <section id="address-field">
+                <label class="input-label">Address</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Enter address"
+                           name="address"
+                           id="wdaddress"
+                           type="text"
+                           formControlName="address">
+                    <mat-hint align="start" i18n>
+                        Please verify that the address is correct
+                    </mat-hint>
+                    <mat-error>
+                        Please enter an address
+                    </mat-error>
+                </mat-form-field>
+            </section>
+
+            <div class="submit-btn">
+                <button mat-button
+                        color="secondary"
+                        type="submit"
+                        i18n>
+                    Submit
+                </button>
+            </div>
+            <p id="deposit-note" class="mat-small text-left" *ngIf="wallet.credit > 0 && userService.isForwarder(profile)" i18n>
+               {{ 8.5 | l10nDecimal:defaultLocale:'1.1-2'}}% fee will be automatically applied to transaction</p>
+        </div>
+        <span class="clearfix"></span>
+
+    </form>
+    <span class="clearfix"></span>
+
+    <span class="clearfix"></span>
+    <p class="mat-medium text-center alert alert-warning no-credit"
+       *ngIf="wallet.credit == 0 && userService.isForwarder(profile)" i18n>
+        You don't have any Bundle Credits at the moment, start selling your services and then you will be able to
+        withdraw what you earned.
+    </p>
+    <span class="clearfix"></span>
+    <p class="mat-medium text-center text-danger" *ngIf="!userService.isForwarder(profile)" i18n>
+        Not allowed for Buyer
+    </p>
+
+</div>
+
+<div id="transactions-row" *ngIf="profile && userService.isForwarder(profile)">
+
+    <h2 class="header-text-uppercase text-center" i18n>Transaction History</h2>
+
+    <div *ngIf="transactions"
+         class="transactions-container">
+        <progress-spinner #spinner></progress-spinner>
+        <mat-table #withdrawTransactionsTable
+                   matSort
+                   matSortActive="dateCreated"
+                   matSortDisableClear
+                   matSortDirection="asc"
+                   [dataSource]="transactions"
+                   id="withdraw-table">
+
+            <ng-container matColumnDef="dateCreated">
+                <mat-header-cell mat-sort-header
+                                 *matHeaderCellDef>
+                    <span i18n>Date</span>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.dateCreated | l10nDate:defaultLocale:'shortDate'}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef><span i18n>Amount</span></mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.amount | l10nDecimal:defaultLocale:'1.2-2'}}
+                </mat-cell>
+
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef><span i18n>Status</span></mat-header-cell>
+                <mat-cell *matCellDef="let transaction"> {{transaction.status}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="view-details">
+                <mat-header-cell class="text-center" *matHeaderCellDef>
+                </mat-header-cell>
+                <mat-cell class="text-center order-detail-btn" *matCellDef="let row">
+                    <i [ngClass]="expandedElement == row ? 'far fa-angle-up' : 'far fa-angle-down'" ></i>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <mat-cell *matCellDef="let detail">
+                    <div class="row-details" style="width: 100%">
+                        <div>
+                            <div *ngIf="detail.transaction.status === 'COMPLETED'" class="highlight_3 row-title">Transaction id</div>
+                            <div *ngIf="detail.transaction.status === 'COMPLETED'">{{detail.transaction.transactionId}}</div>
+                            <div class="transaction-time highlight_3 row-title">Address</div>
+                            <div>{{detail.transaction.address}}</div>
+                            <div class="transaction-time highlight_3 row-title"> Transaction Time</div>
+                            <div> {{detail.transaction.dateCreated | l10nDate:defaultLocale:'shortTime'}}</div>
+                        </div>
+                        <button *ngIf="detail.transaction.status === 'COMPLETED'" mat-button color="secondary" (click)="openWithdrawReceiptPdf(detail.transaction.id)">
+                            View Receipt
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="withdrawDisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: withdrawDisplayedColumns;"
+                     matRipple
+                     class="transaction-row"
+                     [class.expanded]="expandedElement == row"
+                     (click)="expandedElement == row ? expandedElement = null : expandedElement = row">
+            </mat-row>
+            <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+                     [@detailExpand]="row.transaction == expandedElement ? 'expanded' : 'collapsed'"
+                     style="overflow: hidden"></mat-row>
+
+        </mat-table>
+        <mat-paginator [length]="transactionsCount" [pageSize]="maxPerPage">
+        </mat-paginator>
+
+    </div>
+
+</div>

@@ -1,0 +1,116 @@
+<div id="address-verification" class="container-fluid" *ngIf="profile">
+    <div class="verification-header">
+        <div class="verification-title" i18n>Proof of Residence</div>
+        <div class="verification-status">
+            <span i18n>Status</span>:
+            <span class="status-progress"
+                  [ngClass]="verificationResidenceStatus()[1]" i18n>
+                {{verificationResidenceStatus()[0]}}
+            </span>
+        </div>
+        <div class="verification-dot">
+            <i class="material-icons" [ngClass]="verificationResidenceStatus()[1]">brightness_1</i>
+        </div>
+    </div>
+
+    <div id="address-upload-form">
+        <form (ngSubmit)="uploadPoF(uploadForm)"
+              [formGroup]="uploadForm">
+            <div>
+                <div class="address-type-select">
+                    <mat-form-field floatLabel="never">
+                        <mat-select placeholder="Select your proof of residence"
+                                    formControlName="idType">
+                            <mat-option [value]="0" i18n>
+                                Utility Bill
+                            </mat-option>
+                            <mat-option [value]="1" i18n>
+                                Proof of residence certification
+                            </mat-option>
+                            <mat-option [value]="2" i18n>
+                                Bank account statement
+                            </mat-option>
+                        </mat-select>
+                        <mat-error i18n>
+                            *Please select the type of your Proof of Residence
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="address-instructions" i18n>
+                        Document must be valid and released
+                        no more than 6 month ago
+                    </div>
+
+                    <button mat-button
+                            *ngIf="!showSpinner && !profile.forwarderData.verified"
+                            color="secondary"
+                            type="submit"
+                            [class.btn-disabled]="disableBtn"
+                            [disabled]="disableBtn"
+                            class="upload-btn widescreen-btn"
+                            i18n>
+                        Submit
+                    </button>
+                </div>
+                <div class="id-doc-pictures">
+                    <div class="address-doc-picture-wrapper">
+                        <div (click)="setProofDoc()">
+                            <div>
+                                <span i18n>Document</span>
+                            </div>
+                            <div [ngClass]="PoRUploaded ? '' : 'avatar-wrapper'">
+                                <avatar-image
+                                        class="center-text"
+                                        [editable]="!profile.ProofOfresidenceVerified"
+                                        [id]="'userproofofresidence'"
+                                        [altText]="'Your Proof Of Residence'"
+                                        [src]="ProofOfresidenceImageSrc"
+                                        (click)="stopClickPropagation($event)"
+                                        (imageChanged)="setProofOfresidenceImage($event)"
+                                        [accept]="'.jpg, .jpeg, .png, .pdf'">
+                                </avatar-image>
+                                <div *ngIf="!PoRUploaded" i18n>Upload file</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="document-note" i18n>Uploaded file (jpg, png, pdf) <br/>Max 6MB</div>
+                </div>
+            </div>
+            <div class="text-center">
+                <mat-spinner
+                        *ngIf="showSpinner"
+                        style="margin: 0 auto;"
+                        [diameter]="70">
+
+                </mat-spinner>
+                <button mat-button
+                        *ngIf="!showSpinner && !profile.docVerified"
+                        color="secondary"
+                        type="submit"
+                        [class.btn-disabled]="disableBtn"
+                        [disabled]="disableBtn"
+                        class="upload-btn mobile-btn"
+                        i18n>
+                    Submit
+                </button>
+            </div>
+        </form>
+        <div class="alert alert-danger text-center alert-dismissable" [@transitionMessage]="showError1 || showError2 ? 'enter' : 'void'" *ngIf="showError1 || showError2">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" style="margin-top:-3px;" (click)="clearError()">
+                <i class="fa-2x far fa-times"></i>
+            </a>
+            <div *ngIf="uploadForm.get('nullProofOfresidence').errors
+                                        && uploadForm.get('nullProofOfresidence').errors.backend
+                                        && uploadForm.get('nullProofOfresidence').errors.backend.nullProofOfresidence"
+                       i18n>
+                {{uploadForm.get('nullProofOfresidence').errors.backend.nullProofOfresidence}}
+            </div>
+
+            <div *ngIf="uploadForm.get('invalidProofOfresidence').errors
+                                        && uploadForm.get('invalidProofOfresidence').errors.backend
+                                        && uploadForm.get('invalidProofOfresidence').errors.backend.invalidProofOfresidence"
+                       i18n>
+                {{uploadForm.get('invalidProofOfresidence').errors.backend.invalidProofOfresidence}}
+            </div>
+        </div>
+    </div>
+</div>

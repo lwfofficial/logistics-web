@@ -1,0 +1,11 @@
+django==1.11.15
+djangorestframework
+django-cors-headers
+django-recaptcha
+requests
+pillow
+psycopg2
+python-dateutil
+WeasyPrint==0.42
+twilio==6.10.5
+django-fixture-magic

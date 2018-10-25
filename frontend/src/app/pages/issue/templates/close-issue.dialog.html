@@ -1,0 +1,25 @@
+<div id="close-issue-container"
+     class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 i18n>Confirm action</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <div id="confirm-action"
+         class="row">
+        <div>Are you sure you want to close this issue?</div>
+        <div class="full-width confirm-buttons">
+            <button mat-button
+                    color="cancel"
+                    (click)="closeDialog()">
+                <span i18n>Cancel</span>
+            </button>
+            <button mat-button
+                    color="secondary"
+                    (click)="confirm()">
+                <span i18n>Confirm</span>
+            </button>
+        </div>
+    </div>
+</div>

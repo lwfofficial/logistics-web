@@ -1,0 +1,51 @@
+<div id="buyer-card-container" class="container-fluid" *ngIf="buyer">
+
+    <div class="row header-text-uppercase text-center">
+        <h2 class="container-title row-title" i18n>{{buyer.user.username}}</h2>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+    <section id="buyer-card-inner-container">
+        <div class="feedback-card">
+            <div class="feedback-score">
+                <div class="highlight_3 row-title" i18n> Feedback Rating</div>
+                <i class="material-icons">star</i>
+                <div class="score-value" i18n> {{buyer.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</div>
+                <div class="review-count"><span i18n>{{buyer.buyerFeedback.length}}</span> <span i18n>Reviews</span></div>
+            </div>
+            <div class="feedback-list">
+                <div *ngFor="let feedback of feedbacks"
+                     class="single-review">
+                    <p class="highlight_3 row-title" i18n>{{feedback.username}}</p>
+                    <star-rating
+                            labelPosition="'left'"
+                            starType="svg"
+                            staticColor="ok"
+                            size="medium"
+                            [rating]="feedback.score"
+                            readOnly="true">
+                    </star-rating>
+                    <p i18n>
+                        {{feedback.text | slice:0:100}}
+                    </p>
+                    <p i18n>{{feedback.dateCreated |
+                        l10nDate:defaultLocale:'medium'}}</p>
+                </div>
+
+                <mat-paginator [length]="length"
+                               [hidePageSize]="true"
+                               [pageSize]="pageSize"
+                               (page)="changePage($event)">
+                </mat-paginator>
+            </div>
+        </div>
+    </section>
+
+    <div class="buyer-card-btn">
+        <button mat-button
+                color="cancel"
+                (click)="closeDialog()" i18n>
+            Close
+        </button>
+    </div>
+</div>

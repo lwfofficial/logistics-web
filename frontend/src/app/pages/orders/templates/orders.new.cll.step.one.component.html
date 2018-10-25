@@ -1,0 +1,134 @@
+<form [formGroup]="orderCompletionForm">
+    <div>
+        <section class="order-data">
+            <span class="order-state"><span i18n>Order State</span>: <span class="highlight_3 text-uppercase"> <strong
+                    i18n>New</strong></span></span>
+        </section>
+
+        <section id="goods-settings">
+            <div class="section-title-box text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+                <h4 class="section-title text-uppercase" i18n>Goods</h4>
+                <img src="../../../../assets/images/orders/goods-icon.svg">
+            </div>
+
+            <div class="goods-info col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+                <div><span i18n>Size</span>: <strong i18n>{{orderCompletionForm.controls['parcelSize'].value | maxSize:profile.measuresSetting}}</strong></div>
+                <div><span i18n>Weight</span>: <strong i18n>{{orderCompletionForm.controls['parcelWeight'].value | maxWeight:profile.measuresSetting}}</strong></div>
+                <div><span i18n>Buy goods from</span>: <strong i18n>{{orderCompletionForm.controls['buyGoodsFrom'].value ? 'Private' : 'Company'}}</strong>
+                </div>
+            </div>
+
+            <div class="goods-data col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+                <label class="text-uppercase" i18n> Completion Goods Data</label>
+                <div>
+                    <label i18n>Goods Type</label>
+                    <mat-form-field floatLabel="never">
+                        <mat-select name="goods-type"
+                                    placeholder="Select Good Type"
+                                    formControlName="goodType">
+                            <mat-option *ngFor="let goodType of goodTypes"
+                                        [value]="goodType" i18n>
+                                {{goodType | goodType}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label i18n>Delivery to Collector</label>
+                    <mat-form-field floatLabel="never" class="delivery-date">
+                        <input matInput
+                               placeholder="Choose a date"
+                               [matDatepicker]="picker"
+                               [min]="minDate"
+                               formControlName="collectorDeliveryDate"
+                               (dateChange)="setEstimatedDate($event)">
+                        <mat-datepicker-toggle matSuffix
+                                               [for]="picker">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker
+                                #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </section>
+
+        <section id="collecting-settings">
+            <div class="section-title-box text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+                <h4 class="section-title text-uppercase" i18n>Collecting</h4>
+                <img src="../../../../assets/images/orders/forwarder-icon.svg">
+            </div>
+
+            <div class="collecting-info col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+                <div><span i18n>Collector</span>: <strong i18n>{{service.profile.user.username}}</strong></div>
+                <div><span i18n>Service</span>: <strong i18n>{{service.type | serviceName}}</strong></div>
+                <div><span i18n>Feedback</span>: <strong i18n>{{service.profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5</strong></div>
+            </div>
+
+            <div class="clearfix"></div>
+
+        </section>
+
+        <section id="pickup-settings">
+            <div class="section-title-box text-center col-lg-3 col-md-3 col-sm-3 col-xs-3 col-12">
+                <h4 class="section-title text-uppercase" i18n>Pick up</h4>
+                <img src="../../../../assets/images/orders/receiver-icon.svg">
+            </div>
+
+            <div class="pickup-info col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+                <div><span i18n>Receiving</span>: <strong i18n>{{profile.user.first_name}} {{profile.user.last_name}}</strong></div>
+            </div>
+
+            <div class="pickup-slots col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+                <div>
+                    <p i18n>Preferred week days by the Collector</p>
+                    <ul class="day-pref">
+                        <li *ngIf="service.sunday" i18n>Sun</li>
+                        <li *ngIf="service.monday" i18n>Mon</li>
+                        <li *ngIf="service.tuesday" i18n>Tue</li>
+                        <li *ngIf="service.wednesday" i18n>Wed</li>
+                        <li *ngIf="service.thursday" i18n>Thu</li>
+                        <li *ngIf="service.friday" i18n>Fri</li>
+                        <li *ngIf="service.saturday" i18n>Sat</li>
+                    </ul>
+                </div>
+                <div>
+                    <p i18n>Preferred time slots by the Collector</p>
+                    <ul class="time-pref">
+                        <li *ngIf="service.deliveryOnDawn" i18n>Dawn</li>
+                        <li *ngIf="service.deliveryOnMorning" i18n>Morning</li>
+                        <li *ngIf="service.deliveryOnLunchTime" i18n>Lunchtime</li>
+                        <li *ngIf="service.deliveryOnAfternoon" i18n>Afternoon</li>
+                        <li *ngIf="service.deliveryOnEvening" i18n>Evening</li>
+                        <li *ngIf="service.deliveryOnNight" i18n>Night</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </section>
+
+        <section id="total-price">
+            <span i18n>Total Price: </span>
+            <span class="highlight_3" i18n> <strong>BC {{orderCompletionForm.get("totalPrice").value | l10nDecimal:defaultLocale:'1.2-2'}} ({{priceAmount | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}})</strong></span>
+        </section>
+    </div>
+
+    <div class="stepper-btn">
+        <button mat-button
+                color="cancel"
+                class="text-uppercase"
+                (click)="abortOrder()"
+                i18n>
+            Cancel
+        </button>
+        <button mat-button
+                color="primary"
+                class="text-uppercase"
+                matStepperNext>
+            <span i18n>Next</span>
+        </button>
+    </div>
+
+</form>

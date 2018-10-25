@@ -1,0 +1,71 @@
+<div>
+    <section class="order-data">
+        <div><span i18n>Order Number:</span> <span class="highlight_3"><strong i18n>#{{orderId}}</strong></span></div>
+        <div class="order-state"><span i18n>Order State:</span> <span
+                class="highlight_3 text-uppercase"><strong i18n>New</strong></span></div>
+    </section>
+
+    <section id="payment-recap">
+            <div>
+                <div>
+                    <span class="service-title"><strong i18n>{{service.type | serviceName}}</strong></span>
+                </div>
+                <div>
+                    <span i18n>Shipping Mode:</span>
+                    <span><strong i18n>{{orderCompletionForm.get("shippingMode").value |shippingMode}}</strong></span>
+                </div>
+            </div>
+            <div class="service-price">
+                <span class="pull-right">Price: <strong i18n>BC {{orderCompletionForm.get("totalPrice").value | l10nDecimal:defaultLocale:'1.2-2'}}</strong>
+                </span>
+            </div>
+    </section>
+
+    <section class="payment-data">
+        <div class="payment-total">
+         <span i18n>Total</span>
+         <span class="highlight_3">
+            <strong i18n> BC {{orderCompletionForm.get("totalPrice").value | l10nDecimal:defaultLocale:'1.2-2'}} ({{priceAmount | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}})</strong>
+         </span>
+      </div>
+    </section>
+</div>
+
+<div class="last-step-btn">
+    <div class="mobile-btn">
+        <button mat-button
+                color="primary"
+                class="full-width text-uppercase"
+                (click)="payOrder()"
+                matStepperNext
+                i18n>
+            Payment
+        </button>
+    </div>
+    <div class="small-btn">
+        <button mat-button
+                color="cancel"
+                class="text-uppercase "
+                (click)="abortOrder()"
+                i18n>
+            Cancel
+        </button>
+        <button mat-button
+                color="cancel"
+                class="text-uppercase"
+                matStepperPrevious
+                i18n>
+            Back
+        </button>
+    </div>
+    <div class="desktop-btn">
+        <button mat-button
+                color="primary"
+                class="full-width text-uppercase"
+                (click)="payOrder()"
+                matStepperNext
+                i18n>
+            Payment
+        </button>
+    </div>
+</div>

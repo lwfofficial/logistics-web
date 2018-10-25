@@ -1,0 +1,25 @@
+@import "~@angular/material/theming";
+@import './custom-palettes.scss';
+
+$lwf-typography: mat-typography-config(
+  $font-family: 'Open Sans, sans-serif',
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500)
+);
+
+@include mat-core($lwf-typography);
+
+// define 3 theme color
+// mat-palette accepts $palette-name, main, lighter and darker variants
+$lwf-theme-primary: mat-palette($lwf-blue, 500, 300, 700);
+$lwf-theme-accent: mat-palette($lwf-yellow, 500);
+$lwf-theme-warn: mat-palette($lwf-red);
+
+// create theme (use mat-dark-theme for themes with dark backgrounds)
+$lwf-theme: mat-light-theme(
+    $lwf-theme-primary,
+    $lwf-theme-accent,
+    $lwf-theme-warn
+);
+
+@include angular-material-theme($lwf-theme);

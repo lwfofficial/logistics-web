@@ -1,0 +1,261 @@
+<div id="registration-page" class="container-fluid">
+    <img class="logo" src="assets/images/LWF-logo-white.svg"/>
+
+    <div id="signup-container"
+         class="row">
+
+        <mat-card class="registration-container" *ngIf="showSignup">
+            <progress-spinner #signupSpinner></progress-spinner>
+            <div class="row text-center header-text-uppercase" *ngIf="showSignup">
+                <p i18n>Signup</p>
+            </div>
+            <div><p class="row text-center" i18n>Complete the registration and verify your ID to start using LWF</p>
+            </div>
+            <form (ngSubmit)="signup(signupForm)"
+                  [formGroup]="signupForm">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <label i18n>First Name</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Name"
+                               name="name"
+                               type="text"
+                               formControlName="name">
+                        <mat-error i18n>
+                            First name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <label i18n>Last Name</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Last Name"
+                               type="text"
+                               formControlName="surname">
+                        <mat-error i18n>
+                            Last name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+                    <label i18n>Date of Birth</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               [matDatepicker]="picker"
+                               formControlName="dob"
+                               [min]="minDate"
+                               [max]="maxDate"
+                               placeholder="Date Of Birth">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error i18n>
+                           Date of Birth is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 col-12">
+                    <label i18n>City</label>
+                    <geocomplete
+                            [id]="'city'"
+                            [placeHolder]="'City'"
+                            [value]="signupForm.controls['city'].value"
+                            (optionSelected)="setCity($event)"
+                            [signup]="true"
+                            #cityInputForm
+                            ngDefaultControl>
+                    </geocomplete>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-12">
+                    <label i18n>Country</label>
+                    <mat-form-field class="readonlyField" floatLabel="never">
+                        <input matInput
+                               placeholder="Country"
+                               readonly
+                               name="country"
+                               type="text"
+                               formControlName="country">
+                        <mat-error i18n>
+                            Please select a country
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 col-12">
+                    <label i18n>Region/State</label>
+                    <mat-form-field class="readonlyField" floatLabel="never">
+                        <input matInput
+                               placeholder="Region"
+                               readonly
+                               name="region"
+                               type="text"
+                               formControlName="region">
+                        <mat-error i18n>
+                            Region is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-12">
+                    <label i18n>Zip Code</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Zipcode"
+                               name="zipcode"
+                               type="text"
+                               formControlName="zipcode">
+                        <mat-error i18n>
+                            Zip Code is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-12">
+                    <label i18n>Address</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Address"
+                               name="address"
+                               type="text"
+                               formControlName="address">
+                        <mat-error i18n>
+                            Address is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-5">
+                    <label i18n>Country Code</label>
+                    <mat-form-field class="dial-code" floatLabel="never">
+                        <img *ngIf="signupForm.controls['mobilePrefix'].value" src="blank.gif" class="flag flag-{{countryCode}}"/>
+                        <mat-select placeholder="Code"
+                                    formControlName="mobilePrefix"
+                                    [class.full]="signupForm.controls['mobilePrefix'].value"
+                                    (openedChange)="resetSelected($event)">
+                                <mat-option *ngFor="let dialcode of dialcodes"
+                                        [value]="dialcode"
+                                        (click)="selectMobilePrefix(dialcode)">
+                                <img src="../../../assets/images/country-flags/blank.gif" class="flag flag-{{dialcode.code.toLowerCase()}}"/>
+                                {{dialcode.dial_code}}
+                                <span *ngIf="!isSelected"
+                                        class="dialcode-name"
+                                    style="color: #9B9DA0; font-size: 0.875rem;"> - {{dialcode.name}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-7">
+                    <label i18n>Mobile</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Mobile"
+                               name="mobile"
+                               type="tel"
+                               formControlName="mobile">
+                        <mat-error i18n>
+                            Mobile number is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <label i18n>Email</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Email"
+                               type="email"
+                               formControlName="email"
+                               readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <label i18n>Username</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Username"
+                               type="text"
+                               formControlName="username"
+                               readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <label i18n>Password</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Password"
+                               name="password"
+                               type="password"
+                               autocapitalize="none"
+                               formControlName="password">
+                        <mat-error *ngIf="signupForm.controls['password'].hasError('minlength')" i18n>
+                            Password must be at least 8 character!
+                        </mat-error>
+                        <mat-error *ngIf="signupForm.controls['password'].hasError('required')" i18n>
+                            Password is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <label i18n>Repeat Password</label>
+                    <mat-form-field floatLabel="never">
+                        <input matInput
+                               placeholder="Repeat Password"
+                               name="confirmPassword"
+                               type="password"
+                               autocapitalize="none"
+                               formControlName="confirmPassword">
+                        <mat-error *ngIf="signupForm.errors && signupForm.errors.mismatch" i18n>
+                            Password must match!
+                        </mat-error>
+                        <mat-error *ngIf="signupForm.controls['confirmPassword'].hasError('minlength')" i18n>
+                            Password must be at least 8 character!
+                        </mat-error>
+                        <mat-error *ngIf="signupForm.controls['confirmPassword'].hasError('required')" i18n>
+                            Password confirmation is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="agreement col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12">
+                    <mat-checkbox
+                            color="primary"
+                            formControlName="agreement">
+                    </mat-checkbox>
+                    <span class="row-title"><span i18n> Check the box to confirm you have read and accepted </span>
+                        <a href="https://www.lwf.io/docs/terms.pdf"
+                           target="_blank" i18n>our Terms and Conditions</a>
+                    </span>
+                </div>
+                <div class="clearfix"></div>
+                <div class="captcha text-center">
+                    <re-captcha formControlName="captcha"
+                                [siteKey]="captchaSiteKey"></re-captcha>
+                </div>
+                <div class="col-md-6 col-md-push-3 col-sm-6 col-sm-push-3 col-xs-8 col-xs-push-2 col-12 col-push-0">
+                    <button mat-button
+                            color="secondary"
+                            type="submit"
+                            class="full-width"
+                            i18n>
+                        Continue
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+
+            </form>
+
+        </mat-card>
+        <div class="row text-center" *ngIf="!showSignup && !loading">
+            <h1 class="col-md-12 header-text-uppercase" i18n> This link is expired!</h1>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,310 @@
+<div id="p2p-freight-form-container" class="container-fluid">
+
+    <div class="row text-center header-text-uppercase">
+        <h3 class="row-title" i18n>P2P Freight Forwarders</h3>
+        <hr class="bottom-hr-orange"/>
+    </div>
+
+
+    <div id="p2p-freight-form">
+
+        <form (ngSubmit)="addService(addServiceForm)"
+              [formGroup]="addServiceForm"
+              #addServiceFormElement="ngForm">
+            <div>
+                <input type="hidden" name="profileForwarderAddress" formControlName="profileForwarderAddress" [ngModel]="service.profileForwarderAddress"/>
+                <label class="input-label">Title</label>
+                <mat-form-field floatLabel="never">
+                    <input matInput
+                           placeholder="Insert a title for your service"
+                           name="title"
+                           type="text"
+                           maxlength="30"
+                           formControlName="title">
+                    <mat-error>
+                        Please enter a title for your service
+                    </mat-error>
+                    <mat-hint>max 30 characters</mat-hint>
+                </mat-form-field>
+
+            </div>
+
+            <div id="locationFrom-wrapper">
+
+                <label class="input-label">From</label>
+                <mat-form-field floatLabel="never">
+                    <mat-select [placeholder]="'Select the city where the parcel will be delivered from'"
+                                value="selectedFromCity"
+                                (selectionChange)="setLocationFrom($event)"
+                                formControlName="locationFromSelect">
+                        <mat-option *ngFor="let city of forwarderCities"
+                                    [value]="city">
+                            {{city.name}} ({{city.countryCode}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Please Select the city
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+
+            <section id="locationTo">
+                <label class="input-label">Destination Country</label>
+                <div class="locationTos"
+                     formArrayName="locationTos"
+                     *ngFor="let locationTo of addServiceForm.get('locationTos')['controls'];let i=index; let last=last">
+                    <mat-form-field floatLabel="never">
+                        <mat-select [placeholder]="locationTo.value !== '' ? '' : 'Select Destination Country'"
+                                    [compareWith]="compareFn"
+                                    [(value)]="locationTo.value"
+                                    [formControl]="locationTo">
+                            <ngx-mat-select-search [placeholderLabel]="'Search country'"
+                                                   [clearSearchInput]="true"
+                                                   [noEntriesFoundLabel]="'No country found'"
+                                                   [formControl]="countryFilterCtrl">
+                            </ngx-mat-select-search>
+                            <mat-option *ngFor="let country of filteredCountries | async"
+                                        [value]="country">
+                                {{country.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Please select a destination country
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="rm-add-btn-container">
+                        <button id="remove-slot-btn"
+                                color="cancel"
+                                (click)="removeLocationTo(i)"
+                                type="button"
+                                mat-button><i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="last"
+                         class="rm-add-btn-container">
+                        <button id="add-slot-btn"
+                                color="cancel"
+                                type="button"
+                                (click)="addDestination()"
+                                mat-button><i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="size-weight">
+                <div>
+                    <label class="input-label">Max Size</label>
+                    <mat-form-field floatLabel="never">
+                        <mat-select [placeholder]="service.maxSize ? '' : 'Max Size'"
+                                    formControlName="maxSize">
+                            <mat-option *ngFor="let size of sizes"
+                                        [value]="size">
+                                {{size | maxSize:profile.measuresSetting}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Please select the max size you accept
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label class="input-label">Max Weight</label>
+                    <mat-form-field floatLabel="never">
+                        <mat-select [placeholder]="service.maxWeight ? '' : 'Max Weight'"
+                                    formControlName="maxWeight">
+                            <mat-option *ngFor="let weight of weights"
+                                        [value]="weight">
+                                {{weight | maxWeight:profile.measuresSetting}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Please select the max weight you accept
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </section>
+            <section id="forwarder-needed">
+                <p class="service-label-blue" i18n>
+                    Partner forwarder needed
+                </p>
+
+                <div class="checkbox-section forwarder-needed">
+                    <label class="label">
+                        <input class="label__checkbox"
+                               type="checkbox"
+                               value="company"
+                               (click)="setOtherPartnerInput()"
+                               formControlName="addPartnerForwarder"/>
+                        <span class="label__text">
+                            <span class="label__check"
+                                  [class.invalid]="addServiceForm.hasError('partnerError') &&
+                                                    addServiceForm.controls['addPartnerForwarder'].touched">
+                                Forwarder Partner
+                            </span>
+                        </span>
+                    </label>
+                    <label class="label">
+                        <input class="label__checkbox"
+                               type="checkbox"
+                               formControlName="addOtherPartner"
+                               (click)="showOtherPartnerInput(addOtherPartner)"/>
+                        <span class="label__text">
+                            <span class="label__check"
+                                  [class.invalid]="addServiceForm.hasError('partnerError') &&
+                                                    addServiceForm.controls['addOtherPartner'].touched">
+                                Other
+                            </span>
+                        </span>
+                    </label>
+                    <mat-form-field floatLabel="never" *ngIf="addForwarderPartner"
+                                    hintLabel="Forwarder Margin ie. 1.0%">
+                        <input matInput
+                               placeholder="Forwarder Margin ie. 1.0%"
+                               name="partnerForwarderMargin"
+                               type="number"
+                               min="0"
+                               max="100"
+                               formControlName="partnerForwarderMargin">
+                        <span matSuffix>%</span>
+                    </mat-form-field>
+                    <mat-form-field floatLabel="never" *ngIf="addOtherPartner">
+                        <input matInput
+                               placeholder="Enter Courier partner name"
+                               name="otherCourierPartnerName"
+                               type="text"
+                               formControlName="otherCourierPartnerName">
+                        <mat-error>
+                            <span i18n>Please enter a Courier name</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-error-wrapper">
+                    <div class="form-error" *ngIf="addServiceForm.hasError('partnerError') &&
+                                                       addServiceForm.controls['addPartnerForwarder'].touched"
+                         [@transitionMessages]="showPartnerError ? 'enter' : 'void'">
+                        <mat-error>
+                            <span i18n>Please select at least one option!</span>
+                        </mat-error>
+                    </div>
+                </div>
+            </section>
+            <section id="price-settings" *ngIf="!addForwarderPartner && addOtherPartner">
+                <p class="service-label-blue">Prices (BC)</p>
+                <div class="price-fields">
+                    <div>
+                        <label class="input-label">
+                            Cheap
+                            <mat-slide-toggle
+                                    formControlName="priceCheapEnabled"
+                                    color="primary">
+                            </mat-slide-toggle>
+                        </label>
+                        <mat-form-field floatLabel="never" hintLabel="Delivery 15-30 days">
+                            <input matInput
+                                   name="priceCheap"
+                                   type="number"
+                                   min="0"
+                                   formControlName="priceCheap">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label class="input-label">
+                            Standard
+                            <mat-slide-toggle
+                                    formControlName="priceStandardEnabled"
+                                    color="primary">
+                            </mat-slide-toggle>
+                        </label>
+                        <mat-form-field floatLabel="never" hintLabel="Delivery 6-15 days">
+                            <input matInput
+                                   name="priceStandard"
+                                   type="number"
+                                   min="0"
+                                   formControlName="priceStandard">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label class="input-label">
+                            Express
+                            <mat-slide-toggle
+                                    formControlName="priceExpressEnabled"
+                                    color="primary">
+                            </mat-slide-toggle>
+                        </label>
+                        <mat-form-field floatLabel="never" hintLabel="Delivery 3-6 days">
+                            <input matInput
+                                   name="priceExpress"
+                                   type="number"
+                                   min="0"
+                                   formControlName="priceExpress">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </section>
+            <section id="checkbox-p2p-service">
+                <div>
+                    <p class="service-label-blue" i18n>
+                        Package accepted from
+                    </p>
+                    <section class="checkbox-section pack-accepted-from">
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   value="private"
+                                   formControlName="acceptedPacksFromPrivate"/>
+                            <span class="label__text">
+                                 <span class="label__check"
+                                       [class.invalid]="addServiceForm.hasError('packError') &&
+                                                    addServiceForm.controls['acceptedPacksFromPrivate'].touched">
+                                    Private
+                                 </span>
+                              </span>
+                        </label>
+                        <label class="label">
+                            <input class="label__checkbox"
+                                   type="checkbox"
+                                   value="company"
+                                   (click)="logValue()"
+                                   formControlName="acceptedPacksFromCompany"/>
+                            <span class="label__text">
+                                 <span class="label__check"
+                                       [class.invalid]="addServiceForm.hasError('packError') &&
+                                                    addServiceForm.controls['acceptedPacksFromCompany'].touched">
+                                    Company
+                                 </span>
+                              </span>
+                        </label>
+                        <div class="form-error-wrapper">
+                            <div class="form-error" *ngIf="addServiceForm.hasError('packError') &&
+                                                       addServiceForm.controls['acceptedPacksFromPrivate'].touched"
+                                 [@transitionMessages]="showPackError ? 'enter' : 'void'">
+                                <mat-error>
+                                    <span i18n>Please select at least one option!</span>
+                                </mat-error>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-6 col-lg-push-2 col-md-push-2 col-sm-push-2 col-xs-push-2 col-push-0">
+                    <button mat-button color="cancel" class="full-width" (click)="dialogRef.close()" type="button">
+                        <span i18n>Cancel</span>
+                    </button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-6 col-lg-push-2 col-md-push-2 col-sm-push-2 col-xs-push-2 col-push-0">
+                    <button mat-button color="secondary" class="full-width" type="submit">
+                        <span i18n *ngIf="!service.id">Add</span>
+                        <span i18n *ngIf="service.id">Update</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>

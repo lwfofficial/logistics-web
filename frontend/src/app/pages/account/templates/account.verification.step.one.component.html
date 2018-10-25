@@ -1,0 +1,140 @@
+<div id="id-verification" class="container-fluid" *ngIf="profile">
+    <div class="verification-header">
+        <div class="verification-title" i18n>ID Verification</div>
+        <div class="verification-status">
+            <span i18n>Status</span>:
+            <span class="status-progress"
+                  [ngClass]="verificationIdStatus()[1]" i18n>
+                {{verificationIdStatus()[0]}}
+            </span>
+        </div>
+        <div class="verification-dot">
+            <i class="material-icons" [ngClass]="verificationIdStatus()[1]">brightness_1</i>
+        </div>
+    </div>
+    <div id="id-upload-form">
+        <form (ngSubmit)="uploadId(uploadForm)"
+              [formGroup]="uploadForm">
+            <div>
+                <div class="id-type-select">
+                    <mat-form-field floatLabel="never">
+                        <mat-select placeholder="Select ID type"
+                                    formControlName="idType">
+                            <mat-option [value]="0" i18n>
+                                ID Card
+                            </mat-option>
+                            <mat-option [value]="1" i18n>
+                                Passport
+                            </mat-option>
+                            <mat-option [value]="2" i18n>
+                                Driver's License
+                            </mat-option>
+                        </mat-select>
+                        <mat-error i18n>
+                            *Please select the type of your ID
+                        </mat-error>
+                    </mat-form-field>
+                    <button mat-button
+                            *ngIf="!showSpinner && !profile.docVerified"
+                            color="secondary"
+                            type="submit"
+                            [class.btn-disabled]="disableBtn"
+                            [disabled]="disableBtn"
+                            class="upload-btn widescreen-btn"
+                            i18n>
+                        Submit
+                    </button>
+                </div>
+                <div class="id-doc-pictures">
+                    <div class="id-doc-picture-wrapper">
+                        <div (click)="setFrontDoc()">
+                            <div>
+                                <span i18n>Front</span>
+                            </div>
+                            <div [ngClass]="frontUploaded ? '' : 'avatar-wrapper'">
+                                <avatar-image
+                                        [editable]="!profile.docVerified"
+                                        [id]="'useriddocfront'"
+                                        [altText]="'Your doc id front'"
+                                        [src]="IDDocFrontImageSrc"
+                                        (click)="stopClickPropagation($event)"
+                                        (imageChanged)="setIDDocFrontImage($event)"
+                                        [accept]="'.jpg, .jpeg, .png, .pdf'">
+                                </avatar-image>
+                                <div *ngIf="!frontUploaded" i18n>Upload file</div>
+                            </div>
+                        </div>
+                        <div (click)="setBackDoc($event)">
+                            <div>
+                                <span i18n>Back</span>
+                            </div>
+                            <div [ngClass]="backUploaded ? '' : 'avatar-wrapper'">
+                                <avatar-image
+                                        [editable]="!profile.docVerified"
+                                        [id]="'useriddocback'"
+                                        [altText]="'Your doc id front'"
+                                        [src]="IDDocBackImageSrc"
+                                        (click)="stopClickPropagation($event)"
+                                        (imageChanged)="setIDDocBackImage($event)"
+                                        [accept]="'.jpg, .jpeg, .png, .pdf'">
+                                </avatar-image>
+                                <div *ngIf="!backUploaded" i18n>Upload file</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="document-note" i18n>Uploaded file (jpg, png, pdf) <br/>Max 6MB</div>
+                </div>
+            </div>
+            <div class="text-center">
+                <mat-spinner
+                        *ngIf="showSpinner"
+                        style="margin: 0 auto;"
+                        [diameter]="70">
+
+                </mat-spinner>
+                <button mat-button
+                        *ngIf="!showSpinner && !profile.docVerified"
+                        color="secondary"
+                        type="submit"
+                        [class.btn-disabled]="disableBtn"
+                        [disabled]="disableBtn"
+                        class="upload-btn mobile-btn"
+                        i18n>
+                    Submit
+                </button>
+            </div>
+
+        </form>
+        <div class="alert alert-danger text-center alert-dismissable" [@transitionMessage]="showError1 || showError2 ? 'enter' : 'void'" *ngIf="showError1 || showError2">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" style="margin-top:-3px;" (click)="clearError()">
+                <i class="fa-2x far fa-times"></i>
+            </a>
+            <div *ngIf="uploadForm.get('nullFront').errors
+                                        && uploadForm.get('nullFront').errors.backend
+                                        && uploadForm.get('nullFront').errors.backend.nullFront"
+                       i18n>
+                {{uploadForm.get('nullFront').errors.backend.nullFront}}
+            </div>
+            <div *ngIf="uploadForm.get('nullBack').errors
+                                        && uploadForm.get('nullBack').errors.backend
+                                        && uploadForm.get('nullBack').errors.backend.nullBack"
+                       i18n>
+                {{uploadForm.get('nullBack').errors.backend.nullBack}}
+            </div>
+
+            <div *ngIf="uploadForm.get('invalidFront').errors
+                                        && uploadForm.get('invalidFront').errors.backend
+                                        && uploadForm.get('invalidFront').errors.backend.invalidFront"
+                       i18n>
+                {{uploadForm.get('invalidFront').errors.backend.invalidFront}}
+            </div>
+            <div *ngIf="uploadForm.get('invalidBack').errors
+                                        && uploadForm.get('invalidBack').errors.backend
+                                        && uploadForm.get('invalidBack').errors.backend.invalidBack"
+                       i18n>
+                {{uploadForm.get('invalidBack').errors.backend.invalidBack}}
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div id="profile-info">
+    <div id="user-info"
+         class="container"
+         *ngIf="profile && wallet">
+        <div class="flex-info" [ngClass]="!userService.isForwarder(profile) ? 'buyer-info' : ''">
+            <div class="profile-avatar">
+                <avatar-image
+                        [editable]="editAvatar"
+                        [src]="avatarImageSrc"
+                        (imageChanged)="setAvatarImage($event)"
+                        [accept]="'.jpg, .jpeg, .png'">
+                </avatar-image>
+            </div>
+
+            <div class="profile-details">
+                <h4 class="text-uppercase">
+                    <span i18n>{{profile.user.username}}</span>
+                    <img *ngIf="userService.isForwarder(profile)"
+                         src="../../../../assets/images/account/trusted_frw.svg"/>
+                </h4>
+                <div *ngIf="!userService.isForwarder(profile)">
+                    <span i18n>Recipient</span>:
+                    <span class="{{userService.isRecipient(profile) ? 'verified' : 'unverified'}}">
+                        <a [routerLink]="'verification'">
+                          <span *ngIf="userService.isRecipient(profile)" i18n>Verified</span>
+                          <span *ngIf="!userService.isRecipient(profile)" i18n>Not Verified</span>
+                        </a>
+                    </span>
+
+                </div>
+                <div>
+                    <span i18n>Forwarder </span>:
+                    <span class="{{userService.isForwarder(profile) ? 'verified' : 'unverified'}}">
+                        <span *ngIf="userService.isForwarder(profile)" i18n> Level {{profile.forwarderData.level}}</span>
+                        <a [routerLink]="'verification'">
+                          <span *ngIf="!userService.isForwarder(profile)" i18n>Not Verified</span>
+                        </a>
+                    </span>
+                </div>
+                <div *ngIf="userService.isForwarder(profile)" class="feedback-score">
+                    <span i18n>Feedback: </span>
+                    <span class="profile-feedback" i18n>
+                        {{profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5
+                    </span>
+                    <i class="material-icons">star</i>
+                    <span i18n>{{profile.forwarderFeedback.length}} reviews</span>
+                </div>
+                <div *ngIf="userService.isForwarder(profile)">
+                    <span i18n>Your bundle credits: </span>
+                    <span class="profile-balance">
+                        <a [routerLink]="'/wallets'" i18n>
+                             BC {{wallet.credit | l10nDecimal:defaultLocale:'1.2-2'}}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="profile-services">
+                <div *ngIf="!userService.isForwarder(profile)" class="feedback-score">
+                    <span i18n>Feedback</span>:
+                    <span class="profile-feedback" i18n>
+                         {{profile.feedback | l10nDecimal:defaultLocale:'1.2-2'}}/5
+                    </span>
+                    <i class="material-icons">star</i>
+                    <span i18n>{{profile.buyerFeedback.length}} reviews</span>
+                </div>
+                <div *ngIf="!userService.isForwarder(profile)">
+                    <span i18n>Your bundle credits</span>:
+                    <span class="profile-balance" >
+                        <a [routerLink]="'/wallets'" i18n>
+                           BC {{wallet.credit | l10nDecimal:defaultLocale:'1.2-2'}}
+                        </a>
+                    </span>
+                </div>
+                <div *ngIf="userService.isForwarder(profile)">
+                    <h4 class="text-uppercase" i18n>
+                        Services Sold
+                    </h4>
+                    <div class="service-limit"
+                          *ngFor="let serviceLimit of profile.forwarderData.servicesLimits" i18n>
+                            {{serviceLimit.type | profileInfoServiceName}}
+                         <mat-progress-bar mode="determinate" [value]="serviceLimit.used" color="primary"></mat-progress-bar>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

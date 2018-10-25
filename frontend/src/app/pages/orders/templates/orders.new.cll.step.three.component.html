@@ -1,0 +1,101 @@
+<div>
+    <section class="order-data">
+        <div><span i18n>Order Number: </span> <span class="highlight_3"><strong i18n>#{{orderId}}</strong></span></div>
+        <div class="order-state"><span i18n>Order State:</span> <span
+                class="highlight_3 text-uppercase"><strong i18n>New</strong></span></div>
+    </section>
+    <section id="total-price">
+        <span i18n>Total Price: </span>
+        <span class="highlight_3" i18n> <strong>BC {{orderCompletionForm.get("totalPrice").value | l10nDecimal:defaultLocale:'1.2-2'}} ({{priceAmount | l10nCurrency:defaultLocale:currency:'symbol':'1.2-2'}})</strong></span>
+    </section>
+    <section id="deposit-info">
+        <div *ngIf="!isCreditValid">
+            <h3 class="text-uppercase" i18n>Your Balance of BC {{wallet.credit | l10nDecimal:defaultLocale:'1.2-2'}} is
+                not enough to complete the order</h3>
+            <div>
+                To continue you must buy credits through paypal using standard currencies ($,€,£,etc.) or
+                cryptocurrencies (BTC, LWF).
+            </div>
+            <div>
+                All LWF service can be purchased using Bundle credits (1$ = 1BC).
+            </div>
+        </div>
+        <div *ngIf="isCreditValid">
+            <h3 class="text-uppercase" i18n>Your Balance of BC {{wallet.credit | l10nDecimal:defaultLocale:'1.2-2'}} is
+                enough to complete the order</h3>
+            <div>
+                Please to continue just click the button "NEXT" below
+            </div>
+        </div>
+    </section>
+    <div id="deposit-form-container" *ngIf="profile && !isCreditValid">
+        <section class="deposit-sections" id="credit-card-deposit">
+            <div>
+                <h3 class="text-uppercase" i18n>Paypal, Credit &#38; Debit Card</h3>
+                <span i18n>({{8.5 | l10nDecimal:defaultLocale:'1.1-2'}}% fee will be automatically applied to transaction)</span>
+            </div>
+            <div class="credit-card-logos">
+                <img width="150" src="../../../../assets/images/orders/paypal-logo.svg">
+                <img width="100" src="../../../../assets/images/orders/visa-logo.svg">
+                <img width="100" src="../../../../assets/images/orders/mastercard-logo.svg">
+            </div>
+            <div>
+                <button mat-button
+                        class="currency-button"
+                        (click)="openPaypalDepositDialog()"
+                        type="submit">
+                    <span i18n>Buy Credits</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="deposit-sections" id="crypto-deposit">
+            <div>
+                <h3 class="text-uppercase" i18n>Cryptocurrencies</h3>
+                <span i18n>({{8.5 | l10nDecimal:defaultLocale:'1.1-2'}}% fee will be automatically applied to transaction)</span>
+            </div>
+            <div class="crypto-logos">
+                <button mat-button
+                        [class.disabled]="button.disabled"
+                        (click)="openCryptoDepositDialog(button)"
+                        type="submit"
+                        *ngFor="let button of buttons">
+                    <mat-icon [svgIcon]="button.currency | currencySymbol"></mat-icon>
+                    <span>{{button.name}}</span>
+                </button>
+            </div>
+            <div class="crypto-info">
+                Click on currency to show the address
+            </div>
+        </section>
+        <!--<div *ngFor="let button of buttons">-->
+
+        <!--<button mat-button-->
+        <!--class="currency-button"-->
+        <!--[class.disabled]="button.disabled"-->
+        <!--(click)="openDepositDialog(button)"-->
+        <!--type="submit">-->
+        <!--<mat-icon [svgIcon]="button.currency | currencySymbol"></mat-icon>-->
+        <!--{{button.name}}-->
+        <!--</button>-->
+
+        <!--</div>-->
+    </div>
+</div>
+
+<div class="stepper-btn">
+        <button mat-button
+                color="cancel"
+                class="text-uppercase"
+                matStepperPrevious
+                i18n>
+            Back
+        </button>
+        <button mat-button
+                color="primary"
+                class="text-uppercase"
+                matStepperNext
+                i18n>
+            Next
+        </button>
+</div>

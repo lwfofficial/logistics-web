@@ -1,0 +1,27 @@
+<input type='file'
+       (change)="readURL($event)"
+       [disabled]="!editable"
+       style="display: none"
+       [id]="id+'_input'"
+       [accept]="accept"/>
+<div [id]="id+'_container'"
+     [ngClass]="editable ? 'editable' : ''">
+    <img *ngIf="isImage()"
+         class="avatar"
+         [src]="src"
+         [alt]=altText
+         (click)="editable && click()"
+         [id]="id+'_img'"/>
+    <i *ngIf="!isImage()"
+       class="avatar"
+       (click)="editable && click()"
+       [ngClass]="getFileType() | fileTypeIcon"></i>
+    <div *ngIf="!src" class="no-file-text">
+       No File uploaded
+    </div>
+    <div class="edit">
+        <a href="#">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+    </div>
+</div>
